@@ -3,7 +3,7 @@
   "use strict";
   const byId = id => document.getElementById(id);
   const isPublicModel = () => document.body.dataset.publicModel === "true";
-  const openContact = () => window.location.assign("https://wan2-website.web.app/#contact");
+  const openContact = () => window.location.assign("https://wan2-website.web.app/");
   let modelFocusActive = false;
   let modelFocusOrigin = null;
   let modelFocusScroll = 0;

@@ -50,7 +50,7 @@
   <script defer src="project-files.js?v=20261021-audit1"></script>
   <script defer src="finance-controls.js?v=20261021-pilot1"></script>
   <script defer src="model-video.js?v=20261023-model-entry1"></script>
-  <script defer src="dashboard.js?v=20261024-publicmodel1"></script>
+  <script defer src="dashboard.js?v=20261024-materialfirst1"></script>
   <script defer src="facade-preview.js?v=20261023-model-entry1"></script>
   <script defer src="dashboard-study.js?v=20261024-floorplan1"></script>
   <script defer src="parking-review.js?v=20261021-audit1"></script>
@@ -637,10 +637,10 @@
         <aside class="model-focus-palette" id="modelFocusPalette" aria-label="모형 편집 패널">
           <a class="model-focus-kicker" href="./#home" data-workspace-return aria-label="FORMEQUA 홈페이지 맨 위로 돌아가기">FORMEQUA / MODEL STUDY</a>
           <div class="model-focus-tabs" role="tablist" aria-label="모형 편집 항목">
-            <button id="modelFocusShapeTab" type="button" role="tab" aria-selected="true" aria-controls="modelFocusShapePanel" tabindex="0" data-focus-tab="shape">형태 · 높이</button>
-            <button id="modelFocusMaterialTab" type="button" role="tab" aria-selected="false" aria-controls="modelFocusMaterialPanel" tabindex="-1" data-focus-tab="material">외관 · 재료</button>
+            <button id="modelFocusShapeTab" type="button" role="tab" aria-selected="false" aria-controls="modelFocusShapePanel" tabindex="-1" data-focus-tab="shape">형태 · 높이</button>
+            <button id="modelFocusMaterialTab" type="button" role="tab" aria-selected="true" aria-controls="modelFocusMaterialPanel" tabindex="0" data-focus-tab="material">외관 · 재료</button>
           </div>
-          <section id="modelFocusShapePanel" class="model-focus-shape-panel" role="tabpanel" aria-labelledby="modelFocusShapeTab">
+          <section id="modelFocusShapePanel" class="model-focus-shape-panel" role="tabpanel" aria-labelledby="modelFocusShapeTab" hidden>
             <div class="model-focus-scale"><span>현재 모형 높이</span><strong id="modelFocusHeight">— <small>m</small></strong><p id="modelFocusScale">적용 규모를 확인하고 있습니다.</p></div>
             <div id="modelFocusMassControls" class="model-focus-mass-controls"></div>
             <div class="model-focus-form-label">건물 형태</div>
@@ -651,7 +651,7 @@
             </div>
             <p class="model-focus-mass-note" id="modelFocusMassNote" role="status" aria-live="polite">층수·층고·바닥 면적을 조정하면 같은 설계안의 모형과 분석이 함께 갱신됩니다.</p>
           </section>
-          <section id="modelFocusMaterialPanel" role="tabpanel" aria-labelledby="modelFocusMaterialTab" hidden>
+          <section id="modelFocusMaterialPanel" role="tabpanel" aria-labelledby="modelFocusMaterialTab">
             <div id="modelFocusPaletteHost"></div>
             <button class="model-focus-color-toggle" type="button" data-facade-color-toggle aria-pressed="false">실제 색감 보기</button>
           </section>

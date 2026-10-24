@@ -90,7 +90,7 @@ class CloudAppTests(unittest.TestCase):
             for method in ("GET", "HEAD"):
                 status, body, headers = self.call("/dashboard.html", method=method)
                 self.assertEqual((status, body), (303, b""))
-                self.assertEqual(headers["Location"], "https://wan2-website.web.app/#contact")
+                self.assertEqual(headers["Location"], "https://wan2-website.web.app/")
                 self.assertNotIn("WWW-Authenticate", headers)
             env = {}
             setup_testing_defaults(env)

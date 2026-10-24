@@ -31,7 +31,7 @@ Gunicorn WSGI, Python 3.12, Node 22로 조회와 계산을 처리한다. WebGL�
 자세한 동작은 [stateless-deployment.md](stateless-deployment.md)를 참고한다.
 
 `/model.html`은 로그인 없이 모형·형태·재료·평면을 보여주는 전용 화면이다.
-`WORKSPACE_ENTRY=contact`에서는 상세 작업실 진입을 개인 홈페이지의 문의 영역으로
+`WORKSPACE_ENTRY=contact`에서는 상세 작업실 진입을 개인 홈페이지 최상단으로
 보낸다. 예전 `dashboard.html?view=model` 링크는 공개 모형으로 옮긴다.
 계산·법령·필지 등 비공개 API의 Basic 인증은 유지하고 공개 모형에서 자동 호출하지
 않는다. 대시보드 HTML 원본은 Hosting 정적 디렉터리에 복사하지 않는다.
@@ -117,7 +117,7 @@ Cloud Run health가 성공해야 Hosting을 배포한다. Firebase rewrite의 `p
 
 - `/api/health` 200 및 `calculators_ready=true`
 - 비밀번호 없는 `/model.html` 200, 모형·평면 정상 및 초기 보호 API 호출 없음
-- `/dashboard.html`은 개인 홈페이지 `#contact`로 303, 이전 모형 링크는 `/model.html`로 303
+- `/dashboard.html`은 개인 홈페이지 최상단으로 303, 이전 모형 링크는 `/model.html`로 303
 - 인증된 주소·PNU·법령 조회와 실제 Node 사업성 계산 실행
 - disabled 상태의 검토 POST 404, 원본·이미지 조회 404, 공개 연구 빈 피드
 - 브라우저에서 검토 자료 저장 요청과 원격 갤러리 polling 없음

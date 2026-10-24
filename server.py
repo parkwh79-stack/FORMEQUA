@@ -42,7 +42,7 @@ UVAL_SCRIPT = SKILLS_ROOT / "architect-calculator" / "scripts" / "uvalue_calcula
 ENERGY_SCRIPT = SKILLS_ROOT / "architect-calculator" / "scripts" / "energy_calculator.py"
 ANALYSIS_SCRIPT = WEB_DIR / "analysis-engine.js"
 ANALYSIS_MAX_BYTES = 65536
-WORKSPACE_CONTACT_URL = "https://wan2-website.web.app/#contact"
+WORKSPACE_CONTACT_URL = "https://wan2-website.web.app/"
 
 
 def finite_json_number(value):

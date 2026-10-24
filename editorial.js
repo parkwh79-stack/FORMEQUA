@@ -12,7 +12,7 @@
   const byId = id => document.getElementById(id);
   const setText = (id, value) => { const el = byId(id); if (el) el.textContent = value; };
   const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const contactUrl = "https://wan2-website.web.app/#contact";
+  const contactUrl = "https://wan2-website.web.app/";
 
   function openDashboard(context, view = "model") {
     if (view === "workspace") {
