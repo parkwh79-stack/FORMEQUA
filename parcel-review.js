@@ -218,7 +218,12 @@
       window.addEventListener('atelier:updated', sync);
       window.addEventListener('atelier:project-loaded', () => { revision++; draft = current().parcelData ? structuredClone(current().parcelData) : null; renderDraft(); sync(); });
       draft = current().parcelData ? structuredClone(current().parcelData) : null; renderDraft(); sync();
-      request('/api/v1/parcels/status').then(status => { by('parcelProviderStatus').textContent = `지번 검색 ${status.addressSearchReady ? '연결됨' : '연결 필요'} · 필지 경계 ${status.boundaryReady ? '연결됨' : '연결 필요'}`; }).catch(() => { by('parcelProviderStatus').textContent = '필지 API 연결 상태를 확인하지 못했습니다. 서버를 확인해 주세요.'; });
+      const publicAtelierLanding = window.location?.protocol === 'https:' && document.body.dataset.sitePage === 'atelier';
+      if (publicAtelierLanding) {
+        by('parcelProviderStatus').textContent = '실시간 필지 조회는 상세 작업실에서 사용할 수 있습니다.';
+      } else {
+        request('/api/v1/parcels/status').then(status => { by('parcelProviderStatus').textContent = `지번 검색 ${status.addressSearchReady ? '연결됨' : '연결 필요'} · 필지 경계 ${status.boundaryReady ? '연결됨' : '연결 필요'}`; }).catch(() => { by('parcelProviderStatus').textContent = '필지 API 연결 상태를 확인하지 못했습니다. 서버를 확인해 주세요.'; });
+      }
     };
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready); else ready();
   }

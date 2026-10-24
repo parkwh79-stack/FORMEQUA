@@ -5002,7 +5002,8 @@ window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btnExportReport").addEventListener("click", exportProformaAndReport);
 
   syncZoningLawFromMinistry();
-  fetchLiveLawArticle();
+  const publicAtelierLanding = window.location.protocol === "https:" && document.body.dataset.sitePage === "atelier";
+  if (!publicAtelierLanding) fetchLiveLawArticle();
 });
 
 // Back/forward cache restores the previous document without DOMContentLoaded.
