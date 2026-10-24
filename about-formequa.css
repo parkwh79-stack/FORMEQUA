@@ -1,0 +1,112 @@
+/* FORMEQUA's research perspective inside the continuous editorial journal. */
+.about-formequa .about-opening { padding-top: 170px; padding-bottom: 30px; }
+.about-formequa .about-eyeline { display: flex; align-items: baseline; justify-content: space-between; gap: 30px; }
+.about-formequa .about-eyeline > span { font-family: var(--atelier-serif); font-size: 21px; font-style: italic; color: var(--muted); letter-spacing: -.025em; }
+.about-formequa .about-opening-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 9%; align-items: center; padding-block: 55px 70px; }
+.about-formequa .about-opening-title { margin: 0; font-family: var(--atelier-serif); font-size: clamp(88px,10.8vw,178px); font-weight: 400; line-height: .98; letter-spacing: -.06em; }
+.about-formequa .about-opening-title em { display: inline-block; padding-left: .2em; }
+.about-formequa .about-opening-copy h3 { margin: 0; font-size: clamp(24px,2.45vw,37px); font-weight: 450; line-height: 1.6; letter-spacing: -.045em; word-break: keep-all; }
+.about-formequa .about-opening-copy > p { margin-top: 26px; color: var(--muted); font-size: 15px; line-height: 1.95; word-break: keep-all; }
+.about-formequa .about-opening-copy .text-link { margin-top: 25px; font-family: var(--atelier-serif); font-style: italic; font-size: 19px; }
+.about-formequa .about-opening-photo { margin: 0; }
+.about-formequa .about-opening-photo > span { display: block; }
+.about-formequa .about-opening-photo img { width: 100%; height: auto; }
+.about-formequa .about-opening-photo figcaption { display: flex; justify-content: space-between; gap: 20px; padding-top: 16px; color: var(--muted); font-size: 10px; font-weight: 500; letter-spacing: .08em; }
+.about-formequa .about-perspective { padding-block: 140px; }
+.about-formequa .about-perspective h2 { max-width: 1100px; margin: 50px 0 65px; font-size: clamp(34px,4.6vw,68px); font-weight: 400; line-height: 1.6; letter-spacing: -.05em; word-break: keep-all; }
+.about-formequa .about-perspective h2 em { font-style: normal; color: #707960; }
+.about-formequa .about-perspective-copy { display: grid; grid-template-columns: 1fr 1fr; gap: 9%; max-width: 840px; margin-left: auto; }
+.about-formequa .about-perspective-copy p { margin: 0; color: var(--muted); font-size: 16px; line-height: 2; word-break: keep-all; }
+.about-formequa .about-method { background: #e9e7df; }
+.about-formequa .about-method-sticky { display: grid; grid-template-rows: auto auto auto; padding-block: 115px 48px; }
+.about-formequa.method-enhanced .about-method { height: auto; min-height: 0; }
+.about-formequa.method-enhanced .about-method-sticky { position: relative; height: auto; min-height: 0; }
+.about-formequa .about-method-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 25px; }
+.about-formequa .about-method-stage { position: relative; display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.2fr); gap: 42px clamp(32px,6vw,96px); align-items: start; width: calc(100% - 112px); max-width: 1480px; margin-inline: auto; padding-block: 44px; }
+.about-formequa .method-words { grid-column: 1 / -1; grid-row: 1; display: flex; justify-content: center; gap: .2em; margin: 0; color: #424a3b; font-family: var(--atelier-serif); font-size: clamp(62px,9.2vw,146px); font-weight: 400; line-height: 1.15; letter-spacing: -.055em; }
+.about-formequa .method-words > span { display: block; }
+.about-formequa .method-photo { position: relative; min-width: 0; margin: 0; }
+.about-formequa .method-photo img { display: block; width: 100%; height: auto; }
+.about-formequa .method-photo-left { grid-column: 1; grid-row: 2; width: 85%; }
+.about-formequa .method-photo-right { grid-column: 2; grid-row: 2; width: 100%; margin-top: 80px; }
+.about-formequa .about-method-notes { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 35px; }
+.about-formequa .about-method-notes > div { padding-top: 20px; border-top: 1px solid #424a3b40; }
+.about-formequa .about-method-notes span { color: #66705d; font-size: 10px; font-weight: 600; letter-spacing: .12em; }
+.about-formequa .about-method-notes h3 { margin: 16px 0 9px; font-size: 19px; font-weight: 500; letter-spacing: -.035em; word-break: keep-all; }
+.about-formequa .about-method-notes p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.8; word-break: keep-all; }
+.about-formequa .about-researcher { display: grid; grid-template-columns: 1.35fr 1fr; gap: 10%; padding-block: 160px; }
+.about-formequa .about-researcher h2 { margin: 43px 0 0; font-family: var(--atelier-serif); font-size: clamp(72px,8.4vw,135px); font-weight: 400; line-height: 1; letter-spacing: -.055em; }
+.about-formequa .about-researcher-copy { padding-top: 65px; }
+.about-formequa .researcher-name { margin: 0 0 35px; font-size: 26px; font-weight: 500; line-height: 1.5; }
+.about-formequa .researcher-name span { display: inline-block; margin-left: 13px; color: var(--muted); font-family: var(--atelier-serif); font-style: italic; font-size: 24px; font-weight: 400; }
+.about-formequa .about-researcher-copy > p:not(.researcher-name) { margin-bottom: 22px; color: var(--muted); font-size: 17px; line-height: 1.95; word-break: keep-all; }
+.about-formequa .researcher-link { margin-top: 22px; font-family: var(--atelier-serif); font-size: 21px; font-style: italic; }
+.about-formequa .about-next { padding-block: 90px 45px; background: #eceae3; }
+.about-formequa .about-next h2 { margin: 42px 0 35px; font-family: var(--atelier-serif); font-size: clamp(64px,8vw,126px); font-weight: 400; line-height: 1; letter-spacing: -.055em; }
+.about-formequa .about-next h2 em { display: inline-block; margin-left: 12%; }
+.about-formequa .about-next .text-link { margin-left: 52%; margin-top: 20px; }
+.about-formequa .about-image-note { margin-top: 65px; font-size: 11px; line-height: 1.8; color: var(--muted); }
+.about-formequa .about-footer { display: flex; justify-content: space-between; align-items: center; gap: 30px; padding-block: 36px; }
+.about-formequa .about-footer .wordmark { font-size: 22px; }
+.about-formequa .about-footer > a:not(.wordmark) { font-size: 12px; font-weight: 500; }
+.about-formequa .about-footer .about-signature { font-weight: 600 !important; letter-spacing: .06em; }
+@media (max-width: 1100px) {
+  .about-formequa .about-opening-grid { gap: 6%; grid-template-columns: 1.2fr 1fr; }
+  .about-formequa .about-opening-title { font-size: 11vw; }
+  .about-formequa .about-opening-copy > p { font-size: 13px; }
+  .about-formequa .about-method-notes { gap: 22px; }
+  .about-formequa .about-method-notes h3 { font-size: 17px; }
+  .about-formequa .method-words { font-size: 9.5vw; }
+  .about-formequa .about-method-stage { width: calc(100% - 70px); }
+}
+@media (max-width: 760px) {
+  .about-formequa .about-opening { padding-top: 124px; }
+  .about-formequa .about-eyeline { display: block; }
+  .about-formequa .about-eyeline > span { display: block; margin-top: 13px; font-size: 19px; }
+  .about-formequa .about-opening-grid { grid-template-columns: 1fr; gap: 42px; padding-block: 40px 44px; }
+  .about-formequa .about-opening-title { font-size: clamp(76px,19vw,125px); }
+  .about-formequa .about-opening-copy h3 { font-size: 26px; }
+  .about-formequa .about-opening-copy > p { font-size: 14px; }
+  .about-formequa .about-opening-photo { width: calc(100% + 44px); margin-left: -22px; }
+  .about-formequa .about-opening-photo figcaption { padding: 13px 22px 0; font-size: 8px; gap: 12px; }
+  .about-formequa .about-perspective { padding-block: 70px 80px; }
+  .about-formequa .about-perspective h2 { margin: 32px 0 37px; font-size: clamp(27px,7vw,40px); }
+  .about-formequa .about-perspective-copy { grid-template-columns: 1fr; gap: 25px; }
+  .about-formequa .about-perspective-copy p { font-size: 15px; }
+  .about-formequa .about-method-sticky,
+  .about-formequa.method-enhanced .about-method-sticky { position: relative; height: auto; min-height: 0; padding-block: 100px 35px; }
+  .about-formequa.method-enhanced .about-method { height: auto; min-height: 0; }
+  .about-formequa .about-method-heading { gap: 15px; }
+  .about-formequa .about-method-heading .section-aside { font-size: 10px; }
+  .about-formequa .about-method-stage { grid-template-columns: minmax(0,1fr); width: calc(100% - 44px); gap: 32px; padding-block: 32px; }
+  .about-formequa .method-words { flex-direction: column; align-items: center; width: 100%; gap: 0; font-size: clamp(64px,21vw,104px); line-height: 1.03; }
+  .about-formequa .method-words > span:nth-child(1) { align-self: flex-start; margin-left: 10%; }
+  .about-formequa .method-words > span:nth-child(2) { align-self: flex-end; margin-right: 8%; }
+  .about-formequa .method-words > span:nth-child(3) { align-self: flex-start; margin-left: 16%; }
+  .about-formequa .method-photo-left { grid-column: 1; grid-row: 2; width: 78%; }
+  .about-formequa .method-photo-right { grid-column: 1; grid-row: 3; width: 100%; justify-self: end; margin-top: 0; }
+  .about-formequa .about-method-notes { grid-template-columns: 1fr; gap: 12px; }
+  .about-formequa .about-method-notes > div { display: grid; grid-template-columns: 72px 1fr; gap: 3px 15px; padding-top: 10px; }
+  .about-formequa .about-method-notes span { grid-row: 1 / 3; padding-top: 3px; font-size: 9px; }
+  .about-formequa .about-method-notes h3 { margin: 0; font-size: 15px; }
+  .about-formequa .about-method-notes p { font-size: 11px; }
+  .about-formequa .about-researcher { grid-template-columns: 1fr; gap: 38px; padding-block: 80px; }
+  .about-formequa .about-researcher h2 { margin-top: 29px; font-size: clamp(74px,18vw,116px); }
+  .about-formequa .about-researcher-copy { padding-top: 0; }
+  .about-formequa .researcher-name { margin-bottom: 23px; font-size: 24px; }
+  .about-formequa .researcher-name span { font-size: 22px; }
+  .about-formequa .about-researcher-copy > p:not(.researcher-name) { font-size: 15px; }
+  .about-formequa .researcher-link { margin-top: 12px; font-size: 20px; }
+  .about-formequa .about-next { padding-block: 65px 30px; }
+  .about-formequa .about-next h2 { font-size: clamp(50px,12vw,78px); }
+  .about-formequa .about-next .text-link { margin-left: 0; }
+  .about-formequa .about-image-note { font-size: 10px; margin-top: 45px; }
+  .about-formequa .about-footer { flex-wrap: wrap; gap: 20px; padding-block: 30px; }
+  .about-formequa .about-footer .wordmark { font-size: 20px; }
+  .about-formequa .about-footer .about-signature { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-formequa.method-enhanced .about-method { height: auto; min-height: 0; }
+  .about-formequa.method-enhanced .about-method-sticky { position: relative; height: auto; }
+  .about-formequa :is([data-method-word],.method-photo) { transform: none !important; opacity: 1 !important; }
+}

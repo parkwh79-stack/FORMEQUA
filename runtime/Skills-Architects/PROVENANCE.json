@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "sourceCheckoutHead": "30a0845dddcaebd765fc396059573d02e99c5b63",
+  "localCorrectionsIncluded": true,
+  "scope": "Selected runtime scripts only; no nested Git repository or credentials",
+  "files": [
+    {
+      "file": "skills/architect-calculator/scripts/area_calculator.py",
+      "sha256": "d58472a6edaf2885dab53a7380b9c68522eb7a089696a31ccd16078b7f4d9c9e"
+    },
+    {
+      "file": "skills/architect-calculator/scripts/calculator_inputs.py",
+      "sha256": "f003dc1ff3c1121e81646cd94fda963307ef7c073f183a2c495397409584d60d"
+    },
+    {
+      "file": "skills/architect-calculator/scripts/cost_calculator.py",
+      "sha256": "736c6f8a1bf786c9de891e124949071f6e51622850bc59ec5d48158a517d2156"
+    },
+    {
+      "file": "skills/architect-calculator/scripts/daylight_calculator.py",
+      "sha256": "d8691673d28078199aeae9123591f9032dfa564223a0cbe9cdc9fadbb5bdfc43"
+    },
+    {
+      "file": "skills/architect-calculator/scripts/egress_calculator.py",
+      "sha256": "b9c16c639ee04a18d54fa603f2d4c7277901a1aabe6985894c091c3d5ca2d3ed"
+    },
+    {
+      "file": "skills/architect-calculator/scripts/energy_calculator.py",
+      "sha256": "0939741d2796e217ac9c9b53ae1ef9a386df17a010dbb48b5ec44a177a566c7f"
+    },
+    {
+      "file": "skills/architect-calculator/scripts/structural_load_calculator.py",
+      "sha256": "8d9dfec7e6d3102e89001c0f00a0999631cc79bc2f5864797333ac9270ccdeed"
+    },
+    {
+      "file": "skills/architect-calculator/scripts/uvalue_calculator.py",
+      "sha256": "6cfee9be3787274952fdec62644375556e776f2ed824e978075c4b31c8e98c40"
+    },
+    {
+      "file": "skills/country-south-korea/scripts/kr_law_lookup.py",
+      "sha256": "68522e8282bd3fd3a86661bb2e7051bde08fc26ab1f10f9ca2efc0b515f692c4"
+    },
+    {
+      "file": "skills/korea-area-and-parking/scripts/kr_area_parking_calculator.py",
+      "sha256": "b918bd92680886d90657320ddfb04b780351c19183cec0c118548d384fcadcd1"
+    },
+    {
+      "file": "skills/korea-area-and-parking/scripts/kr_egress_calculator.py",
+      "sha256": "154e3cd3d11ab2b02e7bf79d4424bf954da6f386381fe5a99989cda38a7674bb"
+    },
+    {
+      "file": "skills/korea-cost-and-feasibility/scripts/kr_cost_feasibility_calculator.py",
+      "sha256": "da63b5ff02efa6c406c0477165fb2291696ed0f5c09905f80c498cca7435c319"
+    },
+    {
+      "file": "skills/korea-facade-and-envelope/scripts/kr_facade_envelope_calculator.py",
+      "sha256": "60844ed970cb4ec15dd833b2bde83cc6f2f82290f3cc7c0b0924529fc2a9653d"
+    }
+  ]
+}

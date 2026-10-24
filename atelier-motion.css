@@ -1,0 +1,127 @@
+/* FORMEQUA's photographic journal. These rules never load in the workbench. */
+.atelier-motion { --atelier-serif: Georgia, 'Times New Roman', serif; }
+.atelier-motion .hero-gallery { min-height: 720px; background: #716e62; }
+.atelier-motion .hero-image { object-position: center; transform: translate3d(0,var(--hero-image-y,0px),0) scale(1.07); }
+.atelier-motion .hero-shade { background: linear-gradient(180deg,#171a1640,transparent 38%,#171a1638 65%,#171a167a); }
+.atelier-motion .hero-caption { position: absolute; inset: 0; width: 100%; height: 100%; }
+.atelier-motion .hero-caption .hero-eyebrow { position: absolute; top: 128px; left: 56px; margin: 0; font-size: 12px; letter-spacing: .13em; }
+.atelier-motion .hero-letter-title { position: absolute; inset: 0; margin: 0; font-family: var(--atelier-serif); font-weight: 400; }
+.atelier-motion .hero-title-line { position: absolute; display: block; font-family: var(--atelier-serif); font-size: clamp(82px,9.25vw,164px); font-weight: 400; line-height: 1.02; letter-spacing: -.055em; white-space: nowrap; transform: translate3d(var(--hero-copy-x,0px),var(--hero-copy-y,0px),0); }
+.atelier-motion .hero-title-first { top: 22%; left: 7%; }
+.atelier-motion .hero-title-second { top: 41%; right: 10%; font-style: italic; }
+.atelier-motion .hero-title-third { top: 65%; left: 14%; font-size: clamp(70px,8vw,142px); }
+.atelier-motion .hero-glyph { display: inline-block; }
+.atelier-motion.motion-enhanced .hero-title-line:not(.text-visible) .hero-glyph { opacity: 0; transform: translateY(105%); }
+.atelier-motion .hero-caption .hero-subtitle { position: absolute; bottom: 90px; left: 56px; margin: 0; font-size: 16px; line-height: 1.8; }
+.atelier-motion .hero-index { bottom: 88px; }
+
+.atelier-motion .motion-clip { display: inline-block; overflow: clip; vertical-align: top; padding-block: .075em; margin-block: -.075em; }
+.atelier-motion .motion-ink { display: inline-block; }
+.atelier-motion.motion-enhanced [data-motion-title]:not(.text-visible) .motion-ink { transform: translateY(120%); }
+.atelier-motion.motion-enhanced [data-motion-image]:not(.image-visible) { clip-path: inset(0 0 100% 0); }
+.atelier-motion [data-motion-image] { overflow: hidden; }
+
+.atelier-motion .motion-manifesto { position: relative; padding: 0; }
+.atelier-motion.motion-enhanced .motion-manifesto { height: auto; min-height: 0; }
+.atelier-motion .manifesto-sticky { position: relative; display: grid; grid-template-rows: auto auto auto; padding: 116px 0 48px; }
+.atelier-motion.motion-enhanced .manifesto-sticky { position: relative; height: auto; min-height: 0; }
+.atelier-motion .manifesto-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 30px; }
+.atelier-motion .manifesto-stage { position: relative; display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.2fr); gap: 42px clamp(32px,6vw,96px); align-items: start; width: calc(100% - 112px); max-width: 1480px; margin-inline: auto; padding-block: 44px; }
+.atelier-motion .manifesto-title { grid-column: 1 / -1; grid-row: 1; width: 100%; margin: 0; color: #333a2f; font-family: 'SUIT Variable',Arial,sans-serif; font-size: clamp(34px,4.1vw,64px); font-weight: 400; line-height: 1.5; letter-spacing: -.06em; }
+.atelier-motion .manifest-line { display: block; width: max-content; max-width: 100%; white-space: nowrap; }
+.atelier-motion .manifest-line:nth-child(2) { margin-left: 17%; }
+.atelier-motion .manifest-line:nth-child(3) { margin-left: 34%; }
+.atelier-motion .manifest-line strong { font-weight: 600; }
+.atelier-motion .manifest-soft { font-weight: 350; }
+.atelier-motion .manifest-photo { position: relative; min-width: 0; margin: 0; }
+.atelier-motion .manifest-photo img { display: block; width: 100%; height: auto; object-fit: cover; }
+.atelier-motion .manifest-photo figcaption { padding-top: 8px; font-size: 11px; font-weight: 500; letter-spacing: .12em; color: var(--muted); }
+.atelier-motion .manifest-photo-detail { grid-column: 1; grid-row: 2; width: 85%; }
+.atelier-motion .manifest-photo-study { grid-column: 2; grid-row: 2; width: 100%; margin-top: 80px; }
+.atelier-motion .manifesto-axis { grid-column: 1 / -1; grid-row: 3; justify-self: center; margin: 0; font-size: 10px; font-weight: 600; letter-spacing: .2em; color: #878b80; white-space: nowrap; }
+.atelier-motion .manifesto-foot { display: grid; grid-template-columns: 1fr 1.2fr auto; gap: 7%; align-items: end; }
+.atelier-motion .manifesto-foot p { color: #646b5d; font-size: 14px; line-height: 1.85; word-break: keep-all; }
+.atelier-motion .manifesto-foot .text-link { margin: 0; font-size: 13px; }
+
+.atelier-motion .projects-section { padding-top: 100px; }
+.atelier-motion .studies-display { margin: 0 0 85px; color: var(--ink); font-family: var(--atelier-serif); font-size: clamp(66px,9.5vw,158px); font-weight: 400; line-height: .98; letter-spacing: -.055em; }
+.atelier-motion .studies-display em { display: inline-block; margin-left: 17%; font-weight: 400; }
+.atelier-motion .project-card:nth-child(even) { margin-top: 170px; }
+.atelier-motion .project-card:nth-child(3) { margin-top: -110px; }
+.atelier-motion .project-card h3 { font-size: 25px; font-weight: 450; }
+.atelier-motion .project-arrow { opacity: 1; }
+.atelier-motion .studio-intro .section-title,
+.atelier-motion .site-section .section-title,
+.atelier-motion .materials-section .section-title,
+.atelier-motion .feasibility-section .section-title { font-family: var(--atelier-serif); font-size: clamp(52px,6vw,96px); font-weight: 400; line-height: 1.02; letter-spacing: -.055em; }
+.atelier-motion .material-layout { grid-template-columns: 1.05fr 1fr; }
+.atelier-motion .material-image img { aspect-ratio: 1122 / 1402; }
+.atelier-motion .material-copy .section-title { margin-block: 36px; }
+.atelier-motion .portfolio-footer { background: #e9e7df; color: #353a31; padding-top: 110px; }
+.atelier-motion .portfolio-footer .footer-statement { font-family: var(--atelier-serif); font-size: clamp(52px,6.7vw,110px); font-weight: 400; line-height: 1.04; letter-spacing: -.055em; }
+.atelier-motion .portfolio-footer .footer-statement em { font-weight: 400; }
+.atelier-motion .portfolio-footer .founder-credit { color: #656c5e; }
+.atelier-motion .footer-invitation .text-link { color: #404837; border-color: #7e8674; }
+.atelier-motion .footer-refrain { margin: 40px 0 25px; padding-bottom: 12px; font-family: var(--atelier-serif); font-size: clamp(72px,15vw,220px); font-weight: 400; line-height: 1; letter-spacing: -.065em; color: #4a5341; }
+.atelier-motion .portfolio-footer .footer-bottom { border-color: #424c3833; }
+.atelier-motion .portfolio-footer .footer-bottom > :is(span,a),
+.atelier-motion .portfolio-footer .footer-bottom .footer-signature { color: #59634e; }
+.atelier-motion .footer-signature > span:first-child { text-decoration-color: #59634e55; }
+
+@media (min-width: 1600px) {
+  .atelier-motion .hero-title-third { left: 19%; }
+}
+@media (max-width: 1050px) {
+  .atelier-motion .hero-title-line { font-size: 10.5vw; }
+  .atelier-motion .hero-title-third { font-size: 8.5vw; left: 10%; }
+  .atelier-motion .manifesto-stage { width: calc(100% - 70px); }
+  .atelier-motion .manifesto-foot { gap: 25px; }
+  .atelier-motion .project-card:nth-child(even) { margin-top: 110px; }
+  .atelier-motion .project-card:nth-child(3) { margin-top: -70px; }
+}
+@media (max-width: 760px) {
+  .atelier-motion .hero-gallery { min-height: 660px; }
+  .atelier-motion .hero-caption .hero-eyebrow { top: 116px; left: 24px; font-size: 10px; letter-spacing: .08em; }
+  .atelier-motion .hero-title-line { font-size: clamp(58px,16vw,105px); }
+  .atelier-motion .hero-title-first { top: 23%; left: 6%; }
+  .atelier-motion .hero-title-second { top: 39%; right: 8%; }
+  .atelier-motion .hero-title-third { top: 60%; left: 7%; font-size: clamp(38px,10.2vw,70px); }
+  .atelier-motion .hero-caption .hero-subtitle { left: 24px; bottom: 108px; font-size: 15px; }
+  .atelier-motion .hero-index { right: 24px; bottom: 101px; font-size: 10px; }
+  .atelier-motion.motion-enhanced .motion-manifesto { height: auto; min-height: 0; }
+  .atelier-motion .manifesto-sticky,
+  .atelier-motion.motion-enhanced .manifesto-sticky { position: relative; height: auto; min-height: 0; padding-top: 104px; padding-bottom: 36px; }
+  .atelier-motion .manifesto-heading { align-items: start; }
+  .atelier-motion .manifesto-heading .section-aside { font-size: 11px; }
+  .atelier-motion .manifesto-stage { grid-template-columns: minmax(0,1fr); width: calc(100% - 44px); gap: 32px; padding-block: 32px; }
+  .atelier-motion .manifesto-title { font-size: clamp(26px,8vw,50px); line-height: 1.65; }
+  .atelier-motion .manifest-line:nth-child(2) { margin-left: 9%; }
+  .atelier-motion .manifest-line:nth-child(3) { margin-left: 1%; }
+  .atelier-motion .manifest-photo-detail { grid-column: 1; grid-row: 2; width: 78%; }
+  .atelier-motion .manifest-photo-study { grid-column: 1; grid-row: 3; width: 92%; justify-self: end; margin-top: 0; }
+  .atelier-motion .manifest-photo figcaption { font-size: 9px; }
+  .atelier-motion .manifest-photo-study figcaption { text-align: right; padding-right: 14px; }
+  .atelier-motion .manifesto-axis { grid-row: 4; justify-self: end; font-size: 9px; letter-spacing: .09em; }
+  .atelier-motion .manifesto-foot { grid-template-columns: 1fr auto; align-items: end; gap: 10px 20px; }
+  .atelier-motion .manifesto-foot p { font-size: 12px; line-height: 1.75; }
+  .atelier-motion .manifesto-foot p:nth-child(2) { display: none; }
+  .atelier-motion .manifesto-foot .text-link { font-size: 12px; gap: 15px; }
+  .atelier-motion .projects-section { padding-top: 70px; }
+  .atelier-motion .studies-display { font-size: clamp(60px,12vw,90px); margin-bottom: 45px; }
+  .atelier-motion .studies-display em { margin-left: 9%; }
+  .atelier-motion .project-card:nth-child(n) { margin-top: 0; }
+  .atelier-motion .project-card h3 { font-size: 23px; }
+  .atelier-motion .portfolio-footer { padding-top: 74px; }
+  .atelier-motion .footer-refrain { margin-top: 55px; font-size: 16.1vw; letter-spacing: -.075em; }
+  .atelier-motion .portfolio-footer .footer-statement { font-size: clamp(48px,9vw,75px); }
+}
+.atelier-motion .photo-scene-ready[data-photo-state="waiting"] :is(.manifest-photo,.manifest-line,.method-photo,[data-method-word]) { visibility: hidden; }
+.atelier-motion :is(.manifest-photo,.method-photo) { overflow: clip; }
+.atelier-motion :is(.manifest-photo,.method-photo) img { transform-origin: 50% 50%; }
+@media (prefers-reduced-motion: reduce) {
+  .atelier-motion :is(.hero-image,.hero-title-line,.hero-glyph,.motion-ink,.manifest-line,.manifest-photo) { transform: none !important; opacity: 1 !important; animation: none !important; transition: none !important; }
+  .atelier-motion [data-motion-image] { clip-path: none !important; }
+  .atelier-motion.motion-enhanced .motion-manifesto { height: auto; min-height: 0; }
+  .atelier-motion.motion-enhanced .manifesto-sticky { position: relative; height: auto; }
+  .atelier-motion .manifest-soft { opacity: 1 !important; }
+}

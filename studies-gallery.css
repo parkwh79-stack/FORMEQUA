@@ -1,0 +1,34 @@
+/* AI visual portfolio. Input values and analysis thumbnails are never displayed here. */
+.editorial-site .study-ai-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 32px; }
+.editorial-site .public-study-card { min-width: 0; }
+.editorial-site .public-study-featured { grid-column: 1 / -1; }
+.editorial-site .public-study-open { display: block; width: 100%; border: 0; padding: 0; background: transparent; color: var(--ink); text-align: left; cursor: pointer; }
+.public-study-image { display: block; position: relative; aspect-ratio: 1.5; overflow: hidden; background: #e9e7e1; }
+.public-study-image > img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .7s; }
+.editorial-site .public-study-open:hover .public-study-image > img { transform: scale(1.025); }
+.public-study-image-fallback { display: grid; place-content: center; height: 100%; color: #606657; font-size: 14px; line-height: 1.8; padding: 24px; text-align: center; }
+.editorial-site .public-study-caption { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-top: 16px; font-size: 15px; font-weight: 500; line-height: 1.7; }
+.editorial-site .public-study-caption > span:last-child { color: var(--muted); font-size: 13px; font-weight: 500; letter-spacing: .035em; }
+.editorial-site .public-study-open:focus-visible { outline: 2px solid var(--ink); outline-offset: 8px; }
+.editorial-site .study-ai-footer { display: flex; justify-content: space-between; align-items: center; gap: 25px; margin-top: 28px; }
+.editorial-site .study-ai-footer > p { color: var(--muted); font-size: 13px; line-height: 1.8; }
+.editorial-site .study-ai-footer .text-link { margin-top: 0; }
+.editorial-site .study-ai-footer .text-link:disabled { opacity: .5; cursor: progress; }
+.editorial-site .study-ai-grid [hidden], .public-study-dialog [hidden] { display: none !important; }
+.public-study-dialog { width: min(1180px, calc(100vw - 40px)); max-height: calc(100dvh - 40px); margin: auto; border: 0; padding: 30px; color: #30362b; background: #f5f3ee; overflow-y: auto; }
+.public-study-dialog::backdrop { background: #20251eb3; }
+.public-study-dialog .section-kicker { margin: 16px 0 10px; font-size: 13px; font-weight: 600; letter-spacing: .07em; }
+.public-study-dialog-title { margin: 0 0 20px; font-size: 25px; font-weight: 500; line-height: 1.45; letter-spacing: -.025em; }
+.public-study-close { display: block; margin-left: auto; border: 0; border-bottom: 1px solid #646b5c; padding: 5px 0 8px; color: inherit; background: none; font: inherit; font-size: 14px; cursor: pointer; }
+.public-study-dialog .public-study-image { aspect-ratio: auto; }
+.public-study-dialog .public-study-image > img { height: auto; max-height: 72vh; object-fit: contain; }
+.public-study-disclaimer { margin-top: 18px; color: #67705c; font-size: 13px; line-height: 1.9; word-break: keep-all; }
+@media (max-width: 760px) {
+  .editorial-site .study-ai-grid { grid-template-columns: 1fr; gap: 30px; }
+  .editorial-site .public-study-caption { margin-top: 12px; font-size: 14px; gap: 10px; }
+  .editorial-site .public-study-caption > span:last-child { font-size: 12px; }
+  .editorial-site .study-ai-footer { align-items: flex-start; flex-direction: column; gap: 16px; }
+  .public-study-dialog { padding: 20px; max-height: calc(100dvh - 24px); width: calc(100vw - 24px); }
+  .public-study-dialog-title { font-size: 22px; }
+}
+@media (prefers-reduced-motion: reduce) { .public-study-image > img { transition: none; } }

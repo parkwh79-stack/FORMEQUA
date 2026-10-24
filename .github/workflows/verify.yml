@@ -1,0 +1,23 @@
+name: Verify research release
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m pip install -r requirements-cloud.txt
+      - run: python -m unittest discover -s tests -p 'test_*.py'
+      - run: python tools/run_node_tests.py
+      - run: python tools/build_release.py
+      - run: docker build --tag formequa-verify:local .

@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "checkedAt": "2026-10-20",
+  "status": "REVIEWED_SNAPSHOT",
+  "jurisdiction": "서울특별시",
+  "method": "Korean Law MCP + 국가법령정보센터 원문 교차 확인",
+  "note": "브라우저 실행 시 MCP에 자동 연결하거나 법령 개정을 자동 반영하지 않습니다. 아래 시행 버전으로 계산하며 개별 대지의 적용 조건은 별도 확인이 필요합니다.",
+  "sources": [
+    {
+      "id": "seoul-density",
+      "title": "서울특별시 도시계획 조례",
+      "effectiveDate": "2026-07-13",
+      "url": "https://www.law.go.kr/LSW/ordinInfoP.do?ordinSeq=2149501",
+      "articles": "제44·48·50·51조, 별표16"
+    },
+    {
+      "id": "seoul-parking",
+      "title": "서울특별시 주차장 설치 및 관리 조례",
+      "effectiveDate": "2026-10-01",
+      "url": "https://www.law.go.kr/LSW/ordinInfoP.do?ordinSeq=2171833",
+      "articles": "제20·21·25조, 별표2·3"
+    },
+    {
+      "id": "housing-parking",
+      "title": "주택건설기준 등에 관한 규정",
+      "effectiveDate": "2026-09-08",
+      "url": "https://www.law.go.kr/법령/주택건설기준등에관한규정/제27조",
+      "articles": "제27조"
+    },
+    {
+      "id": "north-solar",
+      "title": "건축법 시행령",
+      "effectiveDate": "2026-10-06",
+      "url": "https://www.law.go.kr/법령/건축법시행령/제86조",
+      "articles": "제86조 (건축법 제61조 위임)"
+    },
+    {
+      "id": "seoul-ev",
+      "title": "서울특별시 환경친화적 자동차의 개발 및 보급 촉진에 관한 조례",
+      "effectiveDate": "2025-05-19",
+      "url": "https://www.law.go.kr/LSW/ordinInfoP.do?ordinSeq=2038437",
+      "articles": "제7조의3·4·5"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+/* The walk toolbar belongs to the interior viewer on both presentation and detail pages. */
+.interior-footwork { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 18px; margin: 12px 0 0; padding: 12px 0 0; border-top: 1px solid var(--rule, #d6d9df); color: var(--ink, #252d3c); }
+.interior-footwork[hidden] { display: none !important; }
+.interior-footwork .walk-heading { font-size: 12px; font-weight: 750; letter-spacing: .08em; }
+.interior-footwork .walk-direction-pad { display: inline-flex; gap: 6px; align-items: center; }
+.interior-controls .interior-footwork button { min-height: 36px; padding: 7px 11px; border: 1px solid var(--rule, #cfd6df); border-radius: 4px; background: var(--paper, #faf9f4); color: var(--ink, #25304a); font-size: 12px; font-weight: 650; line-height: 1.3; touch-action: none; }
+.interior-controls .interior-footwork button:hover, .interior-controls .interior-footwork button:focus-visible { border-color: var(--accent, #2c5fb8); outline-offset: 3px; }
+.interior-controls .interior-footwork button[aria-pressed="true"] { background: color-mix(in srgb, var(--accent, #2c5fb8) 10%, var(--paper, #faf9f4)); color: var(--accent, #2c5fb8); }
+.interior-footwork label { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; }
+.interior-footwork select { border: 1px solid var(--rule, #cfd6df); border-radius: 4px; padding: 7px; background: var(--paper, #faf9f4); color: var(--ink, #25304a); font: inherit; }
+.interior-footwork .walk-help { flex-basis: 100%; color: var(--muted, #657187); font-size: 12px; line-height: 1.7; }
+#threeCanvas.interior-walk-ready { cursor: grab; touch-action: none; }
+#threeCanvas.interior-walk-dragging { cursor: grabbing; }
+@media(max-width: 700px) {
+  .interior-footwork { gap: 10px; }
+  .interior-footwork .walk-direction-pad { order: 2; flex-basis: 100%; }
+  .interior-footwork .walk-help { order: 3; }
+}

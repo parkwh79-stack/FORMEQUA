@@ -1,0 +1,51 @@
+'use strict';
+const assert=require('node:assert/strict'), {analyze}=require('../analysis-engine'), clip=require('../vendor/polygon-clipping-0.15.7.umd.min.js');
+const R=6371008.8,rad=Math.PI/180,lat=37.55,lon=126.98,sx=R*rad*Math.cos(lat*rad),sz=R*rad;
+const coords=pts=>pts.map(([x,z])=>[lon+x/sx,lat-z/sz]);
+const data={version:1,source:'import',features:[{type:'Feature',properties:{address:'비정형 검토 경계'},geometry:{type:'Polygon',coordinates:[coords([[0,0],[65,0],[65,35],[40,35],[40,60],[0,60],[0,0]])]}}]};
+for(const option of ['A','B','C']){
+  const result=analyze({program:'office',parcelKey:'custom_seoul',inputs:{parcelData:data,option,parkingMode:'report',floorsAbove:12,northSolar:true,publicContribPct:10}}),m=result.model;
+  assert.ok(Math.abs(m.effectiveCadastralAreaSqm-3275)<.01);
+  assert.ok(m.floorPlates.length>1);
+  for(const f of m.floorPlates){
+    const x=f.widthM/2,d=f.depthM/2,z=f.northShiftM;
+    assert.equal(clip.difference([[[-x,z-d],[x,z-d],[x,z+d],[-x,z+d],[-x,z-d]]],m.parcelGeometry.outlines).length,0,option+' floor inside true boundary');
+  }
+  assert.ok(m.parking.capacityCount<=m.parking.areaEstimateCount);
+  assert.ok(m.parking.capacityCount<=m.parking.layout.capacityCount);
+}
+const base=analyze({program:'office',inputs:{parcelMerged:false}}),oldAssumption=analyze({program:'office',inputs:{parcelMerged:true}});
+assert.equal(base.model.effectiveCadastralAreaSqm,oldAssumption.model.effectiveCadastralAreaSqm,'no +35% without boundaries');
+const report=analyze({program:'office',inputs:{parkingMode:'report'}}),fit=analyze({program:'office',inputs:{parkingMode:'fit'}});
+assert.equal(fit.model.parking.layout.status,'incomplete');
+assert.equal(fit.model.parking.layout.failureReason,'ramp-envelope');
+assert.equal(fit.model.parking.capacityCount,0);assert.equal(fit.model.constraints.parkingFitEligible,false);
+assert.equal(fit.model.constraints.parkingFitDeferred,true);
+assert.deepEqual(fit.model.floorPlates,report.model.floorPlates,'incomplete ramp layout preserves the same legal mass');
+assert.equal(fit.model.areas.aboveGroundGfaSqm,report.model.areas.aboveGroundGfaSqm);
+assert.equal(fit.model.parking.legalParkingCount,report.model.parking.legalParkingCount);
+assert.equal(fit.model.parking.plannedParkingCount,report.model.parking.plannedParkingCount);
+assert.equal(fit.model.parking.deficit,report.model.parking.deficit);assert.ok(fit.model.parking.deficit>0);
+assert.equal(fit.model.constraints.parkingReducedAreaSqm,0);
+const positiveInputs={siteAreaSqm:2400,floorsAbove:35,floorsBelow:1,coreType:'center',northSolar:false};
+const positiveReport=analyze({program:'office',inputs:{...positiveInputs,parkingMode:'report'}});
+const positiveFit=analyze({program:'office',inputs:{...positiveInputs,parkingMode:'fit'}});
+assert.equal(positiveFit.model.coreLayout.status,'reserved');
+assert.equal(positiveFit.model.parking.layout.status,'generated');
+assert.equal(positiveFit.model.parking.layout.validation.valid,true);
+assert.ok(positiveFit.model.parking.layout.levels.every(level=>level.validation.valid));
+assert.ok(positiveFit.model.parking.capacityCount>0);
+assert.equal(positiveFit.model.constraints.parkingFitEligible,true);
+assert.equal(positiveFit.model.constraints.parkingFitDeferred,false);
+assert.ok(positiveReport.model.parking.deficit>0);
+assert.ok(positiveFit.model.parking.legalParkingCount<=positiveFit.model.parking.plannedParkingCount,'positive validated stalls still constrain demand');
+assert.equal(positiveFit.model.parking.deficit,0);
+assert.ok(positiveFit.model.areas.aboveGroundGfaSqm<positiveReport.model.areas.aboveGroundGfaSqm);
+assert.ok(positiveFit.model.constraints.parkingReducedAreaSqm>0);
+const five={version:1,source:'import',features:Array.from({length:5},(_,i)=>({type:'Feature',properties:{address:'검증용 필지 '+(i+1)},geometry:{type:'Polygon',coordinates:[coords([[i*10,0],[(i+1)*10,0],[(i+1)*10,40],[i*10,40],[i*10,0]])]}}))};
+const fiveResult=analyze({program:'office',inputs:{parcelData:five,parkingMode:'report'}});
+assert.equal(fiveResult.model.parcelGeometry.featureCount,5);
+assert.ok(Math.abs(fiveResult.model.effectiveCadastralAreaSqm-2000)<.01);
+const six={...five,features:[...five.features,five.features[0]]};
+assert.throws(()=>analyze({program:'office',inputs:{parcelData:six}}),/5개/,'sixth parcel rejected before calculation');
+console.log('Parcel massing: true concave-boundary containment, public contribution, A/B/C north shifts, no assumed merger area, and spatial parking propagation passed.');

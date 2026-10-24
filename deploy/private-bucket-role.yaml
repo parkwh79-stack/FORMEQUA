@@ -1,0 +1,9 @@
+title: FORMEQUA Private Archive Runtime
+description: Read protected bucket settings and review objects; no IAM changes or public ACLs.
+stage: GA
+includedPermissions:
+  - storage.buckets.get
+  - storage.objects.get
+  - storage.objects.create
+  - storage.objects.delete
+  - storage.objects.update

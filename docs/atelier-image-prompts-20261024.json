@@ -1,0 +1,48 @@
+{
+  "createdAt": "2026-10-24",
+  "mode": "built-in image_gen",
+  "purpose": "Replace repeated FORMEQUA homepage photos with four context-specific original AI concepts.",
+  "note": "Original generated concepts. Not photographs of completed projects or exact named sites. No automatic image API was added.",
+  "images": [
+    {
+      "section": "About / A way of seeing",
+      "alt": "라임스톤 테이블과 브론즈 창호, 건축 모형을 담은 조용한 연구 아뜰리에의 AI 실내 콘셉트",
+      "path": "assets/atelier-editorial-20261024/about-atelier-gallery.png",
+      "prompt": "Use case: photorealistic-natural. Asset type: wide editorial architecture photograph for FORMEQUA's About introduction on a restrained premium architecture and feasibility research website. Generate a completely new scene, not a variation of an outdoor courtyard. Subject: a serene contemporary research atelier gallery interior in Seoul, a long monolithic honed pale limestone table with a single closed charcoal portfolio at its far end, a quiet wall of deeply recessed shelves holding just two small abstract architectural models, slender patinated bronze frames, translucent linen and a glimpse of muted olive foliage through a tall side opening. Composition: panoramic landscape approximately 2:1, eye-level architectural photography, straight verticals, a strong but gentle asymmetrical perspective into a luminous room, ample breathing space, no text over the image. Lighting: soft cool-neutral daylight from the side mixed with very subtle warm reflected stone light, realistic physically plausible shadows, no dramatic golden-hour beams. Palette: warm ivory, chalk, pale greige limestone, charcoal and aged bronze, very restrained desaturated olive, no vivid colours. Materials: fine stone pores, subtle construction joints, brushed bronze and believable linen weave, meticulously realistic, sophisticated architectural magazine photography rather than an obvious CGI render. Constraints: no people, no pool, no courtyard as the main subject, no dramatic villa exterior, no logos, no signage, no captions, no watermark, no collage, no financial charts. This is an original AI architectural concept, not a claim to depict a real project.",
+      "width": 1774,
+      "height": 887,
+      "sha256": "e635e116088bb597ccf8545443a518ce00507c4f5e21cabdd05fc13693b13289",
+      "bytes": 2627017
+    },
+    {
+      "section": "Our Approach / The Form",
+      "alt": "천창의 빛이 곡선형 석재 계단과 브론즈 난간 위로 흐르는 AI 건축 콘셉트",
+      "path": "assets/atelier-editorial-20261024/approach-sculptural-stair.png",
+      "prompt": "Use case: photorealistic-natural. Asset type: portrait editorial architectural photograph for FORMEQUA's 'form and detail' scroll scene. Primary request: an original sculptural staircase and its soft daylight, a distinct scene rather than a window-joint close-up or a courtyard. Subject: a finely built curved flight of pale warm-grey limestone stairs, a gently sweeping solid stone balustrade, slender aged-bronze handrail, a tall quiet plaster wall and a narrow skylight. Composition: portrait 4:5, tightly curated architectural magazine photograph looking diagonally upward from a lower landing, elegant rhythm of individual stair treads and one sculptural curve, realistic straight wall verticals and believable construction. Lighting: diffuse natural daylight, rich but gentle shadow gradients, tactile stone and subtle plaster, calm and contemplative. Palette: chalk ivory, limestone greige, muted charcoal shadow and patinated bronze, low saturation, no orange cast, no vivid colour. Constraints: no people, no lettering, no logo, no watermark, no courtyard, no pool, no collage, no impossible floating steps, no excessive decoration. It must feel like a real carefully photographed architectural space while remaining an AI architectural concept, not a depiction of a named real project.",
+      "width": 1122,
+      "height": 1402,
+      "sha256": "8a4634021040c7bfca41f432889d2914e65c57512d45826812cdf285f8ef6497",
+      "bytes": 2558289
+    },
+    {
+      "section": "The Inquiry / Place",
+      "alt": "오래된 벽돌 건물과 현대적인 석재 건축이 공존하는 서울 가로의 AI 도시 콘셉트",
+      "path": "assets/atelier-editorial-20261024/method-seoul-street.png",
+      "prompt": "Use case: photorealistic-natural. Asset type: portrait editorial image beside the word Place on FORMEQUA, a refined Seoul architecture and feasibility research atelier website. Primary request: an original believable quiet Seoul neighbourhood street where an old low-rise building meets a restrained contemporary infill building; the relationship of urban context, site and building is the subject. Scene: a human-scale narrow Korean street with warm-grey asphalt, a low kerb and simple pale concrete sidewalk, an older weathered muted-brown brick three-storey building on one side, a five-storey honed limestone and aged-bronze contemporary building set carefully into the streetscape on the other, one small olive-grey street tree, subtle overhead utility lines receding naturally. Composition: portrait 4:5, eye-level architectural documentary photograph, strong clear depth looking down the street, buildings fill much of the frame, restrained pale overcast sky, verticals straight, no wide boulevard and no aerial view. Lighting and colour: soft Seoul autumn daylight, desaturated warm ivory, greige stone, dusty brown brick, aged bronze and muted sage foliage, sophisticated calm editorial grading, authentic material imperfections, not sepia. Constraints: no legible signs, no brand logos, no people close to camera, no watermark, no captions, no collage, no fantasy skyline, no luxury villa, no pool. Plausible Korean urban details, no claim to show an exact named site or real project.",
+      "width": 1122,
+      "height": 1402,
+      "sha256": "9c5ccc3536ae39c606ed9c5d1526f2ed35504502dfdbd23acf9f8c8bef008c3f",
+      "bytes": 2973120
+    },
+    {
+      "section": "The Inquiry / Form and Value",
+      "alt": "흑연색 받침 위에 석재와 브론즈 매스를 배치한 AI 건축 형태 연구",
+      "path": "assets/atelier-editorial-20261024/method-mass-composition.png",
+      "prompt": "Use case: photorealistic-natural. Asset type: landscape editorial photograph of a physical architectural massing study for the Form and Value section of FORMEQUA, a premium architecture and finance research atelier. Primary request: an original close composition of a small family of precise stepped building mass models on a dark graphite plinth; this must be visually distinct from a model on tracing plans or a desk. Subject: three compact abstract urban building volumes exploring proportion: one pale chalk plaster stepped tower, one low honed limestone courtyard block, one restrained smoked translucent acrylic and aged-bronze slender block, physically crafted at the same model scale with convincing sharp edges and very subtle hand-made surface texture. No facades or tiny windows; these are sophisticated solid volume studies. Composition: landscape 3:2, three-quarter view from a slightly elevated architectural photographer's angle, cropped graphite plinth against a seamless pale greige studio wall, generous negative space, asymmetrical arrangement and measured shadows, premium quiet still-life photography. Lighting: broad soft side daylight, realistic contact shadows, cool-neutral highlights and soft warm stone reflection. Palette: ivory, chalk, limestone greige, graphite charcoal, muted bronze, desaturated and highly refined. Constraints: no people, no notebooks, no paper drawings, no desk stationery, no text, no measurements, no chart, no logos, no watermark, no collage, no glass skyscraper city, no vivid colours. Original AI concept study, not an actual commissioned project.",
+      "width": 1536,
+      "height": 1024,
+      "sha256": "90ebd01231201d875a9ffcd3cc2ec2311e4df1e20479ddcf7d0d6c29b87103d5",
+      "bytes": 2215093
+    }
+  ]
+}

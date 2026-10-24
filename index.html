@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#eeeae2">
+  <meta name="description" content="FORMEQUA · 박완희의 리서치 아뜰리에. 대지와 법규, 건축과 금융을 연결해 공간과 사업의 가능성을 연구합니다.">
+  <meta property="og:title" content="FORMEQUA — Designing Space. Structuring Value.">
+  <meta property="og:description" content="박완희의 리서치 아뜰리에. 대지와 법규, 건축과 금융을 함께 살펴봅니다.">
+  <meta property="og:type" content="website">
+  <title>FORMEQUA — Designing Space. Structuring Value.</title>
+  <link rel="icon" href="assets/formequa-mark.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/atelier-editorial-20261023/atelier-courtyard.png" as="image" fetchpriority="high">
+  <link rel="stylesheet" href="styles.css?v=20261021-regulations2">
+  <link rel="stylesheet" href="editorial.css?v=20261023-model-studies1">
+  <link rel="stylesheet" href="atelier-motion.css?v=20261024-photoseparate1">
+  <link rel="stylesheet" href="about-formequa.css?v=20261024-photoseparate1">
+  <link rel="stylesheet" href="atelier-studies.css?v=20261023-about1">
+  <link rel="stylesheet" href="site-navigation.css?v=20261024-onepage1">
+  <link rel="stylesheet" href="studies-gallery.css?v=20261021-aiportfolio1">
+  <link rel="stylesheet" href="study-publication.css?v=20261021-private-json1">
+  <link rel="stylesheet" href="study-ai-direction.css?v=20261021-disclosure1">
+  <link rel="stylesheet" href="use-study.css?v=20261021-regulations2">
+  <link rel="stylesheet" href="interior-walk.css?v=20261021-regulations2">
+  <link rel="stylesheet" href="parcel-review.css?v=20261021-bim2">
+  <link rel="stylesheet" href="project-files.css?v=20261021-regulations2">
+  <link rel="stylesheet" href="finance-controls.css?v=20261021-regulations2">
+  <script defer src="deployment-config.js?v=20261024-stateless1"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script defer src="vendor/polygon-clipping-0.15.7.umd.min.js?v=20261021-audit1"></script>
+  <script defer src="parcel-regulation-rules.js?v=20261021-audit1"></script>
+  <script defer src="parcel-geometry.js?v=20261021-audit1"></script>
+  <script defer src="spatial-settings.js?v=20261021-audit1"></script>
+  <script defer src="workspace-state.js?v=20261021-audit1"></script>
+  <script defer src="legal-rules.js?v=20261021-audit1"></script>
+  <script defer src="use-permissions.js?v=20261021-audit1"></script>
+  <script defer src="material-system.js?v=20261021-audit1"></script>
+  <script defer src="facade-geometry.js?v=20261021-audit1"></script>
+  <script defer src="site-navigation.js?v=20261024-onepage1"></script>
+  <script defer src="editorial.js?v=20261024-onepage1"></script>
+  <script defer src="atelier-motion.js?v=20261024-photoseparate1"></script>
+  <script defer src="about-formequa.js?v=20261024-photomotion1"></script>
+  <script defer src="studies-gallery.js?v=20261024-stateless1"></script>
+  <script defer src="building-review.js?v=20261021-audit1"></script>
+  <script defer src="concept-structure.js?v=20261021-audit1"></script>
+  <script defer src="core-layout.js?v=20261021-audit1"></script>
+  <script defer src="office-layout.js?v=20261021-audit1"></script>
+  <script defer src="study-identity.js?v=20261021-audit1"></script>
+  <script defer src="hotel-modules.js?v=20261021-audit1"></script>
+  <script defer src="interior-plan.js?v=20261021-audit1"></script>
+  <script defer src="finance-model.js?v=20261021-audit1"></script>
+  <script defer src="parking-layout.js?v=20261021-audit1"></script>
+  <script defer src="site-context.js?v=20261021-audit1"></script>
+  <script defer src="study-review-snapshot.js?v=20261021-private-review2"></script>
+  <script defer src="app.js?v=20261024-floorplan1"></script>
+  <script defer src="use-study.js?v=20261021-audit1"></script>
+  <script defer src="interior-walk.js?v=20261021-audit1"></script>
+  <script defer src="interior-viewer.js?v=20261024-floorplan1"></script>
+  <script defer src="parcel-review.js?v=20261021-pilot1"></script>
+  <script defer src="project-files.js?v=20261021-audit1"></script>
+  <script defer src="finance-controls.js?v=20261021-audit1"></script>
+  <script defer src="study-publication.js?v=20261024-stateless1"></script>
+</head>
+<body class="editorial-site atelier-motion" data-site-page="atelier">
+  <a class="skip-link" href="#about">본문으로 건너뛰기</a>
+  <header class="editorial-header" id="editorialHeader">
+    <a class="wordmark" href="#home" aria-label="FORMEQUA 홈페이지 맨 위">FORMEQUA</a>
+    <nav class="editorial-nav" id="editorialNavigation" aria-label="주요 메뉴">
+      <a href="#about" data-nav-route="about"><span>About</span><small>포메퀴아 소개</small></a><a href="#projects" data-nav-route="studies"><span>Studies</span><small>공간 연구</small></a><a href="#studio" data-nav-route="atelier"><span>Atelier</span><small>모형·대지·사업성</small></a><a class="nav-workspace" href="dashboard.html?view=model&amp;returnTo=%23studio" data-workspace-link data-workspace-return-to="#studio"><span>모형 크게 보기 <span aria-hidden="true">↗</span></span></a>
+    </nav>
+    <button class="header-menu" id="menuToggle" aria-label="메뉴 열기" aria-controls="editorialNavigation" aria-expanded="false"><span></span><span></span></button>
+  </header>
+  <main class="editorial-main" id="mainContent">
+    <section class="hero-gallery" id="home" data-nav-section="home" aria-label="FORMEQUA 공간과 가치의 연구">
+      <img class="hero-image" src="assets/atelier-editorial-20261023/atelier-courtyard.png" alt="라임스톤과 브론즈 창호, 중정의 빛과 그림자를 표현한 AI 건축 콘셉트" width="1816" height="866" fetchpriority="high">
+      <div class="hero-shade"></div>
+      <div class="hero-caption">
+        <p class="hero-eyebrow">ARCHITECTURE · FEASIBILITY · FINANCE</p>
+        <h1 class="hero-letter-title" aria-label="Designing space. Structuring value.">
+          <span class="hero-title-line hero-title-first" data-hero-type aria-hidden="true">Designing</span>
+          <span class="hero-title-line hero-title-second" data-hero-type aria-hidden="true">space.</span>
+          <span class="hero-title-line hero-title-third" data-hero-type aria-hidden="true">Structuring value.</span>
+        </h1>
+        <p class="hero-subtitle">공간을 설계하고,<br>가치를 구조화하다.</p>
+      </div>
+      <div class="hero-index"><span>SEOUL, KOREA</span><span>A LASTING PERSPECTIVE</span></div>
+      <a href="#about" class="scroll-cue"><span>Scroll to discover</span><span aria-hidden="true">↓</span></a>
+    </section>
+
+    <section class="about-formequa" id="about" data-nav-section="about" aria-labelledby="aboutTitle">
+      <section class="about-opening page-width" aria-labelledby="aboutTitle">
+        <div class="about-eyeline"><p class="section-kicker">01 / ABOUT <a class="brand-home-link" href="#home" aria-label="FORMEQUA 홈페이지 맨 위">FORMEQUA</a></p><span>A research atelier by Wanhee Park.</span></div>
+        <div class="about-opening-grid">
+          <h2 class="about-opening-title" id="aboutTitle" data-motion-title>A way<br><em>of seeing.</em></h2>
+          <div class="about-opening-copy"><h3 id="brandIntroTitle" data-motion-title>공간의 가능성을 읽고,<br>사업의 구조를 설계합니다.</h3><p>대지의 조건에서 건축의 형태, 사업의 구조까지.<br>금융 실무와 실증 연구, 디지털 모델을 연결해<br>공간이 지닌 가능성을 살펴봅니다.</p><a class="text-link" href="#perspective">Our perspective <span aria-hidden="true">↓</span></a></div>
+        </div>
+        <figure class="about-opening-photo"><span data-motion-image="up"><img src="assets/atelier-editorial-20261024/about-atelier-gallery.png" alt="라임스톤 테이블과 브론즈 창호, 건축 모형을 담은 조용한 연구 아뜰리에의 AI 실내 콘셉트" width="1774" height="887" loading="lazy" decoding="async"></span><figcaption><span>THE ATELIER / SPATIAL RESEARCH</span><span>AI ARCHITECTURAL CONCEPT</span></figcaption></figure>
+      </section>
+
+      <section class="about-perspective page-width" id="perspective" data-nav-section="about" aria-labelledby="perspectiveTitle">
+        <p class="section-kicker">OUR PERSPECTIVE</p>
+        <h2 id="perspectiveTitle" data-motion-title>공간을 읽는 일은,<br>그 안의 <em>관계</em>를 이해하는 일.</h2>
+        <div class="about-perspective-copy"><p class="reveal">하나의 장소에는 도시의 맥락과 쓰임,<br>개발의 조건과 자본의 선택이 함께 놓여 있습니다.</p><p class="reveal">FORMEQUA는 이 관계를 연결하며<br>공간과 사업의 가능성을 연구하는<br>박완희의 리서치 아뜰리에입니다.</p></div>
+      </section>
+
+    <section class="approach-section motion-manifesto" id="approach" data-nav-section="about" aria-labelledby="manifestoTitle" data-scroll-scene>
+      <div class="manifesto-sticky">
+        <div class="page-width manifesto-heading"><p class="section-kicker">OUR APPROACH</p><span class="section-aside">The life of a place.</span></div>
+        <div class="manifesto-stage">
+          <h2 class="manifesto-title" id="manifestoTitle" aria-label="장소를 읽고, 형태를 다듬고, 가치를 이어갑니다.">
+            <span class="manifest-line" data-manifest-line="0" aria-hidden="true"><strong>장소</strong><span class="manifest-soft">를 읽고,</span></span>
+            <span class="manifest-line" data-manifest-line="1" aria-hidden="true"><strong>형태</strong><span class="manifest-soft">를 다듬고,</span></span>
+            <span class="manifest-line" data-manifest-line="2" aria-hidden="true"><strong>가치</strong><span class="manifest-soft">를 이어갑니다.</span></span>
+          </h2>
+          <figure class="manifest-photo manifest-photo-detail"><img src="assets/atelier-editorial-20261024/approach-sculptural-stair.png" alt="천창의 빛이 곡선형 석재 계단과 브론즈 난간 위로 흐르는 AI 건축 콘셉트" width="1122" height="1402" loading="lazy" decoding="async"><figcaption>THE FORM</figcaption></figure>
+          <figure class="manifest-photo manifest-photo-study"><img src="assets/formequa-form-equity.png" alt="도면 위의 건축 모형과 재료 샘플을 담은 개념 연구 이미지" width="1536" height="1024" loading="lazy" decoding="async"><figcaption>THE STUDY</figcaption></figure>
+          <p class="manifesto-axis" aria-hidden="true">PLACE / FORM / VALUE</p>
+        </div>
+        <div class="page-width manifesto-foot"><p>한 필지의 가능성에서,<br>오래 이어질 공간까지.</p><p>연구와 실무의 시선으로<br>설계의 선택을 사업의 조건에 연결합니다.</p><a class="text-link" href="#projects">설계 연구 살펴보기 <span aria-hidden="true">↗</span></a></div>
+      </div>
+    </section>
+
+      <section class="about-method" id="method" data-nav-section="about" aria-labelledby="methodTitle" data-method-scene>
+        <div class="about-method-sticky">
+          <div class="page-width about-method-heading"><p class="section-kicker">THE INQUIRY</p><span class="section-aside">From place to possibility.</span></div>
+          <div class="about-method-stage">
+            <figure class="method-photo method-photo-left"><img src="assets/atelier-editorial-20261024/method-seoul-street.png" alt="오래된 벽돌 건물과 현대적인 석재 건축이 공존하는 서울 가로의 AI 도시 콘셉트" width="1122" height="1402" loading="lazy" decoding="async"></figure>
+            <figure class="method-photo method-photo-right"><img src="assets/atelier-editorial-20261024/method-mass-composition.png" alt="흑연색 받침 위에 석재와 브론즈 매스를 배치한 AI 건축 형태 연구" width="1536" height="1024" loading="lazy" decoding="async"></figure>
+            <h2 id="methodTitle" class="method-words" aria-label="Place. Form. Value."><span data-method-word aria-hidden="true">Place.</span><span data-method-word aria-hidden="true"><em>Form.</em></span><span data-method-word aria-hidden="true">Value.</span></h2>
+          </div>
+          <div class="page-width about-method-notes">
+            <div class="reveal"><span>01 / PLACE</span><h3>장소의 조건을 읽습니다.</h3><p>대지와 가로, 법규와 도시의 맥락.</p></div>
+            <div class="reveal"><span>02 / FORM</span><h3>공간의 형태를 탐색합니다.</h3><p>규모와 쓰임, 재료와 공간의 관계.</p></div>
+            <div class="reveal"><span>03 / VALUE</span><h3>사업의 가능성을 검토합니다.</h3><p>개발의 선택과 금융의 구조.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="about-researcher page-width" id="researcher" data-nav-section="about" aria-labelledby="researcherTitle">
+        <div><p class="section-kicker">THE RESEARCHER</p><h2 id="researcherTitle" data-motion-title>Powered<br><em>by WAN2.</em></h2></div>
+        <div class="about-researcher-copy"><p class="researcher-name reveal">박완희 <span>Wanhee Park</span></p><p class="reveal">개발 현장의 경험과 금융의 시선,<br>연구를 통해 쌓은 질문에서<br>FORMEQUA는 시작되었습니다.</p><p class="reveal">공간을 이해하는 방법을 넓히고,<br>새로운 가능성을 직접 탐구합니다.</p><a class="text-link researcher-link" href="https://wan2-website.web.app/" aria-label="Meet the researcher · 박완희 개인 홈페이지">Meet the researcher <span aria-hidden="true">↗</span></a></div>
+      </section>
+    </section>
+
+    <section class="projects-section page-width" id="projects" data-nav-section="studies">
+      <div class="section-heading reveal"><p class="section-kicker">02 / SELECTED STUDIES</p><span class="section-aside">PLACE / FORM / VALUE</span></div>
+      <div class="studies-introduction"><h2 class="studies-display" data-motion-title>Possibilities,<br><em>taking form.</em></h2><p>대지에서 시작해,<br>공간과 사업의 가능성을 살펴봅니다.</p></div>
+      <div class="study-collection">
+        <button class="project-card project-card--featured" data-parcel="gangnam_yeoksam" data-motion-sequence aria-label="역삼 · 업무지구의 밀도를 다시 읽다 · 모형 살펴보기">
+          <span class="study-card-heading"><span class="study-district" data-motion-title data-motion-axis="x">YEOKSAM</span><span class="study-edition">01 / FEATURED STUDY</span></span>
+          <span class="project-visual" data-motion-image="up"><img src="assets/atelier-editorial-20261023/yeoksam-context.png" alt="역삼 15층 기본 모형과 테헤란로 업무지구의 대로·이면도로 맥락을 표현한 AI 조감도" loading="lazy" decoding="async" width="1374" height="1145"><span class="study-image-action">모형 살펴보기 <span aria-hidden="true">↗</span></span></span>
+          <span class="study-copy"><span class="study-category">OFFICE / 업무</span><span class="study-title" data-motion-title data-motion-axis="y">업무지구의 밀도를<br>다시 읽다</span><span class="study-summary">도시의 흐름 속에서<br>업무공간의 새로운 가능성을 찾습니다.</span><span class="project-meta"><span>강남구 역삼동</span><span>15F · OPTION A</span></span><span class="study-text-action" aria-hidden="true">Explore the study <span>↗</span></span></span>
+        </button>
+        <button class="project-card project-card--support study-seongsu" data-parcel="seongdong_seongsu" data-motion-sequence aria-label="성수 · 산업의 흔적 위에 새로운 일상 · 모형 살펴보기">
+          <span class="study-card-heading"><span class="study-district" data-motion-title data-motion-axis="x">SEONGSU</span><span class="study-edition">02</span></span>
+          <span class="project-visual" data-motion-image="left"><img src="assets/atelier-editorial-20261023/seongsu-context.png" alt="성수 10층 기본 모형과 벽돌 공장·창고, 좁은 생활 가로를 표현한 AI 조감도" loading="lazy" decoding="async" width="1145" height="1374"><span class="study-image-action">모형 살펴보기 <span aria-hidden="true">↗</span></span></span>
+          <span class="study-copy"><span class="study-category">CREATIVE WORKPLACE / 업무</span><span class="study-title" data-motion-title data-motion-axis="x">산업의 흔적 위에<br>새로운 일상</span><span class="project-meta"><span>성동구 성수동</span><span>10F · OPTION A</span></span></span>
+        </button>
+        <button class="project-card project-card--support study-hapjeong" data-parcel="mapo_hapjeong" data-motion-sequence aria-label="합정 · 골목의 규모에 맞춘 주거 · 모형 살펴보기">
+          <span class="study-card-heading"><span class="study-district" data-motion-title data-motion-axis="y">HAPJEONG</span><span class="study-edition">03</span></span>
+          <span class="project-visual" data-motion-image="right"><img src="assets/atelier-editorial-20261023/hapjeong-context.png" alt="합정 7층 기본 모형과 주거·카페가 섞인 양화진 일대의 골목 맥락을 표현한 AI 조감도" loading="lazy" decoding="async" width="1374" height="1145"><span class="study-image-action">모형 살펴보기 <span aria-hidden="true">↗</span></span></span>
+          <span class="study-copy"><span class="study-category">LIVING / 주거</span><span class="study-title" data-motion-title data-motion-axis="y">골목의 규모에<br>맞춘 주거</span><span class="project-meta"><span>마포구 합정동</span><span>7F · OPTION A</span></span></span>
+        </button>
+        <button class="project-card project-card--support study-euljiro" data-parcel="jongno_euljiro" data-motion-sequence aria-label="을지로 · 오래된 도시와 새로운 수직성 · 모형 살펴보기">
+          <span class="study-card-heading"><span class="study-district" data-motion-title data-motion-axis="x">EULJIRO</span><span class="study-edition">04</span></span>
+          <span class="project-visual" data-motion-image="down"><img src="assets/atelier-editorial-20261023/euljiro-context.png" alt="을지로 18층 기본 모형과 충무로 일대 인쇄·공구 골목의 조밀한 가로 맥락을 표현한 AI 조감도" loading="lazy" decoding="async" width="1145" height="1374"><span class="study-image-action">모형 살펴보기 <span aria-hidden="true">↗</span></span></span>
+          <span class="study-copy"><span class="study-category">URBAN OFFICE / 도심 업무</span><span class="study-title" data-motion-title data-motion-axis="x">오래된 도시와<br>새로운 수직성</span><span class="project-meta"><span>중구 을지로</span><span>18F · OPTION A</span></span></span>
+        </button>
+      </div>
+      <p class="image-note">기본 대안 A와 지역의 가로 맥락을 반영한 AI 조감도 · 실제 현황·준공 사진은 아니며, 입력과 대안에 따라 모형은 달라집니다.</p>
+      <details class="study-ai-direction" id="studyAiDirection" aria-labelledby="studyAiDirectionTitle">
+        <summary class="study-ai-heading"><span class="section-kicker" id="studyAiDirectionTitle">AI VISUAL STUDY</span><span class="study-ai-toggle" aria-hidden="true"></span></summary>
+        <div class="study-ai-body">
+        <div class="study-ai-intro"><h3>조감도에서, 하나의 장면으로.</h3><p>공간의 검토가 새로운 이미지로 이어집니다.</p></div>
+        <div class="study-ai-grid" id="publicStudiesGrid">
+          <article class="public-study-card public-study-featured" id="aiReferenceStudy">
+            <button class="public-study-open" id="btnAiReferenceStudy" type="button" aria-label="AI 건축 콘셉트 이미지 크게 보기" aria-haspopup="dialog">
+              <span class="public-study-image"><img src="assets/study-ai-architecture-v1.png" alt="참고 조감도를 바탕으로 석재 외장과 브론즈 창호를 표현한 AI 건축 콘셉트 이미지 · 실제 준공 사진이 아닙니다" width="1536" height="1024" loading="lazy" decoding="async"></span>
+              <span class="public-study-caption"><span>Architectural concept</span><span>AI concept image <span aria-hidden="true">↗</span></span></span>
+            </button>
+          </article>
+        </div>
+        <div class="study-ai-footer"><p>AI 개념 이미지 · 실제 준공 사진이 아닙니다.</p><button class="text-link" id="btnMorePublicStudies" type="button" hidden>이미지 더 보기 <span>↓</span></button></div>
+        <p class="study-ai-status" id="publicStudiesStatus" role="status" aria-live="polite"></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="studio-section" id="studio" data-nav-section="atelier">
+      <nav class="page-width atelier-section-links" aria-label="아뜰리에 검토 항목"><span>One study, four perspectives.</span><div><a href="#workspaceGrid" data-nav-target="#studio">공간 모형</a><a href="#site">대지 조건</a><a href="#materials">재료·외관</a><a href="#feasibility">사업성</a></div></nav>
+      <div class="page-width studio-intro"><div class="reveal"><p class="section-kicker">03 / THE ATELIER</p><h2 class="section-title" data-motion-title>From place<br>to form.</h2></div><div class="reveal studio-intro-copy"><p>형태와 재료를 구체화하고,<br>그 선택의 조건을 함께 살펴봅니다.</p><p class="studio-selected" id="editorialProjectName">Yeoksam — Office study</p></div></div>
+      <div class="page-width studio-toolbar"><div class="studio-project-select"><label for="parcelSelect">SELECT A STUDY</label><select id="parcelSelect" class="parcel-select">
+            <option value="gangnam_yeoksam">01  역삼</option>
+            <option value="seongdong_seongsu">02  성수</option>
+            <option value="mapo_hapjeong">03  합정</option>
+            <option value="jongno_euljiro">04  을지로</option>
+            <option value="custom_seoul">05  새로운 대지</option>
+          </select></div><div class="studio-options" role="group" aria-label="설계 대안"><button class="active" data-select-option="A" aria-pressed="true">A <span>Pure volume</span></button><button data-select-option="B" aria-pressed="false">B <span>Courtyard</span></button><button data-select-option="C" aria-pressed="false">C <span>Efficient core</span></button></div><button class="text-link" data-open-design="chap-mass">모형 크게 보기 <span>↗</span></button></div>
+      <section class="program-study page-width" aria-label="필지별 공간 프로그램과 용도 검토">
+        <div class="program-toolbar">
+          <label for="selectStudyProgram">SPACE PROGRAM<select id="selectStudyProgram"><option value="office">오피스</option><option value="hotel">호텔</option><option value="housing">주거 · 공동주택</option><option value="officetel">오피스텔</option><option value="living">리빙 · 코리빙</option><option value="knowledge">지식산업센터</option><option value="retail">리테일 · 근린생활</option><option value="sales">판매시설</option></select></label>
+          <label for="selectHotelType" id="hotelTypeField" hidden>호텔의 법적 유형<select id="selectHotelType"><option value="unconfirmed">미정 · 유형 확인 필요</option><option value="general">일반숙박 · 일반 호텔</option><option value="tourist">관광호텔 · 사업계획 승인 검토</option></select></label>
+          <label for="selectLivingLegalUse" id="livingLegalUseField" hidden>리빙의 법적 용도<select id="selectLivingLegalUse"><option value="업무시설(오피스텔)">업무시설 · 오피스텔</option><option value="공동주택(주상복합)">공동주택</option></select></label>
+          <p id="programUseBrief"></p>
+        </div>
+        <details class="program-rules"><summary><span id="programPermissionStatus" role="status" aria-live="polite">용도 검토</span><span id="programDensitySummary"></span><span>조건·근거 보기 +</span></summary><div id="programPermissionBody"></div></details>
+      </section>
+      <div class="page-width interior-entry"><button class="text-link" id="btnOpenInterior">실내 평면 생성 <span>↗</span></button><span>선택한 층의 용도와 코어를 바탕으로 공간을 탐구합니다.</span></div>
+      <section class="interior-controls page-width" id="interiorControls" aria-label="자동 생성 실내 평면" hidden>
+        <div class="interior-control-row"><label class="interior-floor-label" for="interiorFloorSelect">FLOOR STUDY <select id="interiorFloorSelect" aria-label="실내 평면 층 선택"></select></label><div class="interior-view-switch" role="group" aria-label="실내 보기 방식"><button data-interior-view="overview" aria-pressed="true">공간 모형</button><button data-interior-view="plan" aria-pressed="false">평면</button><button data-interior-view="perspective" aria-pressed="false">실내 투시</button></div><button id="btnExitInterior">외관으로 ↗</button></div>
+        <div class="interior-control-row interior-layer-row"><div class="interior-layers" role="group" aria-label="실내 레이어"><button data-interior-layer="spaces" aria-pressed="true">실명</button><button data-interior-layer="partitions" aria-pressed="true">내벽</button><button data-interior-layer="doors" aria-pressed="true">문</button><button data-interior-layer="furniture" aria-pressed="true">가구</button></div><span id="interiorPlanSummary" role="status" aria-live="polite"></span><button id="btnExportInterior">평면 SVG 저장 ↗</button></div>
+        <p class="interior-note" id="interiorPlanNote">용도에 따른 자동 배치 초안 · 공간 구성과 치수는 설계 검토가 필요합니다.</p>
+      </section>
+      <div class="studio-canvas-wrap" id="workspaceGrid"><section class="center-panel">
+        <div class="viewport-container">
+          
+          <div class="three-stage" id="threeStage">
+            <canvas id="threeCanvas"></canvas>
+            <p class="use-scenario-status" data-use-scenario-status hidden></p>
+
+            
+            <div class="hud-top-left">
+              <div class="hud-card">
+                <div class="hud-title">
+                  <div>
+                    <span style="font-family:var(--font-serif);font-style:italic;color:var(--accent-amber);margin-right:4px;">Parcel</span>
+                    <span id="hudParcelName">강남구 역삼동 823 일원</span>
+                  </div>
+                  <span class="badge badge-blue" id="hudZoningBadge">일반상업지역</span>
+                </div>
+                <div class="hud-grid">
+                  <div class="hud-row"><span>PNU 코드</span><span id="hudPnu">1168010100-10823</span></div>
+                  <div class="hud-row"><span>대지면적</span><span id="hudSiteArea">1,650 ㎡ (499평)</span></div>
+                  <div class="hud-row"><span>건축규모/높이</span><span id="hudBuildingHeight">61.2 m (15F/B5)</span></div>
+                  <div class="hud-row"><span>외관(Facade)</span><span id="hudFacadeName">유니타이즈드 커튼월</span></div>
+                  <div class="hud-row"><span>코어 전용률</span><span id="hudCoreEff">58.2% (중앙코어)</span></div>
+                  <div class="hud-row"><span>총연면적(GFA)</span><span id="hudTotalGfa">18,450 ㎡</span></div>
+                </div>
+                <div style="margin-top:7px;padding-top:6px;border-top:1px solid var(--border-subtle);display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--accent-amber);font-weight:700;">
+                  <span> 3D 건물의 각 층을 클릭하면 층별 스펙 시트가 열립니다</span>
+                  <button class="btn-mini-link" id="btnToggleQuickStudio"> 외관팔레트 접기/열기</button>
+                </div>
+              </div>
+
+              
+              <div class="hud-card hud-facade-studio" id="hudFacadeQuickStudio">
+                <div class="hud-title" style="margin-bottom:5px;">
+                  <span> 오뜨 꾸뛰르 외관 · 마감재 · 컬러 스튜디오</span>
+                  <button class="btn-mini-link" id="btnOpenFacadeDetailTab" title="좌측 03 외관 챕터 열기">03 챕터 ▸</button>
+                </div>
+                <div class="hud-studio-collapsible">
+                  <div class="hud-studio-row">
+                    <span class="hud-studio-label">입면패턴</span>
+                    <div class="hud-pill-group">
+                      <button class="hud-pill active" data-qfacade="curtain_wall">커튼월</button>
+                      <button class="hud-pill" data-qfacade="kinetic_louver">수직루버</button>
+                      <button class="hud-pill" data-qfacade="brick_rainscreen">성수적벽돌</button>
+                      <button class="hud-pill" data-qfacade="stone_ribbon">라임스톤</button>
+                      <button class="hud-pill" data-qfacade="diagrid_biophilic">다이아그리드</button>
+                    </div>
+                  </div>
+                  <div class="hud-studio-row">
+                    <span class="hud-studio-label">외장질감</span>
+                    <div class="hud-pill-group">
+                      <button class="hud-pill active" data-qmat="anodized_metal">메탈</button>
+                      <button class="hud-pill" data-qmat="terracotta_brick">적벽돌</button>
+                      <button class="hud-pill" data-qmat="limestone">라임스톤</button>
+                      <button class="hud-pill" data-qmat="granite_pocheon">포천석</button>
+                      <button class="hud-pill" data-qmat="uhpc_concrete">노출콘크리트</button>
+                      <button class="hud-pill" data-qmat="champagne_bronze">브론즈</button>
+                    </div>
+                  </div>
+                  <div class="hud-studio-row">
+                    <span class="hud-studio-label">외장색상</span>
+                    <div class="hud-swatch-strip">
+                      <button class="hud-dot active" data-qaccent="auto" title="시그니처 기본색(Auto)" style="background:conic-gradient(#38bdf8,#1d4ed8,#d97706,#b45309,#f8fafc);"></button>
+                      <button class="hud-dot" data-qaccent="titanium" title="알라바스터 화이트" style="background:#f8fafc;"></button>
+                      <button class="hud-dot" data-qaccent="warm_limestone" title="웜 베이지 라임스톤" style="background:#e7e5e4;"></button>
+                      <button class="hud-dot" data-qaccent="champagne" title="샴페인 골드" style="background:#d97706;"></button>
+                      <button class="hud-dot" data-qaccent="terracotta" title="성수 테라코타 브릭" style="background:#b45309;"></button>
+                      <button class="hud-dot" data-qaccent="crimson_brick" title="크림슨 고벽돌" style="background:#991b1b;"></button>
+                      <button class="hud-dot" data-qaccent="sage_patina" title="세이지 그린" style="background:#0f766e;"></button>
+                      <button class="hud-dot" data-qaccent="sapphire" title="로열 사파이어" style="background:#1e3a8a;"></button>
+                      <button class="hud-dot" data-qaccent="basalt_charcoal" title="바살트 차콜" style="background:#334155;"></button>
+                    </div>
+                  </div>
+                  <div class="hud-studio-row" style="margin-bottom:0;">
+                    <span class="hud-studio-label">유리틴트</span>
+                    <div class="hud-pill-group">
+                      <button class="hud-pill active" data-qglass="auto">기본</button>
+                      <button class="hud-pill" data-qglass="sapphire_blue" style="color:#0284c7;">사파이어블루</button>
+                      <button class="hud-pill" data-qglass="crystal_clear" style="color:#0369a1;">투명크리스탈</button>
+                      <button class="hud-pill" data-qglass="emerald_green" style="color:#0d9488;">에메랄드그린</button>
+                      <button class="hud-pill" data-qglass="bronze_gold" style="color:#b45309;">브론즈골드</button>
+                      <button class="hud-pill" data-qglass="smoke_grey" style="color:#475569;">스모크그레이</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              
+              <div class="bim-toolbar-card">
+                <span style="font-size:10.5px;font-weight:800;color:var(--text-primary);"> 단면절단</span>
+                <input type="range" id="sliderQuickClip" min="15" max="100" step="1" value="100" style="width:95px;" title="슬라이더를 움직여 건물 단면과 내부 코어를 절단해 봅니다" />
+                <button class="btn-mini-link" id="btnToggleQuickDim"> 치수선 ON</button>
+              </div>
+            </div>
+
+            
+            <div class="floor-inspector-card hidden" id="floorInspectorCard">
+              <div class="inspector-kicker">
+                <span id="inspKicker">ARCHITECTURAL FLOOR DOSSIER</span>
+                <button class="btn-mini-link" id="btnCloseFloorInspector" style="padding:1px 6px;"> 닫기</button>
+              </div>
+              <div class="inspector-headline" id="inspTitle">LEVEL 10F · PRIME OFFICE</div>
+              <div class="inspector-spec-grid" id="inspSpecGrid"></div>
+              <button class="text-link inspector-interior-link" id="btnInspectInterior">이 층의 실내 평면 생성 ↗</button>
+              <div style="margin-top:8px;">
+                <div style="font-size:10px;font-weight:800;color:var(--text-secondary);">이 층의 복합용도 개별 지정 (클릭 시 수지·색상 즉시 변경)</div>
+                <div class="inspector-use-pills" id="inspUsePills">
+                  <button class="inspector-use-btn active" data-flooruse="main"> 오피스</button>
+                  <button class="inspector-use-btn" data-flooruse="retail"> 리테일</button>
+                  <button class="inspector-use-btn" data-flooruse="residential"> 오피스텔·주거</button>
+                  <button class="inspector-use-btn" data-flooruse="hotel"> 호텔 객실</button>
+                  <button class="inspector-use-btn" data-flooruse="amenity"> 스카이라운지</button>
+                </div>
+              </div>
+            </div>
+
+            
+            <div class="narration-banner hidden" id="narrationBanner">
+              <div class="narration-step" id="narrationStep">STEP 1 / 5 · 서울시 필지 및 법규 볼륨 검토</div>
+              <div class="narration-text" id="narrationText">선택한 필지의 건폐율·용적률과 정북방향 일조사선을 3D로 검증합니다.</div>
+              <div class="narration-progress">
+                <div class="narration-progress-bar" id="narrationProgressBar"></div>
+              </div>
+            </div>
+
+            
+            <div class="hud-bottom-bar">
+              <div class="view-mode-group">
+                <button class="view-btn active" data-view="standard"> 모형</button>
+                <button class="view-btn" data-view="envelope"> 검토 볼륨</button>
+                <button class="view-btn" data-view="xray" hidden inert style="display:none"> 구조 개념</button>
+                <button class="view-btn" data-view="exploded"> 분리</button>
+                <button class="view-btn" data-view="reset"> 시점 초기화</button>
+                <button class="context-buildings-toggle" data-context-buildings-toggle aria-label="주변 건물 표시" aria-pressed="true">주변 건물 숨기기</button>
+              </div>
+            </div>
+          </div>
+
+          
+          <div class="smap-split-pane hidden" id="smapSplitPane">
+            <div class="smap-pane-header">
+              <div>
+                <strong style="color:var(--accent-blue);"> 서울시 S-Map</strong>
+                <div style="font-size:10px;color:var(--text-secondary);" id="smapCoordLabel">
+                  WGS84: 37.5006° N, 127.0364° E | 대상지 좌표
+                </div>
+              </div>
+              <div style="display:flex;gap:6px;">
+                <a id="smapExternalLink" href="https://smap.seoul.go.kr/" target="_blank" rel="noopener" class="btn btn-smap" style="text-decoration:none;font-size:11px;padding:4px 8px;">
+                  ↗ S-Map 새창 열기
+                </a>
+                <button class="btn" id="btnCloseSmapPane" style="padding:4px 8px;font-size:11px;">닫기</button>
+              </div>
+            </div>
+            <div style="flex:1;position:relative;display:flex;flex-direction:column;">
+              <iframe
+                id="smapIframe"
+                src="about:blank" data-src="https://smap.seoul.go.kr/" loading="lazy"
+                style="flex:1;width:100%;border:none;background:#f1f5f9;"
+                title="서울시 S-Map 3D"
+                sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+              ></iframe>
+              <div style="padding:10px 12px;background:var(--bg-card);border-top:1px solid var(--border-subtle);font-size:11px;color:var(--text-secondary);">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                  <strong style="color:var(--text-primary);"> 도시의 맥락 살펴보기</strong>
+                  <span class="badge badge-blue" id="smapDistrictPlanBadge">테헤란로 지구단위계획구역</span>
+                </div>
+                <div>
+                  서울시 S-Map에서 주변 실제 3D 건물 현황·일조·경관을 대조하면서 좌측 3D 스튜디오에서 대안 매스 및 사업수지(XIRR·토지매입한도)를 실시간 모의실험합니다.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section><div class="viewer-fallback" id="viewerFallback" hidden><p>공간을 준비하고 있습니다.</p><span>3D 화면을 불러오지 못했습니다. 설계 조건과 분석 자료는 계속 살펴볼 수 있습니다.</span><button class="text-link" data-open-design="chap-mass" data-workspace-view="workspace">설계 조건 보기 ↗</button></div></div>
+      <div class="page-width studio-caption"><span id="editorialModelCaption">15 FLOORS · OPTION A</span><span>Drag to explore · 층을 선택하면 상세 정보를 확인할 수 있습니다.</span><a class="text-link" href="#site">대지 요약 <span>↓</span></a></div>
+    </section>
+
+    <section class="site-section page-width" id="site" data-nav-section="atelier"><div class="site-layout"><div class="reveal"><p class="section-kicker">04 / READING THE SITE</p><h2 class="section-title" data-motion-title>Place,<br>before form.</h2><p class="section-description">건축의 출발점은 장소입니다.<br>대지의 맥락과 조건을 차분히 읽고<br>그 위에 가능한 공간을 그려봅니다.</p><details class="atelier-local-note" id="atelierSiteNote"><summary>대지 조건 살펴보기 <span aria-hidden="true">+</span></summary><p>선택한 연구의 면적·용도지역·도로 조건을 이 페이지에서 살펴봅니다. 예시 연구의 수치는 계획 가정이며, 실제 필지 자료가 적용된 경우에도 공부상 면적과 접도 조건은 별도 확인이 필요합니다.</p></details></div><div class="site-dossier reveal"><p class="dossier-name" id="editorialSiteName">강남구 역삼동 823 일원</p><dl><div><dt>LOCATION</dt><dd id="editorialSiteDistrict">서울특별시 강남구</dd></div><div><dt>SITE AREA</dt><dd id="editorialSiteArea">1,650 ㎡</dd></div><div><dt>ZONING</dt><dd id="editorialSiteZone">일반상업지역</dd></div><div><dt>STREET</dt><dd id="editorialSiteRoad">30 m</dd></div><div><dt>CONTEXT</dt><dd id="editorialSitePlan">테헤란로 지구단위계획구역</dd></div></dl><details class="atelier-local-note" id="atelierLawNote"><summary>검토 기준 살펴보기 <span aria-hidden="true">+</span></summary><p id="editorialLegalDensity">선택한 용도지역의 일반 건폐율·용적률 기준을 참고합니다.</p><p>개별 필지의 지구단위계획·고시, 허용 용도와 도로·높이 조건은 추가 확인이 필요합니다. 현재 모형은 인허가가 확정된 설계안이 아닙니다.</p></details></div></div></section>
+
+    <section class="materials-section page-width" id="materials" data-nav-section="atelier"><div class="material-layout"><figure class="material-image" data-motion-image="left"><img src="assets/atelier-editorial-20261023/stone-bronze-detail.png" alt="빛이 드러내는 라임스톤의 기공과 브론즈·유리 접합부의 AI 건축 디테일" width="1122" height="1402" loading="lazy" decoding="async"><figcaption>MATERIAL STUDY / LIGHT, STONE & SHADOW</figcaption></figure><div class="material-copy reveal"><p class="section-kicker">05 / MATERIAL & ATMOSPHERE</p><h2 class="section-title" data-motion-title>A language<br>of materials.</h2><p class="section-description">돌의 온도, 벽돌의 깊이, 유리의 투명함.<br>재료는 형태를 넘어<br>공간의 분위기를 완성합니다.</p><div class="material-swatches" role="group" aria-label="외장 재료 선택"><button data-qmat="limestone"><span class="swatch swatch-stone"></span><span>Limestone</span></button><button data-qmat="terracotta_brick"><span class="swatch swatch-brick"></span><span>Terracotta</span></button><button data-qmat="anodized_metal" class="active"><span class="swatch swatch-metal"></span><span>Metal</span></button></div><p class="material-current" id="editorialMaterialName">아노다이징 알루미늄 메탈패널</p><a class="text-link" href="#studio">모형에서 살펴보기 <span>↑</span></a></div></div></section>
+
+    <section class="feasibility-section page-width" id="feasibility" data-nav-section="atelier"><div class="section-heading reveal"><p class="section-kicker">06 / A CONSIDERED PERSPECTIVE</p><span class="section-aside">설계와 가치 사이의 균형</span></div><div class="feasibility-intro reveal"><h2 class="section-title" data-motion-title>From form<br>to value.</h2><p class="section-description">짓는 비용에서 운영의 시간까지.<br>공간의 선택이 남기는 가치를 살핍니다.</p></div><div class="quiet-metrics reveal"><section class="kpi-ribbon">
+      
+      <div class="kpi-cell" data-kpitab="tab-area" title="클릭하여 한국형 8대 면적 및 용적률 상세 사양 보기">
+        <div class="kpi-label">
+          <span>01 · 법정 용적률 · 연면적</span>
+          <span id="kpiFarStatus" class="badge badge-emerald">적합</span>
+        </div>
+        <div class="kpi-main-row">
+          <div class="kpi-value" id="kpiFarArea">- ㎡</div>
+          <div class="kpi-sub" id="kpiFarPct">용적 -% / 법정 -%</div>
+        </div>
+        <div class="kpi-bar-track"><div class="kpi-bar-fill" id="kpiFarBar" style="width:75%;"></div></div>
+      </div>
+
+      
+      <div class="kpi-cell" data-kpitab="tab-area" data-kpidrawer="drawerTestFit" title="클릭하여 기준층 CAD 평면도 및 주차·피난 사양 보기">
+        <div class="kpi-label">
+          <span>02 · 임대 전용면적 · 주차</span>
+          <span id="kpiNetEffBadge" class="badge badge-blue">전용률 -%</span>
+        </div>
+        <div class="kpi-main-row">
+          <div class="kpi-value" id="kpiNetArea">- 평</div>
+          <div class="kpi-sub" id="kpiParkingSub">주차 -대 (법정 -대)</div>
+        </div>
+        <div class="kpi-bar-track"><div class="kpi-bar-fill" id="kpiEffBar" style="width:60%;background:linear-gradient(90deg,#10b981,#34d399);"></div></div>
+      </div>
+
+      
+      <div class="kpi-cell" data-kpitab="tab-finance" data-kpidrawer="drawerSourcesUses" title="클릭하여 총사업비 및 외장공사비 산출내역 보기">
+        <div class="kpi-label">
+          <span>03 · 총사업비 (Total CAPEX)</span>
+          <span id="kpiBcrStatus" class="badge badge-blue">건폐 -%</span>
+        </div>
+        <div class="kpi-main-row">
+          <div class="kpi-value" id="kpiTotalCost">- 억원</div>
+          <div class="kpi-sub" id="kpiConstCostSub">공사비 -억 (외장 -억)</div>
+        </div>
+        <div class="kpi-bar-track"><div class="kpi-bar-fill" id="kpiCostBar" style="width:68%;background:linear-gradient(90deg,#6366f1,#a855f7);"></div></div>
+      </div>
+
+      
+      <div class="kpi-cell" data-kpitab="tab-finance" title="클릭하여 선·중·후순위 PF 대주단 트랜치 및 DSCR 보기">
+        <div class="kpi-label">
+          <span>04 · 자기자본 · PF 트랜치</span>
+          <span class="badge badge-amber">LTC <span id="kpiLtvLabel">62</span>%</span>
+        </div>
+        <div class="kpi-main-row">
+          <div class="kpi-value" id="kpiPeakEquity">- 억원</div>
+          <div class="kpi-sub" id="kpiLoanSub">PF -억 · DSCR -x</div>
+        </div>
+        <div class="kpi-bar-track"><div class="kpi-bar-fill" id="kpiLtcBar" style="width:62%;background:linear-gradient(90deg,#f59e0b,#fbbf24);"></div></div>
+      </div>
+
+      
+      <div class="kpi-cell hero-irr" data-kpitab="tab-finance" title="클릭하여 한국형 부동산펀드 LP(우선주) / GP(보통주) 워터폴 배분 사양 보기">
+        <div class="kpi-label">
+          <span>05 · Equity XIRR (LP/GP)</span>
+          <span id="kpiIrrBadge" class="badge badge-emerald">목표 상회</span>
+        </div>
+        <div class="kpi-main-row">
+          <div class="kpi-value" id="kpiEquityIrr" style="color:var(--accent-emerald);">- %</div>
+          <div class="kpi-sub" id="kpiNpvSub">LP -% · GP -%</div>
+        </div>
+        <div class="kpi-bar-track"><div class="kpi-bar-fill" id="kpiIrrBar" style="width:80%;background:linear-gradient(90deg,#059669,#0ea5e9);"></div></div>
+      </div>
+
+      
+      <div class="kpi-cell hero-land" data-kpitab="tab-finance" data-kpidrawer="drawerResidualSensitivity" title="클릭하여 목표수익률 역산 최대 토지매입한도 및 민감도 행렬 보기">
+        <div class="kpi-label">
+          <span>06 · 최대 토지매입한도</span>
+          <span id="kpiLandGapBadge" class="badge badge-emerald">매입 적정</span>
+        </div>
+        <div class="kpi-main-row">
+          <div class="kpi-value" id="kpiResidualLand" style="color:var(--accent-blue);">- 억원</div>
+          <div class="kpi-sub" id="kpiResidualLandPyeong">한도 평당 -백만</div>
+        </div>
+        <div class="kpi-bar-track"><div class="kpi-bar-fill" id="kpiLandBar" style="width:72%;"></div></div>
+      </div>
+    </section></div><div class="feasibility-actions reveal"><span>선택한 설계 조건에 따라 함께 변화하는 계획 지표</span><button class="text-link" data-open-analysis="tab-finance">사업성 상세 검토 <span>↗</span></button></div></section>
+  </main>
+
+  <footer class="portfolio-footer"><div class="page-width"><p class="section-kicker"><a class="footer-home-link" href="#home" aria-label="FORMEQUA 홈페이지 맨 위">FORMEQUA</a></p><div class="footer-story"><h2 class="footer-statement" data-motion-title>Every place,<br><em>a possibility.</em></h2><div class="footer-invitation"><p class="founder-credit">공간의 가능성을,<br>오래 이어질 가치로.<br><span>박완희의 리서치 아뜰리에</span></p><a class="footer-about-link" href="#about">About FORMEQUA ↗</a><br><a class="text-link" href="#studio">아뜰리에에서 살펴보기 <span aria-hidden="true">↗</span></a></div></div><a class="footer-refrain footer-home-link" href="#home" data-motion-title aria-label="FORMEQUA 홈페이지 맨 위">FORMEQUA</a><div class="footer-bottom"><span>ARCHITECTURE · FEASIBILITY · FINANCE</span><a href="#home">Back to top ↑</a><a class="footer-signature" href="https://wan2-website.web.app/" aria-label="POWERED BY WAN2 · 박완희 프로필"><span>POWERED BY WAN2</span><span class="signature-arrow" aria-hidden="true">↗</span></a></div></div></footer>
+
+  <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+  <aside class="design-drawer left-panel" id="designDrawer" role="dialog" aria-modal="true" aria-labelledby="designDrawerTitle" aria-hidden="true" inert><div class="drawer-header"><div><p class="section-kicker">THE ATELIER</p><h2 id="designDrawerTitle">설계 조정</h2></div><button class="drawer-close" data-close-drawer aria-label="설계 조정 닫기">×</button></div><div class="drawer-scroll">
+        
+        <div class="panel-section" style="padding:10px 11px;">
+          <div class="section-header" style="margin-bottom:7px;padding-bottom:5px;">
+            <div class="section-title"><span style="font-family:var(--font-serif);font-style:italic;color:var(--accent-amber);font-size:15px;">00</span> 생성설계 3대 대안 비교</div>
+            <span class="badge badge-blue" id="activeOptionLabel">Option A</span>
+          </div>
+          <div class="option-cards">
+            <button class="option-card active" data-option="A">
+              <div class="option-top-row">
+                <span class="option-tag">OPT A</span>
+                <span class="option-mini-irr" id="miniIrrA">IRR -%</span>
+              </div>
+              <div class="option-name">포디움+타워</div>
+              <div class="option-desc" id="miniDescA">법정 용적률 극대화 표준안</div>
+            </button>
+            <button class="option-card" data-option="B">
+              <div class="option-top-row">
+                <span class="option-tag">OPT B</span>
+                <span class="option-mini-irr" id="miniIrrB">IRR -%</span>
+              </div>
+              <div class="option-name">중정·테라스</div>
+              <div class="option-desc" id="miniDescB">채광 중정 · 임대료 +8%</div>
+            </button>
+            <button class="option-card" data-option="C">
+              <div class="option-top-row">
+                <span class="option-tag">OPT C</span>
+                <span class="option-mini-irr" id="miniIrrC">IRR -%</span>
+              </div>
+              <div class="option-name">북측 편심코어</div>
+              <div class="option-desc" id="miniDescC">전용률 극대화 (+4.5%p)</div>
+            </button>
+          </div>
+        </div>
+
+        
+        <div class="atelier-chapter open" id="chap-site">
+          <button class="chapter-header" data-chapter="chap-site">
+            <div class="chapter-title-wrap">
+              <span class="chapter-num">01</span>
+              <span class="chapter-title">대지 · 4면 정밀이격 · 합필</span>
+            </div>
+            <div class="chapter-meta">
+              <span class="chapter-summary-pill" id="chapSummarySite">일반상업 · 1,650㎡</span>
+              <span class="chapter-chevron">▾</span>
+            </div>
+          </button>
+          <div class="chapter-body">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span style="font-size:10.5px;color:var(--text-muted);font-weight:700;">서울시 도시계획 조례 · 검토 버전</span>
+              <button class="btn badge-emerald" id="btnSyncZoningLaw" style="padding:2px 8px;font-size:10px;">
+                 검토한 적용 근거 불러오기
+              </button>
+            </div>
+
+            <div class="input-grid-2" style="margin-bottom:8px;">
+              <div class="field-box">
+                <label for="inputSiteArea">공부상 대지면적 (㎡)</label>
+                <input type="number" id="inputSiteArea" value="1650" min="200" max="20000" step="10" />
+              </div>
+              <div class="field-box">
+                <label for="inputRoadWidth">전면도로 폭 (m)</label>
+                <input type="number" id="inputRoadWidth" value="30" min="4" max="50" step="1" />
+              </div>
+            </div>
+
+            <div class="input-grid-2" style="margin-bottom:8px;">
+              <div class="field-box">
+                <label for="selectZoning">서울시 용도지역 (제44·48조)</label>
+                <select id="selectZoning">
+                  <option value="일반상업지역">일반상업지역 (60% / 800%)</option>
+                  <option value="중심상업지역">중심상업지역 (60% / 1000%)</option>
+                  <option value="근린상업지역">근린상업지역 (60% / 600%)</option>
+                  <option value="준공업지역">준공업지역 (60% / 400%)</option>
+                  <option value="준주거지역">준주거지역 (60% / 400%)</option>
+                  <option value="제3종일반주거지역">제3종일반주거 (50% / 250%)</option>
+                  <option value="제2종일반주거지역">제2종일반주거 (60% / 200%)</option>
+                </select>
+              </div>
+              <div class="field-box">
+                <label for="selectBuildingUse">주용도 (주차·피난·제50조)</label>
+                <select id="selectBuildingUse">
+                  <option value="업무시설(오피스)">업무시설 (오피스+근생)</option>
+                  <option value="지식산업센터">지식산업센터 (성수·문정형)</option>
+                  <option value="공동주택(주상복합)">공동주택 (주상복합)</option>
+                  <option value="업무시설(오피스텔)">오피스텔</option>
+                  <option value="숙박시설(호텔)">호텔 (숙박시설)</option>
+                  <option value="근린생활시설(리테일)">근린생활시설</option>
+                  <option value="판매시설">판매시설</option>
+                </select>
+              </div>
+            </div>
+
+            
+            <details class="editorial-drawer legal-controls" open>
+              <summary><span>법규를 반영하는 매스 스터디</span><span class="drawer-cta">조건</span></summary>
+              <div class="drawer-content">
+                <div class="field-box"><label for="selectRegulationMode">법규 적용 기준</label><select id="selectRegulationMode"><option value="statutory">법정 기준 적용 (기본)</option><option value="scenario">사용자 추가 제한으로 비교</option></select></div>
+                <p id="regulationBasisSummary" class="legal-note" role="status">법령 검토 기준으로 계산합니다.</p>
+                <p class="legal-note">서울 일반 기준·확인된 고시 상한·사용자 추가 제한을 구분해 적용합니다. 아래 비교값은 ‘사용자 추가 제한으로 비교’를 선택할 때만 적용합니다. 확인된 고시 상한은 항상 적용합니다.</p>
+                <div class="input-grid-2">
+                  <div class="field-box"><label for="inputLegalFarCap">추가 용적률 제한 (%)</label><input id="inputLegalFarCap" type="number" min="0" max="1500" step="10" value="0"></div>
+                  <div class="field-box"><label for="inputLegalBcrCap">추가 건폐율 제한 (%)</label><input id="inputLegalBcrCap" type="number" min="0" max="100" step="1" value="0"></div>
+                  <div class="field-box"><label for="inputLegalHeightCap">추가 높이 제한 (m)</label><input id="inputLegalHeightCap" type="number" min="0" max="300" step="1" value="0"></div>
+                  <div class="field-box"><label for="selectParkingMode">주차가 부족할 때</label><select id="selectParkingMode"><option value="fit">확보 가능 대수에 맞춰 매스 축소</option><option value="report">매스 유지 · 부족 대수 표시</option></select></div>
+                </div>
+                <div class="field-box"><label for="selectParkingDistrict">주차장 설치제한지역 확인</label><select id="selectParkingDistrict"><option value="unconfirmed">미확인 · 일반 기준으로 비교</option><option value="standard">일반지역 (별표2 최소 대수)</option><option value="restricted">설치제한지역 (별표3 최고한도)</option></select></div>
+                <details class="housing-law-inputs">
+                  <summary>주거가 포함된 경우의 산정 조건</summary>
+                  <div class="input-grid-2">
+                    <div class="field-box"><label for="selectResidentialType">혼합용도의 주거 분류</label><select id="selectResidentialType"><option value="officetel">오피스텔</option><option value="apartment">공동주택</option></select></div>
+                    <div class="field-box"><label for="selectHousingPermitType">공동주택 인허가 기준</label><select id="selectHousingPermitType"><option value="building_permit">건축허가 · 서울 별표2</option><option value="housing_approval">주택건설사업계획 승인 · 규정27</option></select></div>
+                    <div class="field-box"><label for="inputHousingUnitArea">세대당 전용면적 (㎡)</label><input id="inputHousingUnitArea" type="number" min="15" max="250" step="1" value="59"></div>
+                    <div class="field-box"><label for="inputHousingUnits">세대수 (0 = 면적에서 추정)</label><input id="inputHousingUnits" type="number" min="0" max="3000" step="1" value="0"></div>
+                  </div>
+                  <p class="legal-note">단일 전용면적 유형으로 계산합니다. 자동 세대수와 지하 주차용량은 기획 가정이며, 실제 배치도 확정 전입니다.</p>
+                </details>
+                <div id="legalMassSummary" class="legal-mass-summary" aria-live="polite"></div>
+                <p class="legal-note">일반 용도지역별 용도 제한을 비교합니다. 개별 필지의 용도 허용·지구단위계획·도로 후퇴·대지 안의 공지·채광·동간거리·조경·피난·소방·교통영향평가는 추가 확인이 필요합니다.</p>
+              </div>
+            </details>
+            <div class="toggle-banner" style="background:rgba(4,120,87,0.08);border-color:rgba(4,120,87,0.28);margin-bottom:6px;">
+              <label for="chkParcelMerger" style="font-size:11px;font-weight:800;color:var(--accent-emerald);cursor:pointer;">
+                 인접 경계 추가 시 합집합 적용 (법적 합필 확인 전)
+              </label>
+              <input type="checkbox" id="chkParcelMerger" style="width:16px;height:16px;accent-color:#047857;cursor:pointer;" />
+            </div>
+
+            
+            <details class="editorial-drawer" style="margin-top:6px;">
+              <summary>
+                <span> 4면 경계선별 차등 이격 · 기부채납 · 일조사선 세부조건</span>
+                <span class="drawer-cta">+ 펼치기</span>
+              </summary>
+              <div class="drawer-content">
+                <div class="control-row">
+                  <div class="control-label">
+                    <span>전면도로 건축한계선 (남측 Front Setback)</span>
+                    <span class="control-val" id="valSetback">2.0 m</span>
+                  </div>
+                  <input type="range" id="sliderSetback" min="1.0" max="6.0" step="0.5" value="2.0" />
+                </div>
+                <div class="control-row">
+                  <div class="control-label">
+                    <span>인접대지 측면 이격 (동·서측 Side Setback)</span>
+                    <span class="control-val" id="valSetbackSide">1.5 m</span>
+                  </div>
+                  <input type="range" id="sliderSetbackSide" min="0.5" max="5.0" step="0.5" value="1.5" />
+                </div>
+                <div class="control-row">
+                  <div class="control-label">
+                    <span>후면 정북경계 이격 (북측 Rear Setback)</span>
+                    <span class="control-val" id="valSetbackRear">2.0 m</span>
+                  </div>
+                  <input type="range" id="sliderSetbackRear" min="1.0" max="6.0" step="0.5" value="2.0" />
+                </div>
+                <div class="control-row" style="margin-top:6px;">
+                  <div class="control-label">
+                    <span> 공공시설 기부채납 (제51조 `(1+1.3α)` 완화)</span>
+                    <span class="control-val" id="valPublicContrib">0%</span>
+                  </div>
+                  <input type="range" id="sliderPublicContribPct" min="0" max="25" step="1" value="0" />
+                </div>
+                <div class="toggle-banner toggle-banner-blue">
+                  <label for="chkSeoulDowntown" style="font-size:10.5px;font-weight:700;color:var(--accent-blue);cursor:pointer;">
+                     서울도심(한양도성) 단서 적용 (중심800/일반600%)
+                  </label>
+                  <input type="checkbox" id="chkSeoulDowntown" style="width:15px;height:15px;accent-color:#1d4ed8;cursor:pointer;" />
+                </div>
+                <div class="toggle-banner">
+                  <label for="chkNorthSolar" style="font-size:10.5px;font-weight:700;color:var(--accent-amber);cursor:pointer;">
+                     건축법 제61조 정북방향 일조사선(H/2) 적용
+                  </label>
+                  <input type="checkbox" id="chkNorthSolar" style="width:15px;height:15px;accent-color:#d97706;cursor:pointer;" />
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        
+        <div class="atelier-chapter" id="chap-mass">
+          <button class="chapter-header" data-chapter="chap-mass">
+            <div class="chapter-title-wrap">
+              <span class="chapter-num">02</span>
+              <span class="chapter-title">3D 층수 · 용도 · 단면 검토</span>
+            </div>
+            <div class="chapter-meta">
+              <span class="chapter-summary-pill" id="chapSummaryMass">15F/B5 · 건폐54%</span>
+              <span class="chapter-chevron">▾</span>
+            </div>
+          </button>
+          <div class="chapter-body">
+            <div class="control-row">
+              <div class="control-label">
+                <span>지상 층수 (Above-ground)</span>
+                <span class="control-val" id="valFloorsAbove">15층</span>
+              </div>
+              <input type="range" id="sliderFloorsAbove" min="1" max="35" step="1" value="15" />
+            </div>
+
+            <div class="control-row">
+              <div class="control-label">
+                <span>지하 층수 (Underground B1~B7)</span>
+                <span class="control-val" id="valFloorsBelow">5층</span>
+              </div>
+              <input type="range" id="sliderFloorsBelow" min="0" max="7" step="1" value="5" />
+            </div>
+
+            <div class="control-row">
+              <div class="control-label">
+                <span>목표 건폐율 (Footprint BCR)</span>
+                <span class="control-val" id="valTargetBcr">54%</span>
+              </div>
+              <input type="range" id="sliderTargetBcr" min="25" max="60" step="1" value="54" />
+            </div>
+
+            <div class="control-row">
+              <div class="control-label">
+                <span>기준층 층고 (Floor Height)</span>
+                <span class="control-val" id="valFloorHeight">4.0 m</span>
+              </div>
+              <input type="range" id="sliderFloorHeight" min="3.0" max="5.2" step="0.1" value="4.0" />
+            </div>
+
+            <div class="input-grid-2" style="margin-top:8px;margin-bottom:8px;">
+              <div class="field-box"><label for="selectModelDetail">모형 표현 수준</label><select id="selectModelDetail"><option value="auto">규모에 따라 자동</option><option value="massing">간략 매스</option><option value="concept">개념 상세 · 실내</option></select><p class="legal-note">간략 표현은 상세 실내·기둥을 생략합니다. 구조 검토 면제 판정이 아닙니다.</p></div>
+              <div class="field-box">
+                <label for="selectCoreType">동선·코어 예약 위치 (기획)</label>
+                <select id="selectCoreType">
+                  <option value="center">중앙 코어 (Center)</option>
+                  <option value="north">북측 편심 코어 (North)</option>
+                  <option value="split">양단 분리 코어 (Twin)</option>
+                </select>
+              </div>
+              <div class="field-box">
+                <label for="selectMixedUseProfile">층별 복합용도 배정</label>
+                <select id="selectMixedUseProfile">
+                  <option value="office_retail">저층근생(1~2F) + 오피스</option>
+                  <option value="mixed_resi">근생 + 오피스 + 상층주거(오피스텔)</option>
+                  <option value="knowledge_ind">성수형 지산 + 지원근생 + 기숙사</option>
+                  <option value="flagship_hq">전층 플래그십 사옥 + 스카이라운지</option>
+                </select>
+              </div>
+            </div>
+
+            
+            <div class="control-row" style="padding-top:6px;border-top:1px solid var(--border-subtle);">
+              <div class="control-label">
+                <span> 3D BIM 실시간 단면 절단기 (Section Clipping)</span>
+                <span class="control-val" id="valClipPlane">OFF (100%)</span>
+              </div>
+              <input type="range" id="sliderClipPlane" min="15" max="100" step="1" value="100" />
+            </div>
+
+            <div class="input-grid-2" style="margin-top:6px;">
+              <div class="field-box">
+                <label for="sliderSunHour">동지 태양 시각 (<span id="valSunHour">12:00</span>)</label>
+                <input type="range" id="sliderSunHour" min="9" max="16" step="0.25" value="12" style="margin-top:6px;" />
+              </div>
+              <div class="field-box" style="justify-content:center;">
+                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-top:10px;color:var(--accent-blue);">
+                  <input type="checkbox" id="chkShowDimensions" checked style="width:15px;height:15px;accent-color:#1e3a8a;" />
+                   3D 대지·높이 치수선 표시
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="atelier-chapter" id="chap-facade">
+          <button class="chapter-header" data-chapter="chap-facade">
+            <div class="chapter-title-wrap">
+              <span class="chapter-num">03</span>
+              <span class="chapter-title">외관(Facade) · 마감텍스처 · 컬러칩</span>
+            </div>
+            <div class="chapter-meta">
+              <span class="chapter-summary-pill" id="chapSummaryFacade">커튼월 · 메탈</span>
+              <span class="chapter-chevron">▾</span>
+            </div>
+          </button>
+          <div class="chapter-body">
+            <div class="sub-label-row">1. 5대 입면(Facade) 아키타입 디자인</div>
+            <div class="facade-preset-grid" id="facadePresetGrid" style="margin-bottom:10px;">
+              <button class="facade-card active" data-facade="curtain_wall">
+                <div class="facade-card-top">
+                  <span class="facade-swatch" style="background:linear-gradient(135deg,#38bdf8,#1d4ed8);"></span>
+                  <span class="facade-title">유니타이즈드 커튼월</span>
+                  <span class="facade-badge">공사 +6.5% · 임대 +4.5%</span>
+                </div>
+                <div class="facade-desc">로이 삼중유리 + 알루미늄 멀리언 그리드 (강남·여의도 프라임)</div>
+              </button>
+
+              <button class="facade-card" data-facade="kinetic_louver">
+                <div class="facade-card-top">
+                  <span class="facade-swatch" style="background:linear-gradient(135deg,#d97706,#fbbf24);"></span>
+                  <span class="facade-title">친환경 수직 차양 루버</span>
+                  <span class="facade-badge">일사 -35% · ZEB 특화</span>
+                </div>
+                <div class="facade-desc">아노다이징 수직 핀(Fin) + 브리즈솔레이유 차양 (종로·광화문)</div>
+              </button>
+
+              <button class="facade-card" data-facade="brick_rainscreen">
+                <div class="facade-card-top">
+                  <span class="facade-swatch" style="background:linear-gradient(135deg,#b45309,#dc2626);"></span>
+                  <span class="facade-title">성수동 테라코타·적벽돌</span>
+                  <span class="facade-badge">표준 공사비 · U=0.14</span>
+                </div>
+                <div class="facade-desc">통기형 적벽돌 레인스크린 + 펀치드 윈도우 &amp; 아케이드</div>
+              </button>
+
+              <button class="facade-card" data-facade="stone_ribbon">
+                <div class="facade-card-top">
+                  <span class="facade-swatch" style="background:linear-gradient(135deg,#d6d3d1,#78716c);"></span>
+                  <span class="facade-title">라임스톤 PC + 리본창</span>
+                  <span class="facade-badge">공사 +3.0% · 내구성</span>
+                </div>
+                <div class="facade-desc">유럽산 라임스톤 수평 스팬드럴 밴드 + 연속 수평 리본창</div>
+              </button>
+
+              <button class="facade-card" data-facade="diagrid_biophilic">
+                <div class="facade-card-top">
+                  <span class="facade-swatch" style="background:linear-gradient(135deg,#10b981,#0284c7);"></span>
+                  <span class="facade-title">다이아그리드·그린테라스</span>
+                  <span class="facade-badge">공사 +13% · 임대 +8%</span>
+                </div>
+                <div class="facade-desc">티타늄 화이트 X-Brace 외골격 + 바이오필릭 스카이 발코니</div>
+              </button>
+            </div>
+
+            <div class="sub-label-row">2. 외장 마감재 프로시저럴 질감 (6종) · <span id="activeMaterialBadge" style="color:var(--accent-amber);">아노다이징 메탈</span></div>
+            <div class="material-chip-grid" id="claddingMaterialGrid">
+              <button class="mat-chip active" data-mat="anodized_metal"> 아노다이징 메탈</button>
+              <button class="mat-chip" data-mat="terracotta_brick"> 성수 적벽돌(줄눈)</button>
+              <button class="mat-chip" data-mat="limestone"> 유럽산 라임스톤</button>
+              <button class="mat-chip" data-mat="granite_pocheon"> 포천석 화강암</button>
+              <button class="mat-chip" data-mat="uhpc_concrete"> 노출콘크리트 UHPC</button>
+              <button class="mat-chip" data-mat="champagne_bronze"> 샴페인 브론즈패널</button>
+            </div>
+
+            <div class="sub-label-row" style="margin-top:8px;">3. 외장 프레임·스팬드럴 컬러칩 (9종)</div>
+            <div class="color-swatch-row" id="exteriorColorSwatchGroup">
+              <button class="color-swatch-btn active" data-accent="auto" title="시그니처 기본 컬러 (Auto)" style="background:conic-gradient(#38bdf8,#1d4ed8,#d97706,#b45309,#f8fafc);"><span>Auto</span></button>
+              <button class="color-swatch-btn" data-accent="titanium" title="알라바스터 티타늄 화이트" style="background:#f8fafc;"></button>
+              <button class="color-swatch-btn" data-accent="warm_limestone" title="웜 베이지 라임스톤" style="background:#e7e5e4;"></button>
+              <button class="color-swatch-btn" data-accent="champagne" title="샴페인 브론즈 골드" style="background:#d97706;"></button>
+              <button class="color-swatch-btn" data-accent="terracotta" title="성수 테라코타 로제 브릭" style="background:#b45309;"></button>
+              <button class="color-swatch-btn" data-accent="crimson_brick" title="크림슨 클래식 고벽돌" style="background:#991b1b;"></button>
+              <button class="color-swatch-btn" data-accent="sage_patina" title="세이지 그린 아키텍처" style="background:#0f766e;"></button>
+              <button class="color-swatch-btn" data-accent="sapphire" title="로열 사파이어 네이비" style="background:#1e3a8a;"></button>
+              <button class="color-swatch-btn" data-accent="basalt_charcoal" title="바살트 다크 차콜" style="background:#334155;"></button>
+            </div>
+
+            <div class="sub-label-row" style="margin-top:8px;">4. 로이(Low-E) 유리 색상 틴트 (6종)</div>
+            <div class="color-swatch-row" id="glassTintSwatchGroup">
+              <button class="glass-swatch-btn active" data-glasstint="auto">Auto</button>
+              <button class="glass-swatch-btn" data-glasstint="sapphire_blue" style="background:linear-gradient(135deg,#7dd3fc,#0284c7);color:#fff;">블루</button>
+              <button class="glass-swatch-btn" data-glasstint="crystal_clear" style="background:linear-gradient(135deg,#f0f9ff,#bae6fd);color:#0f172a;">투명</button>
+              <button class="glass-swatch-btn" data-glasstint="emerald_green" style="background:linear-gradient(135deg,#6ee7b7,#0d9488);color:#fff;">그린</button>
+              <button class="glass-swatch-btn" data-glasstint="bronze_gold" style="background:linear-gradient(135deg,#fde68a,#b45309);color:#fff;">골드</button>
+              <button class="glass-swatch-btn" data-glasstint="smoke_grey" style="background:linear-gradient(135deg,#cbd5e1,#475569);color:#fff;">그레이</button>
+            </div>
+
+            <div class="sub-label-row" style="margin-top:8px;">5. 저층부(1~2층 포디움) 가로경관</div>
+            <div class="podium-chip-row" id="podiumStyleGroup" style="margin-bottom:8px;">
+              <button class="podium-chip active" data-podium="showwindow"> 통유리 쇼윈도</button>
+              <button class="podium-chip" data-podium="brick_arcade"> 아케이드 기둥열</button>
+              <button class="podium-chip" data-podium="piloti_colonade"> 개방형 필로티</button>
+            </div>
+
+            <details class="editorial-drawer">
+              <summary>
+                <span> 창면적비(WWR) · 베이 간격 · 루버 깊이 세부 조절</span>
+                <span class="drawer-cta" id="facadeThermalBadge">U 적합 ▾</span>
+              </summary>
+              <div class="drawer-content">
+                <div class="control-row">
+                  <div class="control-label">
+                    <span>창면적비 (WWR)</span>
+                    <span class="control-val" id="valFacadeWwr">72%</span>
+                  </div>
+                  <input type="range" id="sliderFacadeWwr" min="30" max="85" step="1" value="72" />
+                </div>
+                <div class="control-row">
+                  <div class="control-label">
+                    <span>수직 베이 모듈 간격 (Bay Width)</span>
+                    <span class="control-val" id="valFacadeBay">2.4 m</span>
+                  </div>
+                  <input type="range" id="sliderFacadeBay" min="1.5" max="4.5" step="0.1" value="2.4" />
+                </div>
+                <div class="control-row">
+                  <div class="control-label">
+                    <span>차양 루버 · 핀 돌출 깊이 (Fin Depth)</span>
+                    <span class="control-val" id="valFacadeLouver">0.20 m</span>
+                  </div>
+                  <input type="range" id="sliderFacadeLouver" min="0.05" max="1.10" step="0.05" value="0.20" />
+                </div>
+              </div>
+            </details>
+
+            <div id="facadeLiveSummaryCard" class="facade-live-summary"></div>
+          </div>
+        </div>
+
+        
+        <div class="atelier-chapter" id="chap-finance">
+          <button class="chapter-header" data-chapter="chap-finance">
+            <div class="chapter-title-wrap">
+              <span class="chapter-num">04</span>
+              <span class="chapter-title">공사비 · 선중후 PF · LP/GP 워터폴</span>
+            </div>
+            <div class="chapter-meta">
+              <span class="chapter-summary-pill" id="chapSummaryFin">LTC 62% · LP 80%</span>
+              <span class="chapter-chevron">▾</span>
+            </div>
+          </button>
+          <div class="chapter-body">
+            <div class="control-row">
+              <div class="control-label">
+                <span>토지 매입단가 (대지평당)</span>
+                <span class="control-val" id="valLandPricePyeong">150 백만원/평</span>
+              </div>
+              <input type="range" id="sliderLandPricePyeong" min="30" max="350" step="5" value="150" />
+            </div>
+
+            <div class="control-row">
+              <div class="control-label">
+                <span>기준 평당 공사비 (지하·외장 자동반영)</span>
+                <span class="control-val" id="valConstCostPyeong">950 만원/평</span>
+              </div>
+              <input type="range" id="sliderConstCostPyeong" min="650" max="1500" step="10" value="950" />
+            </div>
+
+            <div class="control-row">
+              <div class="control-label">
+                <span>기준층 월 임대료 (계약평당)</span>
+                <span class="control-val" id="valRentPyeong">15.5 만원/평</span>
+              </div>
+              <input type="range" id="sliderRentPyeong" min="5.0" max="30.0" step="0.5" value="15.5" />
+            </div>
+
+            <div class="control-row">
+              <div class="control-label">
+                <span>안정화 매각 Exit Cap Rate</span>
+                <span class="control-val" id="valCapRate">4.4 %</span>
+              </div>
+              <input type="range" id="sliderCapRate" min="3.2" max="6.5" step="0.1" value="4.4" />
+            </div>
+
+            <div class="input-grid-2" style="margin:8px 0;">
+              <div class="field-box">
+                <label for="inputLoanLtv">총 PF 대출 한도 LTC (%)</label>
+                <input type="number" id="inputLoanLtv" value="62" min="30" max="80" step="1" />
+              </div>
+              <div class="field-box">
+                <label for="inputLoanRate">선순위 기준금리 (%)</label>
+                <input type="number" id="inputLoanRate" value="5.6" min="3.0" max="12.0" step="0.1" />
+              </div>
+            </div>
+
+            
+            <details class="editorial-drawer" open style="margin-top:6px;">
+              <summary>
+                <span> 한국형 펀드/PFV 출자·배분 (LP 우선주 / GP 보통주)</span>
+                <span class="drawer-cta">워터폴 설정</span>
+              </summary>
+              <div class="drawer-content">
+                <div class="control-row">
+                  <div class="control-label">
+                    <span>기관 LP(우선주) 출자 비중 (나머지 시행사 GP)</span>
+                    <span class="control-val" id="valLpSharePct">80% (GP 20%)</span>
+                  </div>
+                  <input type="range" id="sliderLpSharePct" min="50" max="95" step="5" value="80" />
+                </div>
+                <div class="control-row">
+                  <div class="control-label">
+                    <span>LP 우선배당 허들레이트 (Preferred Hurdle)</span>
+                    <span class="control-val" id="valLpHurdlePct">연 7.5%</span>
+                  </div>
+                  <input type="range" id="sliderLpHurdlePct" min="4.0" max="12.0" step="0.5" value="7.5" />
+                </div>
+                <div class="control-row">
+                  <div class="control-label">
+                    <span>초과수익 GP 성공보수 배분율 (Promote)</span>
+                    <span class="control-val" id="valGpPromotePct">30% (LP 70%)</span>
+                  </div>
+                  <input type="range" id="sliderGpPromotePct" min="10" max="50" step="5" value="30" />
+                </div>
+                <div class="control-row" style="margin-top:6px;">
+                  <div class="control-label">
+                    <span> 목표 Equity IRR (최대 토지한도 역산 기준)</span>
+                    <span class="control-val" id="valTargetIrr">14.0 %</span>
+                  </div>
+                  <input type="range" id="sliderTargetIrr" min="8.0" max="25.0" step="0.5" value="14.0" />
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div></aside>
+  <aside class="analysis-drawer right-panel" id="analysisDrawer" role="dialog" aria-modal="true" aria-labelledby="analysisDrawerTitle" aria-hidden="true" inert><div class="drawer-header"><div><p class="section-kicker">PROJECT DOSSIER</p><h2 id="analysisDrawerTitle">설계와 사업의 기록</h2></div><button class="drawer-close" data-close-drawer aria-label="상세 자료 닫기">×</button></div><div class="drawer-scroll">
+        <div class="tab-nav-wrapper">
+          <nav class="tab-nav">
+            <button class="tab-btn active" data-tab="tab-area">01 · 면적·외관</button>
+            <button class="tab-btn" data-tab="tab-finance">02 · PF·워터폴</button>
+            <button class="tab-btn" data-tab="tab-remodel">03 · 합필·대안</button>
+            <button class="tab-btn" data-tab="tab-smap-law">04 · 법제처·S-Map</button>
+          </nav>
+          <button class="btn" id="btnExpandAnalytics" style="padding:4px 8px;font-size:10.5px;" title="우측 분석 도서 넓게 보기 토글">
+            ◀ 넓히기
+          </button>
+        </div>
+
+        
+        <div class="tab-content active" id="tab-area">
+          <div class="panel-section">
+            <div class="section-header">
+              <div class="section-title"> 5대 건물 외관(Facade) 룩북 &amp; 수익률 비교 (행 클릭 시 3D 즉시 전환)</div>
+              <span class="badge badge-amber">원클릭 3D 전환</span>
+            </div>
+            <table class="data-table facade-compare-table">
+              <thead>
+                <tr>
+                  <th>외관 디자인 아키타입</th>
+                  <th class="num">외장공사비 (평당)</th>
+                  <th class="num">열관류율 / 일사</th>
+                  <th class="num">임대료 자동 가산</th>
+                  <th class="num">Equity XIRR</th>
+                </tr>
+              </thead>
+              <tbody id="tableFacadeCompareBody"></tbody>
+            </table>
+          </div>
+
+          <div class="panel-section">
+            <div class="section-header">
+              <div class="section-title"> 한국 건축법 · 부동산 개발 8대 면적 산출표</div>
+              <button class="btn" id="btnVerifyPythonSkills" style="padding:3px 9px;font-size:10.5px;">
+                 보조 계산 참조
+              </button>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>면적 구분 (법적·실무 정의)</th>
+                  <th class="num">면적 (㎡)</th>
+                  <th class="num">평수 (3.3㎡)</th>
+                  <th class="num">비율 / 법정기준</th>
+                </tr>
+              </thead>
+              <tbody id="tableArea8Body"></tbody>
+            </table>
+          </div>
+
+          
+          <details class="editorial-drawer" id="drawerFacadeSpec">
+            <summary>
+              <span> 외관(Facade) 외피 물량 · 열관류율 · 방화구조 상세 사양서</span>
+              <span class="drawer-cta" id="facadeSystemBadge">클릭하여 펼치기 ▾</span>
+            </summary>
+            <div class="drawer-content">
+              <table class="data-table">
+                <tbody id="tableFacadeEnvelopeBody"></tbody>
+              </table>
+            </div>
+          </details>
+
+          
+          <details class="editorial-drawer" id="drawerTestFit" open>
+            <summary>
+              <span> 기준층 평면 · 용도별 주차 산정 · 피난 개략 검토</span>
+              <span class="drawer-cta" id="testFitEfficiencyBadge">전용률 58.2% ▾</span>
+            </summary>
+            <div class="drawer-content">
+              <div class="testfit-box" id="testFitSvgContainer" style="margin-bottom:8px;"></div>
+              <span class="badge badge-emerald" id="parkingRuleSummaryBadge" style="display:none;">법정 적합</span>
+              <table class="data-table">
+                <tbody id="tableParkingEgressBody"></tbody>
+              </table>
+            </div>
+          </details>
+        </div>
+
+        
+        <div class="tab-content" id="tab-finance">
+          <div class="panel-section">
+            <div class="section-header">
+              <div class="section-title"> 월별 현금흐름 및 누적 S-Curve 차트</div>
+              <span class="badge badge-blue" id="scheduleSummaryBadge">총 34개월</span>
+            </div>
+            <div class="chart-box">
+              <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--text-secondary);margin-bottom:6px;">
+                <span><b style="color:#e11d48;">■</b> 자기자본 · <b style="color:#2563eb;">■</b> PF 인출 · <b style="color:#059669;">■</b> NOI/매각 · <b style="color:#d97706;">━</b> S-Curve</span>
+                <span id="chartPeakEquityLabel" style="font-family:var(--font-mono);color:var(--text-primary);font-weight:700;">Peak Equity: -억</span>
+              </div>
+              <div id="cashflowChartContainer"></div>
+            </div>
+          </div>
+
+          
+          <div class="panel-section">
+            <div class="section-header">
+              <div class="section-title"> 한국형 부동산펀드(PFV) LP/GP 수익배분 워터폴 &amp; 선·중·후순위 PF</div>
+              <span class="badge badge-amber" id="waterfallSummaryBadge">DSCR -x</span>
+            </div>
+            <div id="waterfallVisualHeader" style="margin-bottom:8px;"></div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>트랜치 / 출자자 구분</th>
+                  <th class="num">약정/출자액</th>
+                  <th class="num">금리/배당조건</th>
+                  <th class="num">회수/배분익</th>
+                  <th class="num">수익률 (IRR/EM)</th>
+                </tr>
+              </thead>
+              <tbody id="tableWaterfallTrancheBody"></tbody>
+            </table>
+          </div>
+
+          
+          <details class="editorial-drawer" id="drawerSourcesUses">
+            <summary>
+              <span> 자금조달 및 사업비 상세 산출내역 (Sources &amp; Uses)</span>
+              <span class="drawer-cta" id="circularSolverBadge">이자수렴 완료 ▾</span>
+            </summary>
+            <div class="drawer-content">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>항목 (Sources &amp; Uses)</th>
+                    <th class="num">금액 (억원)</th>
+                    <th class="num">연면적 평당</th>
+                    <th class="num">비중</th>
+                  </tr>
+                </thead>
+                <tbody id="tableSourcesUsesBody"></tbody>
+              </table>
+            </div>
+          </details>
+
+          
+          <details class="editorial-drawer" id="drawerResidualSensitivity" open>
+            <summary>
+              <span> 최대 토지매입한도 역산 · 민감도 행렬 · 투자심의 가드레일</span>
+              <span class="drawer-cta" id="residualTargetBadge">목표 IRR 14.0% ▾</span>
+            </summary>
+            <div class="drawer-content">
+              <div id="residualLandSummaryBox" class="residual-summary-card"></div>
+              <table class="data-table" style="margin-bottom:10px;">
+                <thead>
+                  <tr>
+                    <th>Exit Cap \ 공사비</th>
+                    <th class="num">-10% 공사비</th>
+                    <th class="num">기준 공사비</th>
+                    <th class="num">+10% 공사비</th>
+                  </tr>
+                </thead>
+                <tbody id="tableSensitivityBody"></tbody>
+              </table>
+              <div class="guardrail-list" id="guardrailListContainer"></div>
+            </div>
+          </details>
+        </div>
+
+        
+        <div class="tab-content" id="tab-remodel">
+          
+          <div class="panel-section">
+            <div class="section-header">
+              <div class="section-title"> 인접 소필지 합필(Parcel Merger) 전 · 후 개발수익성 비교</div>
+              <button class="btn badge-emerald" id="btnQuickToggleMerger" style="padding:2px 8px;font-size:10px;">필지 경계 관리 ↗</button>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>합필 분석 지표</th>
+                  <th class="num">단독 필지 개발 (Before)</th>
+                  <th class="num">선택한 전체 경계</th>
+                  <th class="num">계산 차이</th>
+                </tr>
+              </thead>
+              <tbody id="tableParcelMergerBody"></tbody>
+            </table>
+          </div>
+
+          <div class="panel-section">
+            <div class="section-header">
+              <div class="section-title"> 생성설계 3대 대안 (Option A / B / C) 종합 비교표</div>
+              <span class="badge badge-blue">실시간 비교</span>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>비교 지표</th>
+                  <th class="num">Option A (포디움+타워)</th>
+                  <th class="num">Option B (중정·테라스)</th>
+                  <th class="num">Option C (북측코어)</th>
+                </tr>
+              </thead>
+              <tbody id="tableOptionCompareBody"></tbody>
+            </table>
+          </div>
+
+          <details class="editorial-drawer" open>
+            <summary>
+              <span> 기존 노후 건물 개선 (대수선·리모델링 vs 신축) 비교 분석</span>
+              <span class="drawer-cta">korea-asset-improvement ▾</span>
+            </summary>
+            <div class="drawer-content">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>구분</th>
+                    <th class="num">신축 개발 (New Build)</th>
+                    <th class="num">대수선·리모델링</th>
+                    <th class="num">격차 / 판정</th>
+                  </tr>
+                </thead>
+                <tbody id="tableRemodelCompareBody"></tbody>
+              </table>
+            </div>
+          </details>
+        </div>
+
+        
+        <div class="tab-content" id="tab-smap-law">
+          <div class="panel-section">
+            <div class="section-header">
+              <div class="section-title"> 적용 법령 근거 · 국가법령정보센터 원문 조회</div>
+              <span class="badge badge-emerald">검토 버전 + 원문 조회</span>
+            </div>
+            <div style="display:flex;gap:6px;margin-bottom:8px;">
+              <select id="selectLawPreset" class="law-preset-select">
+                <option value="ordinance|서울특별시 도시계획 조례|48">서울특별시 도시계획 조례 제48조 (용도지역 안에서의 용적률 · 서울도심 단서)</option>
+                <option value="ordinance|서울특별시 도시계획 조례|44">서울특별시 도시계획 조례 제44조 (용도지역 안에서의 건폐율)</option>
+                <option value="ordinance|서울특별시 도시계획 조례|50">서울특별시 도시계획 조례 제50조 (용적률의 강화 · 주거복합/준공업)</option>
+                <option value="ordinance|서울특별시 도시계획 조례|51">서울특별시 도시계획 조례 제51조 (용적률의 완화 · 기부채납 (1+1.3α))</option>
+                <option value="law|건축법|52">건축법 제52조 (건축물의 마감재료 등 · 외벽 불연/준불연 기준)</option>
+                <option value="law|국토의 계획 및 이용에 관한 법률 시행령|84">국토계획법 시행령 제84조 (용도지역안에서의 건폐율 법정상한)</option>
+                <option value="law|국토의 계획 및 이용에 관한 법률 시행령|85">국토계획법 시행령 제85조 (용도지역안에서의 용적률 법정상한)</option>
+                <option value="ordinance|서울특별시 주차장 설치 및 관리 조례|">서울특별시 주차장 설치 및 관리 조례 (부설주차장 설치기준)</option>
+                <option value="law|건축법|61">건축법 제61조 (일조 등의 확보를 위한 건축물의 높이 제한)</option>
+                <option value="law|건축법 시행령|86">건축법 시행령 제86조 (일조 등의 확보를 위한 높이제한 세부기준)</option>
+              </select>
+              <button class="btn btn-primary" id="btnFetchLawLive">원문 조회</button>
+            </div>
+            <div class="law-result-box" id="lawResultContainer"></div>
+            <div id="legalEvidenceList" class="legal-evidence-list"></div>
+          </div>
+
+          <div class="panel-section">
+            <div class="section-header">
+              <div class="section-title"> 서울시 공공데이터 · S-Map 필지 규제 및 근거출처 메타데이터</div>
+            </div>
+            <table class="data-table">
+              <tbody id="tableSiteEvidenceBody"></tbody>
+            </table>
+          </div>
+        </div>
+      <div class="dossier-actions"><p class="section-kicker">EXPORT & TOOLS</p><button class="btn" id="btnToggleStudioTheme" title="3D 뷰포트 주간 화이트 건축모형 / 야간 디지털트윈 테마 전환">빛의 분위기 전환</button><button class="btn btn-smap" id="btnToggleSmap" title="서울시 S-Map 3D 디지털트윈 화면 분할 및 좌표 연동">서울시 지도 보기</button><button class="btn btn-record" id="btnRecordVideo" title="자막·KPI가 캔버스에 직접 합성(Burn-in)된 1분 3D 워크스루 영상 녹화">워크스루 영상 기록</button><button class="btn" id="btnExportIfc" title="IfcExtrudedAreaSolid 3D 솔리드 기하 + 물량이 포함된 정밀 IFC 4.0 다운로드">IFC 모델 저장</button><button class="btn btn-primary" id="btnExportReport" title="월별 현금흐름 CSV 및 한국형 건축기획·PFV 워터폴 사전검토 보고서(MD) 다운로드">사업수지·보고서 저장</button></div><div class="source-status"><span id="lawApiBadge">법령 조회 대기</span></div></div></aside>
+  <div class="legacy-controls" hidden><button id="btnToggleGalleryMode" type="button">갤러리 보기</button></div>
+  <div id="atelierAnnouncement" class="sr-only" aria-live="polite"></div>
+</body>
+</html>

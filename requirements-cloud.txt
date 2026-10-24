@@ -1,0 +1,3 @@
+-r requirements.txt
+google-cloud-storage>=3.0,<4
+gunicorn>=26.2,<27

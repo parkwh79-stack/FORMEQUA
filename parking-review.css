@@ -1,0 +1,12 @@
+.parking-review { margin-top: 2px; }
+.parking-plan-controls { display: flex; justify-content: space-between; align-items: end; gap: 10px; flex-wrap: wrap; margin: 14px 0 9px; }
+.parking-plan-controls label { display: grid; gap: 5px; color: #5b7187; font-size: 12px; font-weight: 700; }
+.parking-plan-controls select { min-height: 32px; border: 1px solid #cbd8e6; padding: 4px 8px; color: #24517e; border-radius: 4px; background: #f7faff; }
+.parking-plan-drawing { border: 1px solid #d8e3ee; border-radius: 5px; padding: 6px; background: white; }
+.parking-plan-drawing svg { display: block; width: 100%; max-height: 470px; }
+.parking-plan-legend { display: flex; gap: 7px 13px; flex-wrap: wrap; margin: 10px 0; color: #5d7288; font-size: 12px; }
+.parking-plan-legend span { display: inline-flex; gap: 5px; align-items: center; }
+.parking-plan-legend i { display: inline-block; width: 10px; height: 10px; border: 1px solid #8ca3ba; }
+.parking-key-space { background: white; }.parking-key-accessible { background: #cfe4f7; }.parking-key-ev { background: #d4ede7; }.parking-key-ramp { background: #dfc8a6; }.parking-key-aisle { background: #edf2f8; }
+.parking-review-notes { padding-left: 18px; margin: 12px 0 0; color: #62778e; font-size: 12px; line-height: 1.8; }
+.parking-review-notes li + li { margin-top: 7px; }

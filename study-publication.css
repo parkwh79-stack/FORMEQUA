@@ -1,0 +1,10 @@
+.anonymous-study-notice{display:flex;align-items:center;flex-wrap:wrap;gap:6px 14px;padding:10px 24px;background:#f7f7f3;border-bottom:1px solid #dedfd7;color:#4a5145;font-size:12px;line-height:1.55}
+.anonymous-study-notice>strong{flex:none;font-size:12px;font-weight:750;letter-spacing:.02em}
+.anonymous-study-notice>span:not(.anonymous-study-status){flex:1;min-width:260px;color:#62695d}
+.anonymous-study-status{font-weight:650;font-size:12px}
+.anonymous-study-notice button{border:1px solid #b7bcae;border-radius:3px;padding:4px 8px;background:transparent;color:inherit;cursor:pointer;font:inherit}
+.anonymous-study-notice button[hidden]{display:none}
+.anonymous-study-notice[data-state="error"] .anonymous-study-status{color:#865b3a}
+.anonymous-study-notice[data-state="saved"] .anonymous-study-status{color:#3e5b46}
+.model-focus .anonymous-study-notice,.model-focus-active .anonymous-study-notice,body[data-model-focus="true"] .anonymous-study-notice{display:none}
+@media(max-width:680px){.anonymous-study-notice{padding:10px 14px;gap:3px 9px}.anonymous-study-notice>span:not(.anonymous-study-status){flex-basis:100%;min-width:0}.anonymous-study-status{flex-basis:100%}}

@@ -1,0 +1,283 @@
+{
+  "checkedAt": "2026-10-24T04:34:57.257Z",
+  "checksPassed": 31,
+  "checks": [
+    "Only one header, navigation, main and h1",
+    "All three editorial menu destinations are in this page",
+    "No duplicate element IDs",
+    "Old About story is present in the homepage",
+    "Hero keeps its own header theme",
+    "Menu about scrolls to the same document section",
+    "Menu studies scrolls to the same document section",
+    "Menu atelier scrolls to the same document section",
+    "Browser Back retains the in-page Studies destination",
+    "Brand still returns to absolute homepage top",
+    "Real wheel scrolling reaches About, Studies and Atelier in order",
+    "Every configured title, photo and reveal plays during real scrolling",
+    "Korean manifesto advances during actual scrolling",
+    "Place Form Value advances during actual scrolling",
+    "Directional photo curtains and moving titles actually animate",
+    "Footer About uses the exact same introduction section",
+    "Legacy URL maps to shared content: /about.html",
+    "Legacy URL maps to shared content: /about.html#method",
+    "Legacy URL maps to shared content: /about.html#perspective",
+    "Legacy URL maps to shared content: /about.html#researcher",
+    "Initial reduced-motion mode leaves all content readable",
+    "Motion can be enabled after a reduced-motion initial load",
+    "Motion can be disabled again without hidden content",
+    "Menu about scrolls to the same document section",
+    "Mobile About closes menu and displays shared content",
+    "Mobile Place Form Value responds to actual scrolling",
+    "Short mobile screen does not pin or clip the English scene",
+    "Last method note stays readable on a short mobile screen",
+    "No horizontal overflow at 320px",
+    "No runtime errors",
+    "No missing local resources"
+  ],
+  "errors": [],
+  "missing": [],
+  "motionSamples": [
+    {
+      "y": 510,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "hero": "35.7px"
+    },
+    {
+      "y": 1020,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "current": "about",
+      "hero": "35.7px"
+    },
+    {
+      "y": 1530,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "current": "about",
+      "hero": "35.7px"
+    },
+    {
+      "y": 2040,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "current": "about",
+      "hero": "35.7px"
+    },
+    {
+      "y": 2550,
+      "end": false,
+      "manifest": "0.000",
+      "method": "1.000",
+      "current": "about",
+      "hero": "35.7px"
+    },
+    {
+      "y": 3060,
+      "end": false,
+      "manifest": "0.007",
+      "method": "1.000",
+      "current": "about",
+      "hero": "35.7px"
+    },
+    {
+      "y": 3570,
+      "end": false,
+      "manifest": "0.470",
+      "method": "1.000",
+      "current": "about",
+      "hero": "35.7px"
+    },
+    {
+      "y": 4080,
+      "end": false,
+      "manifest": "0.934",
+      "method": "1.000",
+      "current": "about",
+      "hero": "35.7px"
+    },
+    {
+      "y": 4590,
+      "end": false,
+      "manifest": "1.000",
+      "method": "0.000",
+      "current": "about",
+      "hero": "35.7px"
+    },
+    {
+      "y": 5100,
+      "end": false,
+      "manifest": "1.000",
+      "method": "0.000",
+      "current": "about",
+      "hero": "35.7px"
+    },
+    {
+      "y": 5610,
+      "end": false,
+      "manifest": "1.000",
+      "method": "0.610",
+      "current": "about",
+      "hero": "35.7px"
+    },
+    {
+      "y": 6120,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "current": "about",
+      "hero": "35.7px"
+    },
+    {
+      "y": 6630,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "current": "about",
+      "hero": "35.7px"
+    },
+    {
+      "y": 7140,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "current": "about",
+      "hero": "35.7px"
+    },
+    {
+      "y": 7650,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "current": "studies",
+      "hero": "35.7px"
+    },
+    {
+      "y": 8160,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "current": "studies",
+      "hero": "35.7px"
+    },
+    {
+      "y": 8670,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "current": "studies",
+      "hero": "35.7px"
+    },
+    {
+      "y": 9180,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "current": "studies",
+      "hero": "35.7px"
+    },
+    {
+      "y": 9690,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "current": "studies",
+      "hero": "35.7px"
+    },
+    {
+      "y": 10200,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "current": "atelier",
+      "hero": "35.7px"
+    },
+    {
+      "y": 10710,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "current": "atelier",
+      "hero": "35.7px"
+    },
+    {
+      "y": 11220,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "current": "atelier",
+      "hero": "35.7px"
+    },
+    {
+      "y": 11730,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "current": "atelier",
+      "hero": "35.7px"
+    },
+    {
+      "y": 12240,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "current": "atelier",
+      "hero": "35.7px"
+    },
+    {
+      "y": 12750,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "current": "atelier",
+      "hero": "35.7px"
+    },
+    {
+      "y": 13260,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "current": "atelier",
+      "hero": "35.7px"
+    },
+    {
+      "y": 13770,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "current": "atelier",
+      "hero": "35.7px"
+    },
+    {
+      "y": 14280,
+      "end": false,
+      "manifest": "1.000",
+      "method": "1.000",
+      "current": "atelier",
+      "hero": "35.7px"
+    },
+    {
+      "y": 14376,
+      "end": true,
+      "manifest": "1.000",
+      "method": "1.000",
+      "hero": "35.7px"
+    }
+  ],
+  "privateReviewWritesDisabled": true,
+  "protectedFilesUnchanged": [
+    "app.js",
+    "workspace-state.js",
+    "dashboard.js",
+    "dashboard.html",
+    "parcel-geometry.js",
+    "legal-rules.js",
+    "finance-model.js",
+    "interior-plan.js",
+    "model-video.js"
+  ]
+}

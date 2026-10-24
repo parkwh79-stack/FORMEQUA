@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-24",
+  "checks": [
+    "Shape controls are the initial focus tab",
+    "sliderFloorsAbove has one shared input in the focus host",
+    "sliderFloorHeight has one shared input in the focus host",
+    "sliderTargetBcr has one shared input in the focus host",
+    "Keyboard height input changes the canonical floor count",
+    "Model height actually changes with the floor count",
+    "Floor height input changes the shared model",
+    "Footprint control changes actual geometry",
+    "Height readout is calculated from the actual model",
+    "Courtyard choice changes canonical option and floor geometry",
+    "North core choice uses the existing option/core update path",
+    "Tower choice and pressed state stay synchronized",
+    "Focus geometry, parking and finance match a fresh calculation",
+    "Exterior tab retains the original shared palette",
+    "Tab switching alone does not change any design inputs",
+    "Exterior editing remains functional",
+    "Accessible tab keyboard navigation selects shape",
+    "Legal/physical constraints distinguish requested from generated floors",
+    "Returning restores the exact original controls to the workbench",
+    "Workbench return preserves current shape, floors and material",
+    "Reentering focus moves controls once without duplicating IDs",
+    "Reload preserves the shared design inputs",
+    "Mobile layout retains a usable canvas and scrollable panel",
+    "Mobile height edit remains connected",
+    "No browser runtime errors"
+  ],
+  "errors": [],
+  "passed": 25,
+  "environment": "Isolated headless Microsoft Edge; real WebGL; private review collection blocked"
+}

@@ -1,0 +1,79 @@
+/* REALYTICS analytical layer. Inputs, the model and drawings share one source. */
+.dashboard-site .realytics-program-bar { display: flex; align-items: center; gap: 20px; padding: 13px 24px; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); background: #fff; color: var(--ink, #14273e); }
+.realytics-program-heading { display: grid; gap: 2px; flex: none; }
+.realytics-program-heading > span { font-size: 12px; font-weight: 800; letter-spacing: .1em; color: #687c91; }
+.realytics-program-heading > strong { font-size: 16px; font-weight: 800; }
+.realytics-program-options { display: flex; gap: 7px; flex: 1; min-width: 0; overflow-x: auto; }
+.dashboard-site .realytics-program-options button { display: grid; gap: 2px; min-width: 100px; padding: 8px 15px; border: 1px solid #cfdae6; border-radius: 6px; color: #23415f; background: #f5f8fc; cursor: pointer; text-align: left; }
+.realytics-program-options button > span { font-size: 13px; font-weight: 800; white-space: nowrap; }
+.realytics-program-options button > small { font-size: 12px; letter-spacing: .07em; font-weight: 700; opacity: .8; }
+.dashboard-site .realytics-program-options button:hover { border-color: var(--accent-blue, #1967b5); background: #e9f2ff; }
+.dashboard-site .realytics-program-options button[aria-pressed=true] { border-color: #184d88; background: #173a65; color: #fff; box-shadow: inset 3px 0 #c0a06b; }
+.realytics-other-program { display: grid; gap: 3px; color: #61768c; font-size: 12px; font-weight: 700; flex: none; }
+.dashboard-site .realytics-other-program select { min-height: 28px; padding: 2px 24px 2px 6px; color: #203e5d; background: #fff; border: 1px solid #cbd7e3; border-radius: 4px; font-size: 12px; }
+.realytics-study { display: grid; gap: 16px; color: var(--ink, #18304a); min-width: 0; font-size: 12px; line-height: 1.65; }
+.dashboard-site .realytics-study p { margin: 10px 0; font-size: 12px; line-height: 1.75; }
+.realytics-review-card { min-width: 0; background: #fff; border: 1px solid #d6e0ea; border-radius: 8px; padding: 16px; box-shadow: 0 3px 10px rgba(15, 44, 77, .035); }
+.realytics-program-summary { border-top: 3px solid var(--accent-blue, #2468ae); }
+.realytics-card-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.realytics-eyebrow { display: block; color: #67809a; font-size: 12px; font-weight: 800; letter-spacing: .09em; }
+.dashboard-site .realytics-study h2 { margin: 4px 0 0; font-size: 19px; color: #163655; line-height: 1.4; font-weight: 800; }
+.dashboard-site .realytics-study h3 { margin: 4px 0 0; font-size: 16px; color: #163655; line-height: 1.4; font-weight: 800; }
+.realytics-status { padding: 4px 7px; border: 1px solid #d5dfeb; color: #476785; background: #eff5fc; border-radius: 4px; font-size: 12px; font-weight: 800; white-space: nowrap; }
+.realytics-status[data-status=prohibited] { color: #9c3242; background: #fff0f2; border-color: #ecc9d0; }
+.realytics-status[data-status=conditional] { color: #865f21; background: #fff7e9; border-color: #e9d3ab; }
+.realytics-live { color: #46708f; font-size: 12px; white-space: nowrap; font-weight: 700; padding-top: 4px; }
+.realytics-live::before { content: ''; display: inline-block; width: 5px; height: 5px; background: #2695b4; border-radius: 50%; margin-right: 5px; vertical-align: 1px; }
+.realytics-metric-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 14px 0 0; border-top: 1px solid #e3eaf1; }
+.realytics-metric-grid > div { padding: 9px 7px 9px 0; border-bottom: 1px solid #e3eaf1; min-width: 0; }
+.realytics-metric-grid dt { color: #6d8093; font-size: 12px; margin-bottom: 2px; font-weight: 600; }
+.realytics-metric-grid dd { margin: 0; font-size: 13px; color: #173957; font-weight: 800; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.dashboard-site .realytics-study .realytics-note { color: #65798d; font-size: 12px; line-height: 1.8; }
+.realytics-plan-controls { display: grid; gap: 10px; margin: 15px 0 9px; }
+.realytics-plan-controls > label { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: #5a718a; font-size: 12px; font-weight: 700; }
+.dashboard-site .realytics-plan-controls select { max-width: 100%; min-width: 0; flex: 1; padding: 7px 9px; color: #163956; background: #f5f8fc; border: 1px solid #cedae7; border-radius: 4px; font-size: 12px; font-weight: 700; }
+.realytics-plan-actions, .realytics-api-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.dashboard-site .realytics-study button, .dashboard-site .realytics-api-actions a, .dashboard-site .realytics-plan-dialog button { padding: 7px 9px; border: 1px solid #cbd8e6; border-radius: 4px; font-size: 12px; color: #24517e; background: #f7faff; cursor: pointer; font-weight: 700; line-height: 1.4; text-decoration: none; }
+.dashboard-site .realytics-study button:hover, .dashboard-site .realytics-api-actions a:hover { background: #e7f1fc; border-color: #638db7; }
+.dashboard-site .realytics-study button:disabled { opacity: .45; cursor: default; }
+.dashboard-site .realytics-study .realytics-primary-button { background: #173f6b; color: #fff; border-color: #173f6b; }
+.realytics-plan-toggles { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: #5b7187; margin: 10px 0; }
+.realytics-plan-toggles label { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; cursor: pointer; font-weight: 700; }
+.dashboard-site .realytics-plan-toggles input { accent-color: #1e66ac !important; }
+.realytics-plan-toggles > span { font-size: 12px; color: #788a9d; }
+.realytics-plan-drawing { padding: 5px; border: 1px solid #dce5ef; border-radius: 4px; background: #fff; min-height: 160px; display: grid; align-items: center; }
+.realytics-plan-drawing svg { display: block; width: 100%; height: auto; max-height: 460px; }
+.realytics-plan-legend { display: flex; gap: 12px; justify-content: center; margin-top: 10px; font-size: 12px; color: #5b7187; }
+.realytics-plan-legend span { display: flex; gap: 4px; align-items: center; }
+.realytics-plan-legend i { width: 9px; height: 9px; border: 1px solid #a8b7c7; display: block; }
+.realytics-key-room { background: #f4f7fb; }.realytics-key-core { background: #a7b7ca; }.realytics-key-circulation { background: #e2ecf5; }.realytics-key-furniture { background: #d9c29a; }
+.dashboard-site .realytics-study .realytics-empty { padding: 18px 8px; color: #6c8195; text-align: center; }
+.realytics-disclosure > summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #173957; font-size: 13px; font-weight: 800; cursor: pointer; }
+.realytics-disclosure > summary::-webkit-details-marker { display: none; }
+.realytics-disclosure > summary::after { content: '+'; color: #4c78a2; font-size: 17px; line-height: 1; margin-left: auto; }
+.realytics-disclosure[open] > summary::after { content: '−'; }
+.realytics-disclosure > summary > span { color: #71869a; font-size: 12px; font-weight: 600; }
+.realytics-disclosure:not(.realytics-review-card) { margin-top: 14px; border-top: 1px solid #e1e9f1; padding-top: 12px; }
+.realytics-disclosure:not(.realytics-review-card) > summary { font-size: 12px; }
+.realytics-table-scroll { overflow-x: auto; margin-top: 12px; max-width: 100%; }
+.dashboard-site .realytics-table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; font-variant-numeric: tabular-nums; }
+.realytics-table th { padding: 8px 5px; background: #eff4fa; color: #5b748f; border-bottom: 1px solid #d8e3ee; font-size: 12px; font-weight: 800; white-space: nowrap; }
+.realytics-table td { padding: 8px 5px; border-bottom: 1px solid #e3ebf3; color: #264762; font-weight: 600; }
+.realytics-table th:nth-child(n+3), .realytics-table td:nth-child(n+3) { text-align: right; }
+.realytics-table tr.is-selected td { background: #e8f2ff; color: #124a82; }
+.dashboard-site .realytics-table button { padding: 3px 5px; border-color: transparent; font-size: 12px; background: transparent; color: #1c64a6; }
+.realytics-table td:last-child { min-width: 50px; }
+.realytics-note-list { padding-left: 17px; margin: 12px 0; color: #647a90; font-size: 12px; line-height: 1.8; }
+.realytics-note-list > li { margin: 7px 0; }
+.realytics-source-links { display: grid; gap: 6px; margin: 10px 0; }
+.realytics-source-links a { color: #235c91; text-decoration: underline; font-size: 12px; }
+.dashboard-site .realytics-study .realytics-text-link { padding: 6px 0; border: 0; background: transparent; color: #2467a5; text-align: left; }
+.realytics-api-actions { margin: 12px 0; }
+.realytics-json { white-space: pre-wrap; overflow-wrap: anywhere; margin: 10px 0; padding: 12px; max-height: 330px; overflow-y: auto; background: #102a44; color: #c9e6fb; font: 12px/1.7 Consolas, monospace; border-radius: 5px; text-align: left; }
+.realytics-plan-dialog { width: min(1200px, calc(100vw - 40px)); max-width: none; max-height: calc(100dvh - 40px); padding: 20px; margin: auto; border: 1px solid #b7c9dc; border-radius: 8px; background: #fff; color: #173957; overflow-y: auto; box-sizing: border-box; }
+.realytics-plan-dialog::backdrop { background: rgba(9, 28, 49, .62); backdrop-filter: blur(3px); }
+.realytics-dialog-heading { display: flex; align-items: center; justify-content: space-between; gap: 15px; border-bottom: 1px solid #dce5ee; padding-bottom: 12px; }
+.realytics-dialog-heading strong { font-size: 18px; }.realytics-plan-dialog > p { color: #6b8094; font-size: 12px; margin-bottom: 0; }
+#realyticsDialogDrawing svg { display: block; width: 100%; height: min(72dvh, 900px); object-fit: contain; }
+@media (max-width: 1199px) { .dashboard-site .realytics-program-bar { padding: 14px 22px; gap: 14px; flex-wrap: wrap; }.realytics-program-options { flex-basis: calc(100% - 160px); }.realytics-other-program { margin-left: auto; } }
+@media (max-width: 700px) { .dashboard-site .realytics-program-bar { padding: 14px 16px; gap: 12px; }.realytics-program-heading { display: flex; width: 100%; align-items: baseline; justify-content: space-between; }.realytics-program-options { flex-basis: 100%; gap: 6px; }.dashboard-site .realytics-program-options button { min-width: 103px; }.realytics-other-program { display: flex; align-items: center; gap: 8px; margin: 0; width: 100%; }.dashboard-site .realytics-other-program select { flex: 1; }.realytics-review-card { padding: 15px; }.realytics-metric-grid dd { font-size: 14px; }.realytics-plan-dialog { padding: 14px; width: calc(100vw - 20px); max-height: calc(100dvh - 20px); } }

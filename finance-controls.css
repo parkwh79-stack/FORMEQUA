@@ -1,0 +1,27 @@
+.finance-income-controls { padding:14px 0 18px; margin-bottom:20px; border-bottom:1px solid var(--border,#d8dfe8); }
+.finance-income-controls h3 { font-size:14px; margin:0 0 12px; }
+.finance-input { display:flex; flex-direction:column; gap:7px; font-size:12px; line-height:1.55; font-weight:600; margin:0 0 13px; }
+.finance-input input,.finance-input select { min-width:0; width:100%; min-height:35px; border:1px solid #c8d4e4; border-radius:3px; padding:7px 9px; background:#fff; color:#233c62; font:inherit; font-size:13px; box-sizing:border-box; }
+.finance-input input:invalid { border-color:#ac7042; }
+.finance-hotel-inputs { margin-top:16px; }
+.finance-hotel-inputs[hidden],.finance-hotel-law[hidden] { display:none; }
+.finance-assumption { font-size:12px; line-height:1.85; color:#64748b; font-weight:400; margin:10px 0; }
+#financeIncomeSummary { font-size:12px; line-height:1.8; background:#f0f5fc; padding:12px; color:#244470; }
+#financeIncomeSummary p { margin:7px 0 0; }
+.finance-income-warning { color:#925d23; background:#fff5e5; font-size:12px; line-height:1.8; padding:9px 11px; }
+.finance-hotel-law { border-top:1px solid #dce4ee; padding:12px 18px; background:#fafbfd; }
+.finance-hotel-law>summary { font-size:12px; font-weight:600; cursor:pointer; color:#52698b; }
+.finance-hotel-law-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin-top:14px; }
+.finance-income-audit { border:1px solid #d2dff0; background:white; border-radius:5px; margin:0 0 18px; padding:14px; color:#294366; }
+.finance-income-audit>summary { font-size:14px; font-weight:700; cursor:pointer; }
+.finance-income-audit dl { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); font-size:12px; line-height:1.8; gap:8px 12px; margin:18px 0; }
+.finance-income-audit dt { color:#607390; }
+.finance-income-audit dd { margin:0; font-weight:600; text-align:right; }
+.finance-audit-scroll { overflow:auto; }
+.finance-income-audit table { border-collapse:collapse; width:100%; min-width:335px; font-size:11px; white-space:nowrap; }
+.finance-income-audit th,.finance-income-audit td { border-bottom:1px solid #e0e8f2; padding:9px 6px; text-align:right; }
+.finance-income-audit th:first-child,.finance-income-audit td:first-child { text-align:left; }
+.finance-income-audit tfoot { font-weight:700; background:#f0f5fc; }
+.finance-income-audit details { font-size:12px; margin-top:14px; }
+.finance-income-audit details summary { cursor:pointer; }
+@media(max-width:600px) { .finance-hotel-law-grid { grid-template-columns:1fr; gap:0; } }

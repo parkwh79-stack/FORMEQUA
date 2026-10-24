@@ -1,0 +1,21 @@
+/* Product scope for the public pilot; access checks are enforced by the server. */
+.pilot-release [data-pilot-feature][hidden] { display: none !important; }
+.pilot-release .pilot-scope-note {
+  margin: 0; padding: 11px 24px; border-bottom: 1px solid #d9e2ef;
+  background: #f6f8fc; color: #49617d; font-size: 12px; line-height: 1.65;
+}
+.pilot-release .pilot-scope-note strong { color: #173c67; font-weight: 700; margin-right: 7px; }
+.pilot-release .dashboard-site .kpi-ribbon { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.pilot-release .dashboard-site .kpi-cell:nth-child(5) { border-right: 0; padding-right: 0; }
+.pilot-release .dashboard-site .kpi-sub { font-size: 11.5px; }
+.pilot-release .dashboard-site.model-focus .pilot-scope-note { display: none; }
+.pilot-release .facade-live-summary p { margin: 5px 0 0; font-size: 12px; line-height: 1.6; }
+@media (max-width: 1200px) {
+  .pilot-release .dashboard-site .kpi-ribbon { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .pilot-release .dashboard-site .kpi-cell:nth-child(5) { border-right: 0; }
+}
+@media (max-width: 640px) {
+  .pilot-release .pilot-scope-note { padding: 10px 16px; }
+  .pilot-release .dashboard-site .kpi-ribbon { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pilot-release .dashboard-site .kpi-cell:nth-child(5) { border-right: 0; }
+}
