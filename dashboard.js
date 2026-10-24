@@ -2,6 +2,8 @@
 (() => {
   "use strict";
   const byId = id => document.getElementById(id);
+  const isPublicModel = () => document.body.dataset.publicModel === "true";
+  const openContact = () => window.location.assign("https://wan2-website.web.app/#contact");
   let modelFocusActive = false;
   let modelFocusOrigin = null;
   let modelFocusScroll = 0;
@@ -102,7 +104,9 @@
       note.classList.toggle("is-limited", limited);
       note.textContent = limited
         ? `요청 ${state.floorsAbove}층 중 ${floors}층이 적용되었습니다. 대지·용적률·높이·주차·코어 조건에 따라 규모가 제한될 수 있습니다.`
-        : "층수·층고·바닥 면적을 조정하면 모형과 면적·주차·사업성이 함께 갱신됩니다. 법정 상한과 대지 조건은 유지됩니다.";
+        : isPublicModel()
+          ? "층수·층고·바닥 면적을 조정하면 모형과 층별 평면이 함께 갱신됩니다. 구체적인 대지·법규·사업성 검토는 문의해 주세요."
+          : "층수·층고·바닥 면적을 조정하면 모형과 면적·주차·사업성이 함께 갱신됩니다. 법정 상한과 대지 조건은 유지됩니다.";
     }
   }
 
@@ -127,6 +131,7 @@
   }
 
   function applyWorkspaceContext() {
+    if (isPublicModel()) { pendingWorkspaceContext = null; return; }
     const context = pendingWorkspaceContext;
     pendingWorkspaceContext = null;
     if (context?.tab) showAnalysis(context.tab, context.drawer, false);
@@ -136,7 +141,9 @@
   function setModelFocus(next, restoreFocus = true) {
     const grid = byId("workspaceGrid");
     if (!grid) return;
-    next = Boolean(next);
+    // A public model is a dedicated surface: URL parameters and shared panel
+    // handlers cannot reveal the private analysis workbench beneath it.
+    next = isPublicModel() || Boolean(next);
     if (next === modelFocusActive && grid.classList.contains("gallery-mode") === next && document.body.classList.contains("model-focus") === next) return;
     const wasActive = modelFocusActive;
     if (next && !wasActive) {
@@ -162,7 +169,8 @@
     }
     try {
       const url = new URL(window.location.href);
-      url.searchParams.set("view", next ? "model" : "workspace");
+      if (isPublicModel()) url.searchParams.delete("view");
+      else url.searchParams.set("view", next ? "model" : "workspace");
       window.history.replaceState(window.history.state, "", url);
     } catch (_) { /* The view remains usable if history is restricted. */ }
     syncAppearance();
@@ -172,7 +180,7 @@
   }
   window.AtelierModelFocus = {
     set: setModelFocus,
-    toggle: () => setModelFocus(!modelFocusActive),
+    toggle: () => isPublicModel() ? openContact() : setModelFocus(!modelFocusActive),
     isActive: () => modelFocusActive
   };
   const palette = {
@@ -215,7 +223,7 @@
     const gallery = byId("btnToggleGalleryMode"), theme = byId("btnToggleStudioTheme"), expand = byId("btnExpandAnalytics");
     if (gallery && grid) {
       const focused = grid.classList.contains("gallery-mode");
-      gallery.textContent = focused ? "상세 작업실로 돌아가기" : "모형 집중";
+      gallery.textContent = isPublicModel() ? "상세 검토 문의 ↗" : focused ? "상세 작업실로 돌아가기" : "모형 집중";
       gallery.setAttribute("aria-pressed", String(focused));
     }
     if (theme) {
@@ -259,6 +267,7 @@
   }
 
   function showAnalysis(tabId, drawerId, focus = true) {
+    if (isPublicModel()) { openContact(); return; }
     const tab = byId(tabId);
     if (!tab?.classList.contains("tab-content")) return;
     if (modelFocusActive) setModelFocus(false, false);
@@ -276,6 +285,7 @@
   }
 
   function showDesign(chapterId, focus = true) {
+    if (isPublicModel()) { openContact(); return; }
     const chapter = byId(chapterId);
     if (!chapter?.classList.contains("atelier-chapter")) return;
     if (modelFocusActive) setModelFocus(false, false);
@@ -314,7 +324,9 @@
     if (!stage) return;
     const fallback = document.createElement("div");
     fallback.className = "workspace-viewer-fallback";
-    fallback.textContent = "3D 화면을 불러오지 못했습니다. 설계 조건과 분석 자료는 계속 편집할 수 있습니다.";
+    fallback.textContent = isPublicModel()
+      ? "3D 화면을 불러오지 못했습니다. 브라우저의 WebGL 설정을 확인하거나 상세 검토를 문의해 주세요."
+      : "3D 화면을 불러오지 못했습니다. 설계 조건과 분석 자료는 계속 편집할 수 있습니다.";
     stage.append(fallback);
   });
 
@@ -334,7 +346,12 @@
       // use precisely the same update path as the complete workbench.
       document.querySelector(`.option-card[data-option="${button.dataset.focusOption}"]`)?.click();
     }));
-    byId("btnExitModelFocus")?.addEventListener("click", () => setModelFocus(false));
+    const exitModel = byId("btnExitModelFocus");
+    if (isPublicModel() && exitModel) {
+      exitModel.textContent = "상세 검토 문의 ↗";
+      exitModel.setAttribute("aria-label", "박완희 홈페이지에서 상세 검토 문의");
+    }
+    exitModel?.addEventListener("click", () => isPublicModel() ? openContact() : setModelFocus(false));
     byId("btnFocusPlan")?.addEventListener("click", () => setFocusPlan(!focusPlanOpen, !focusPlanOpen));
     byId("btnCloseFocusPlan")?.addEventListener("click", () => { setFocusPlan(false); byId("btnFocusPlan")?.focus({ preventScroll: true }); });
     byId("btnFocusInterior")?.addEventListener("click", () => {
@@ -344,7 +361,10 @@
     window.addEventListener("keydown", event => {
       if (event.key === "Escape" && !event.defaultPrevented && modelFocusActive && !document.querySelector("dialog[open]")) {
         event.preventDefault();
-        setModelFocus(false);
+        if (isPublicModel()) {
+          if (document.body.classList.contains("interior-active")) window.AtelierInteriorViewer?.exit();
+          else if (focusPlanOpen) setFocusPlan(false);
+        } else setModelFocus(false);
       }
     });
     const grid = byId("workspaceGrid");
@@ -361,7 +381,7 @@
     window.addEventListener("scroll", () => { if (!pendingScroll) { pendingScroll = true; requestAnimationFrame(updateJumpbar); } }, { passive: true });
     updateJumpbar();
     const context = window.AtelierWorkspace?.getContext() || {};
-    pendingWorkspaceContext = context;
+    pendingWorkspaceContext = isPublicModel() ? null : context;
     // Leaving the work surface always opens the homepage at its beginning.
     document.querySelectorAll("[data-workspace-return]").forEach(link => { link.href = "./#home"; });
     document.querySelectorAll(".kpi-cell[data-kpitab]").forEach(cell => {
@@ -380,7 +400,7 @@
       if (link.hash === "#dashboardAnalysisPanel") byId("workspaceGrid")?.classList.remove("gallery-mode");
     }));
     const requestedView = new URL(window.location.href).searchParams.get("view");
-    setModelFocus(!viewerUnavailable && requestedView !== "workspace", false);
+    setModelFocus(isPublicModel() || (!viewerUnavailable && requestedView !== "workspace"), false);
     if (!modelFocusActive) applyWorkspaceContext();
   });
 })();

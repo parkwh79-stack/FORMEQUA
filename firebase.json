@@ -11,6 +11,14 @@
     ],
     "rewrites": [
       {
+        "source": "/model.html",
+        "run": {
+          "serviceId": "formequa-api",
+          "region": "asia-northeast3",
+          "pinTag": true
+        }
+      },
+      {
         "source": "/api/**",
         "run": {
           "serviceId": "formequa-api",
@@ -60,6 +68,13 @@
             "key": "Cache-Control",
             "value": "no-cache"
           }
+        ]
+      },
+      {
+        "source": "/model.html",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-store" },
+          { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive, nosnippet" }
         ]
       },
       {

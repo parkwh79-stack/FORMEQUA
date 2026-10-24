@@ -42,6 +42,7 @@ UVAL_SCRIPT = SKILLS_ROOT / "architect-calculator" / "scripts" / "uvalue_calcula
 ENERGY_SCRIPT = SKILLS_ROOT / "architect-calculator" / "scripts" / "energy_calculator.py"
 ANALYSIS_SCRIPT = WEB_DIR / "analysis-engine.js"
 ANALYSIS_MAX_BYTES = 65536
+WORKSPACE_CONTACT_URL = "https://wan2-website.web.app/#contact"
 
 
 def finite_json_number(value):
@@ -132,6 +133,17 @@ class Seoul3DRequestHandler(http.server.SimpleHTTPRequestHandler):
         if "%" in path or "\\" in path or ":" in path:
             self.send_error(404)
             return False
+        if path == "/dashboard.html" and method in {"GET", "HEAD"} and os.environ.get("WORKSPACE_ENTRY") == "contact":
+            # The public model and enquiry flow never serve the private
+            # workbench. Keep old model links usable without a Basic prompt.
+            parsed = urllib.parse.urlparse(self.path)
+            model_view = urllib.parse.parse_qs(parsed.query).get("view") == ["model"]
+            target = "/model.html" + ("?" + parsed.query if parsed.query else "") if model_view else WORKSPACE_CONTACT_URL
+            self.send_response(303)
+            self.send_header("Location", target)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return False
         if pilot_security.protected_route(path, method) and not pilot_security.authorized(self.headers):
             self.send_response(401)
             self.send_header("WWW-Authenticate", 'Basic realm="FORMEQUA Pilot", charset="UTF-8"')
@@ -194,6 +206,9 @@ class Seoul3DRequestHandler(http.server.SimpleHTTPRequestHandler):
         path = urllib.parse.urlparse(self.path).path
         if not self.allow_request("HEAD"):
             return
+        if path == "/model.html":
+            self.send_public_model(head=True)
+            return
         if not pilot_security.static_allowed(path):
             self.send_error(404)
             return
@@ -213,6 +228,9 @@ class Seoul3DRequestHandler(http.server.SimpleHTTPRequestHandler):
 
     def get_route(self):
         parsed = urllib.parse.urlparse(self.path)
+        if parsed.path == "/model.html":
+            self.send_public_model()
+            return
         if parsed.path == "/api/v1/studies/provider-status":
             self.send_json({"error": {"code": "AUTOMATIC_GENERATION_REMOVED", "message": "자동 이미지 생성은 종료되었습니다."}}, 410)
             return
@@ -332,6 +350,20 @@ class Seoul3DRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.send_error(404)
             return
         return super().do_GET()
+
+    def send_public_model(self, head=False):
+        # Share the maintained model markup, while the explicit marker keeps
+        # the visitor in model mode and prevents private API initializers.
+        template = (WEB_DIR / "dashboard.html").read_text(encoding="utf-8")
+        template = re.sub(r"<title>[^<]*</title>", "<title>FORMEQUA | Model Study</title>", template, count=1)
+        template = template.replace('상세 작업실 열기 <span aria-hidden="true">Esc</span>', '상세 검토 문의 <span aria-hidden="true">↗</span>')
+        body = re.sub(r"<body\b", '<body data-public-model="true"', template, count=1).encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        if not head:
+            self.wfile.write(body)
 
     def do_POST(self):
         if not self.allow_request("POST"):

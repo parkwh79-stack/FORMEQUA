@@ -478,6 +478,9 @@ body.dashboard-site .use-scenario-status { background: #fff1f3f5; border-color: 
 .dashboard-site :is(.model-focus-palette,.model-video-status) { display: none; }
 html:has(body.dashboard-site.model-focus), body.dashboard-site.model-focus { overflow: hidden; overscroll-behavior: none; }
 .dashboard-site.model-focus :is(.workspace-topbar,#realyticsProgramBar,.kpi-ribbon,.left-panel,.right-panel,.program-study,.interior-entry) { display: none !important; }
+/* A public model never exposes the private workbench, even while shared
+   controls or startup observers are synchronizing the focus classes. */
+.dashboard-site[data-public-model="true"] :is(.workspace-topbar,.workspace-section-nav,#realyticsProgramBar,.kpi-ribbon,.left-panel,.right-panel,.program-study,.interior-entry,.smap-split-pane,.hud-top-left,.hud-bottom-bar,.floor-inspector-card,.site-context-hud) { display: none !important; }
 .dashboard-site.model-focus .workspace-grid.gallery-mode {
   position: fixed; inset: 0; z-index: 1000; display: block; width: 100%; height: 100dvh;
   min-height: 0; margin: 0; padding: 0; overflow: hidden;

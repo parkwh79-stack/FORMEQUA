@@ -23,7 +23,8 @@ try {
     & python tools/build_release.py
     if ($LASTEXITCODE -ne 0) { throw 'Release checks failed.' }
     # Hosting calls the service anonymously at the infrastructure layer; the
-    # application still enforces its original password on dashboard and APIs.
+    # model is public, workspace entry opens the owner's enquiry page, and
+    # non-public APIs keep their original application password.
     & gcloud run deploy formequa-api --project=$ProjectId --region=$Region --image=$Image `
         --service-account="formequa-api@$ProjectId.iam.gserviceaccount.com" --allow-unauthenticated `
         --min=0 --max=1 --concurrency=4 --cpu=1 --memory=1Gi --timeout=60 --cpu-throttling `

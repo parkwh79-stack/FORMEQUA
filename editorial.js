@@ -12,11 +12,16 @@
   const byId = id => document.getElementById(id);
   const setText = (id, value) => { const el = byId(id); if (el) el.textContent = value; };
   const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const contactUrl = "https://wan2-website.web.app/#contact";
 
   function openDashboard(context, view = "model") {
+    if (view === "workspace") {
+      window.location.assign(contactUrl);
+      return;
+    }
     const workspace = window.AtelierWorkspace;
     workspace?.save();
-    const path = `dashboard.html?view=${view === "workspace" ? "workspace" : "model"}`;
+    const path = "model.html";
     const target = new URL(path, window.location.href);
     Object.entries(context).forEach(([key, value]) => { if (value) target.searchParams.set(key, value); });
     window.location.assign(workspace ? workspace.buildUrl(path, context) : target.href);

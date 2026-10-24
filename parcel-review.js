@@ -80,6 +80,9 @@
   function mount(window) {
     const document = window.document;
     const ready = () => {
+      // Public models edit their already-loaded study locally. Parcel queries
+      // belong to the private workbench and must never trigger a login dialog.
+      if (document.body?.dataset?.publicModel === 'true') return;
       const host = document.querySelector('#chap-site .chapter-content') || document.querySelector('#chap-site .chapter-body');
       if (!host || !window.AtelierParcelGeometry || document.getElementById('parcelReview')) return;
       const panel = document.createElement('details'); panel.id = 'parcelReview'; panel.className = 'parcel-review'; panel.open = true;

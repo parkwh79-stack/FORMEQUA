@@ -2,7 +2,7 @@
 
 Gunicorn parses and bounds HTTP. This adapter invokes application routes directly;
 it does not open a socket or run Python's development HTTP server in Cloud Run.
-Only API routes, robots.txt and the password-protected dashboard are served here.
+Only API routes, robots.txt, the public model and private workbench are served here.
 """
 import io
 from email.message import Message
@@ -71,7 +71,7 @@ def create_app(validate=True):
     def application(environ, start_response):
         request = RouteContext(environ)
         path = urlsplit(request.path).path
-        if path != "/dashboard.html" and path != "/robots.txt" and not path.startswith("/api/"):
+        if path not in {"/dashboard.html", "/model.html", "/robots.txt"} and not path.startswith("/api/"):
             request.send_error(404)
         elif request.command not in {"GET", "HEAD", "POST", "OPTIONS"}:
             request.send_error(405)

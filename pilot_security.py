@@ -112,7 +112,7 @@ def validate_public_config():
 def response_headers(path):
     headers = [("X-Content-Type-Options", "nosniff"), ("X-Frame-Options", "SAMEORIGIN"),
                ("Referrer-Policy", "same-origin"), ("Permissions-Policy", "camera=(), microphone=(), geolocation=()")]
-    if path.startswith(("/api/", "/dashboard")):
+    if path.startswith(("/api/", "/dashboard", "/model.html")):
         headers += [("Cache-Control", "no-store"), ("X-Robots-Tag", "noindex, nofollow, noarchive, nosnippet")]
     headers.append(("Content-Security-Policy", "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self'; frame-src 'self' https://smap.seoul.go.kr; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"))
     return headers

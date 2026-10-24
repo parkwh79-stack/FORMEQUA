@@ -22,7 +22,8 @@ class CloudAppTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.env = patch.dict(os.environ, {"ARCHIVE_BACKEND": "sqlite", "K_SERVICE": "", "PUBLIC_ORIGIN": "https://pilot.example",
-            "PILOT_PASSWORD": "test-password-for-pilot", "ARCHIVE_DB_PATH": str(Path(self.temp.name) / "archive.sqlite3")})
+            "PILOT_PASSWORD": "test-password-for-pilot", "WORKSPACE_ENTRY": "private",
+            "ARCHIVE_DB_PATH": str(Path(self.temp.name) / "archive.sqlite3")})
         self.env.start()
         self.app = validator(cloud_app.create_app())
         with pilot_security._LOCK:
@@ -70,6 +71,40 @@ class CloudAppTests(unittest.TestCase):
         for path in ("/api/v1/study-reviews", "/api/v1/study-reviews/weeks", "/api/v1/study-reviews/export"):
             self.assertEqual(self.call(path, auth=True)[0], 404)
         self.assertEqual(json.loads(self.call("/api/v1/studies")[1])["total"], 0)
+
+    def test_public_model_is_separate_from_private_workbench_and_apis(self):
+        status, body, headers = self.call("/model.html")
+        self.assertEqual(status, 200)
+        self.assertIn(b'data-public-model="true"', body)
+        self.assertNotIn("WWW-Authenticate", headers)
+        self.assertEqual(headers["Cache-Control"], "no-store")
+        self.assertEqual(self.call("/model.html", method="HEAD")[0:2], (200, b""))
+        self.assertEqual(self.call("/dashboard.html")[0], 401)
+        for path in ("/api/v1/analysis", "/api/calculate-skills", "/api/v1/parcels/status", "/api/law-lookup", "/api/v1/study-reviews"):
+            self.assertEqual(self.call(path)[0], 401, path)
+        self.assertEqual(self.call("/api/v1/analysis", {"schemaVersion": 1})[0], 401)
+        self.assertEqual(self.call("/model.html", {"schemaVersion": 1})[0], 404)
+
+    def test_production_workbench_entry_goes_to_contact_without_a_login_prompt(self):
+        with patch.dict(os.environ, {"WORKSPACE_ENTRY": "contact"}):
+            for method in ("GET", "HEAD"):
+                status, body, headers = self.call("/dashboard.html", method=method)
+                self.assertEqual((status, body), (303, b""))
+                self.assertEqual(headers["Location"], "https://wan2-website.web.app/#contact")
+                self.assertNotIn("WWW-Authenticate", headers)
+            env = {}
+            setup_testing_defaults(env)
+            env.update(REQUEST_METHOD="GET", PATH_INFO="/dashboard.html", RAW_URI="/dashboard.html?view=model&returnTo=%23studio", REMOTE_ADDR="127.0.0.1", QUERY_STRING="view=model&returnTo=%23studio")
+            result = {}
+            response = self.app(env, lambda status, headers, exc_info=None: result.update(status=int(status.split()[0]), headers=dict(headers)))
+            try:
+                self.assertEqual(b"".join(response), b"")
+            finally:
+                response.close()
+            self.assertEqual(result["status"], 303)
+            self.assertEqual(result["headers"]["Location"], "/model.html?view=model&returnTo=%23studio")
+            self.assertNotIn("WWW-Authenticate", result["headers"])
+            self.assertEqual(self.call("/api/v1/study-reviews", review_payload())[0], 401)
 
     def test_static_backend_and_encoded_paths_are_not_served(self):
         for path in ("/", "/server.py", "/cloud_app.py", "/runtime/Skills-Architects/LICENSE", "/%64ashboard.html", "/assets/../dashboard.html"):
