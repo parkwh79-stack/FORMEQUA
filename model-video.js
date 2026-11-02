@@ -49,7 +49,8 @@
     link.href = url; link.download = filename; link.hidden = true;
     document.body.append(link); link.click(); link.remove();
     setTimeout(() => URL.revokeObjectURL(url), 30000);
-    ui("idle", `동영상 저장을 시작했습니다. (${extension.toUpperCase()})`);
+    const message=`동영상 다운로드를 시작했습니다. (${extension.toUpperCase()})`;
+    if(window.AtelierUI){ui('idle');window.AtelierUI.notify(message);}else ui('idle',message);
   }
 
   function stop() {

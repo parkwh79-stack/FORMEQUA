@@ -3,6 +3,7 @@
   'use strict';
   let worker,timer,revision=0,inflight=null,queued=null;
   const cache=new Map();
+  const signal=status=>window.dispatchEvent(new CustomEvent('atelier:solid-status',{detail:{status}}));
   function finish(job,message){
     if(!message.error){cache.set(job.key,message.results);if(cache.size>8)cache.delete(cache.keys().next().value);}
     if(job.revision===revision){if(message.error)job.fail();else job.apply(message.results);}
@@ -15,7 +16,7 @@
       if(!worker){
         worker=new Worker(new URL('mass-solid-worker.js?v=20261102-mass1',document.baseURI),{type:'module'});
         worker.onmessage=event=>{if(inflight&&event.data.id===inflight.revision)finish(inflight,event.data);};
-        worker.onerror=()=>{worker?.terminate();worker=null;const job=inflight;queued=null;inflight=null;if(job)job.fail();};
+        worker.onerror=()=>{worker?.terminate();worker=null;const job=queued||inflight;queued=null;inflight=null;if(job)job.fail();};
       }
       inflight=job;worker.postMessage({id:job.revision,items:job.items});
     }catch(_){inflight=null;job.fail();}
@@ -23,7 +24,9 @@
   function apply(group,model,THREE){
     const current=++revision;clearTimeout(timer);queued=null;
     const targets=group.children.filter(mesh=>mesh.userData?.massSolid);
-    if(!targets.length||typeof Worker==='undefined')return;
+    if(!targets.length){signal('idle');return;}
+    if(typeof Worker==='undefined'){signal('fallback');return;}
+    signal('pending');
     const items=targets.map(mesh=>({key:mesh.uuid,...mesh.userData.massSolid}));
     // UUIDs identify this scene only; cache uses geometry, not appearances/finance.
     const key=JSON.stringify(items.map(({key,...shape})=>shape));
@@ -37,8 +40,9 @@
         targets[i].geometry.dispose();targets[i].geometry=flat;targets[i].userData.solidEngine='manifold-3d-3.5.4';
       });
       group.userData.solidEngine='manifold-3d-3.5.4';
+      signal('ready');
     };
-    const fail=()=>{if(current===revision)group.userData.solidEngine='contour-fallback';};
+    const fail=()=>{if(current===revision){group.userData.solidEngine='contour-fallback';signal('fallback');}};
     if(cache.has(key)){use(cache.get(key));return;}
     timer=setTimeout(()=>dispatch({revision:current,key,items,apply:use,fail}),160);
   }

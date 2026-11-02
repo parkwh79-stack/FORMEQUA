@@ -214,7 +214,11 @@
     "vendor/manifold/package.json",
     "vendor/manifold/provenance.json",
     "tests/mass-profiles.test.js",
-    "docs/MASS-PROFILES.md"
+    "docs/MASS-PROFILES.md",
+    "ui-feedback.js",
+    "ui-feedback.css",
+    "tests/ui-feedback.test.js",
+    "docs/UI-REFINEMENT.md"
   ],
   "web": [
     "NOTICE.md",
@@ -302,6 +306,8 @@
     "vendor/manifold/formequa-kernel.js",
     "vendor/manifold/manifold.js",
     "vendor/manifold/manifold.wasm",
-    "vendor/manifold/LICENSE.txt"
+    "vendor/manifold/LICENSE.txt",
+    "ui-feedback.js",
+    "ui-feedback.css"
   ]
 }

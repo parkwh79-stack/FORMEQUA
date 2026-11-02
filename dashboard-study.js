@@ -184,6 +184,7 @@
     function download(contents, name, type) {
       const url = URL.createObjectURL(new Blob([contents], { type }));
       const link = doc.createElement("a"); link.href = url; link.download = name; link.click();
+      host.AtelierUI?.notify(type.includes('svg')?'평면 SVG 다운로드를 시작했습니다.':'검토 파일 다운로드를 시작했습니다.');
       host.setTimeout(() => URL.revokeObjectURL(url), 1000);
     }
     function changeProgram(key) {

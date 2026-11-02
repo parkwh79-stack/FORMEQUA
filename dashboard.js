@@ -15,6 +15,20 @@
   let focusPlanHome = null;
   let focusPlanOpen = false;
   let pendingInterior = false;
+  let focusEditorOpen = true;
+
+  function setEditorOpen(next, restoreFocus=false) {
+    focusEditorOpen=Boolean(next);
+    const panel=byId('modelFocusPalette');
+    if(panel){panel.hidden=!modelFocusActive||!focusEditorOpen;panel.inert=!focusEditorOpen;}
+    document.body.classList.toggle('focus-editor-collapsed',modelFocusActive&&!focusEditorOpen);
+    document.querySelectorAll('[data-editor-toggle]').forEach(button=>{
+      button.setAttribute('aria-expanded',String(focusEditorOpen));button.textContent=focusEditorOpen?'편집 접기':'편집 열기';
+    });
+    window.AtelierUI?.hideHelp();
+    if(restoreFocus)byId('btnToggleModelEditor')?.focus({preventScroll:true});
+    requestAnimationFrame(()=>window.dispatchEvent(new Event('resize')));
+  }
 
   function moveFocusPlan(next) {
     const card = byId("realyticsPlanCard"), host = byId("modelFocusPlanHost");
@@ -77,6 +91,7 @@
   }
 
   function selectFocusTab(tab, focus = false) {
+    window.AtelierUI?.hideHelp();
     const shape = tab !== "material";
     ["shape", "material"].forEach(name => {
       const selected = (name === "shape") === shape;
@@ -89,6 +104,7 @@
   }
 
   function syncFocusMass() {
+    if(byId('modelAdvancedSummary'))byId('modelAdvancedSummary').textContent=`배치·지붕 옵션 · ${{A:'타워형',B:'중정형',C:'북측 코어형'}[state.option]||'기본 배치'}`;
     for (const [id,key] of [['modelMassProfile','massProfile'],['modelMassShapePct','massShapePct'],['modelCrownStyle','crownStyle'],['modelCrownHeight','crownHeightM']]) {
       const field=byId(id); if(field && field!==document.activeElement)field.value=state[key];
     }
@@ -122,7 +138,7 @@
   function moveFocusPalette(next) {
     const studio = byId("hudFacadeQuickStudio"), host = byId("modelFocusPaletteHost");
     const panel = byId("modelFocusPalette");
-    if (panel) panel.hidden = !next;
+    if (panel) {panel.hidden = !next||!focusEditorOpen;panel.inert=!focusEditorOpen;}
     if (!studio || !host) return;
     if (next && studio.parentNode !== host) {
       paletteWasCollapsed = studio.classList.contains("collapsed");
@@ -164,6 +180,7 @@
     if (!next && wasActive) window.AtelierModelVideo?.stop();
     grid.classList.toggle("gallery-mode", next);
     document.body.classList.toggle("model-focus", next);
+    document.body.classList.toggle('focus-editor-collapsed',next&&!focusEditorOpen);
     moveFocusPalette(next);
     moveFocusMassControls(next);
     if (!next) setFocusPlan(false);
@@ -341,15 +358,19 @@
 
   window.addEventListener("DOMContentLoaded", () => {
     syncAppearance();
+    byId('btnToggleModelEditor')?.addEventListener('click',()=>setEditorOpen(!focusEditorOpen));
+    byId('btnCloseModelEditor')?.addEventListener('click',()=>setEditorOpen(false,true));
     document.querySelectorAll('[data-mass-preset]').forEach(button=>button.addEventListener('click',()=>{
       state.massProfile=button.dataset.massPreset;state.massShapePct=30;
       updateAllCalculationsAndUI();
+      window.AtelierUI?.notify(button.querySelector('strong').textContent+' 형태를 적용했습니다.');
     }));
     for (const [id,key] of [['modelMassProfile','massProfile'],['modelMassShapePct','massShapePct'],['modelCrownStyle','crownStyle'],['modelCrownHeight','crownHeightM']]) {
       const field=byId(id);
       field?.addEventListener(field.type==='range'?'input':'change',()=>{
         state[key]=field.type==='range'?Number(field.value):field.value;
         updateAllCalculationsAndUI();
+        if(id==='modelMassProfile')window.AtelierUI?.notify(field.selectedOptions[0].textContent+' · 적용했습니다.');
       });
     }
     document.querySelectorAll("[data-focus-tab]").forEach(button => {
@@ -381,6 +402,7 @@
     window.addEventListener("keydown", event => {
       if (event.key === "Escape" && !event.defaultPrevented && modelFocusActive && !document.querySelector("dialog[open]")) {
         event.preventDefault();
+        if(focusEditorOpen&&event.target.closest?.('#modelFocusPalette')){setEditorOpen(false,true);return;}
         if (isPublicModel()) {
           if (document.body.classList.contains("interior-active")) window.AtelierInteriorViewer?.exit();
           else if (focusPlanOpen) setFocusPlan(false);

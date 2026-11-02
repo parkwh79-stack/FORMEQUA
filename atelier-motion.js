@@ -44,7 +44,7 @@
     walk(element);
   }
 
-  function revealTitle(element, order, delay = 0) {
+  function revealTitle(element, order, delay = 0, duration = 1100) {
     if (element.classList.contains("text-visible")) return;
     element.classList.add("text-visible");
     const horizontal = element.dataset.motionAxis === "x" || order % 3 === 1;
@@ -52,17 +52,40 @@
     [...element.querySelectorAll(".motion-ink")].forEach((ink, i) => {
       const from = horizontal ? `translate3d(${direction * 110}%,0,0) rotate(${direction * 2}deg)` : `translate3d(0,115%,0) rotate(${direction * 2}deg)`;
       animate(ink, [{ transform: from, opacity: .1 }, { transform: "translate3d(0,0,0) rotate(0deg)", opacity: 1 }],
-        { duration: 1100, delay: delay + Math.min(i * 105, 650), easing: "cubic-bezier(.18,.7,.25,1)", fill: "both" });
+        { duration, delay: delay + Math.min(i * 85, 450), easing: "cubic-bezier(.18,.7,.25,1)", fill: "both" });
     });
   }
 
-  function revealPhoto(element, delay = 0) {
+  function revealPhoto(element, delay = 0, duration = 1450) {
     if (element.classList.contains("image-visible")) return;
     element.classList.add("image-visible");
     const from = { left: "inset(0 100% 0 0)", right: "inset(0 0 0 100%)", down: "inset(0 0 100% 0)", up: "inset(100% 0 0 0)" }[element.dataset.motionImage] || "inset(100% 0 0 0)";
-    animate(element, [{ clipPath: from }, { clipPath: "inset(0 0 0 0)" }], { duration: 1450, delay, easing: "cubic-bezier(.2,.65,.25,1)", fill: "both" });
+    animate(element, [{ clipPath: from }, { clipPath: "inset(0 0 0 0)" }], { duration, delay, easing: "cubic-bezier(.2,.65,.25,1)", fill: "both" });
     const image = element.querySelector("img");
-    if (image) animate(image, [{ transform: "scale(1.075)" }, { transform: "scale(1)" }], { duration: 1800, delay, easing: "cubic-bezier(.2,.65,.25,1)", fill: "both" });
+    if (image) animate(image, [{ transform: "scale(1.045)" }, { transform: "scale(1)" }], { duration: duration+250, delay, easing: "cubic-bezier(.2,.65,.25,1)", fill: "both" });
+  }
+
+  function playStudy(card) {
+    if(card.dataset.sequencePlayed)return;
+    card.dataset.sequencePlayed='true';
+    card.querySelectorAll('.study-district').forEach(el=>revealTitle(el,Number(el.dataset.motionOrder||0),0,700));
+    card.querySelectorAll('[data-motion-image]').forEach(el=>revealPhoto(el,70,1050));
+    card.querySelectorAll('.study-title').forEach(el=>revealTitle(el,Number(el.dataset.motionOrder||0),360,800));
+    card.querySelectorAll('.study-category,.study-summary,.project-meta,.study-image-action').forEach((el,i)=>{
+      animate(el,[{opacity:0,transform:'translate3d(0,12px,0)'},{opacity:1,transform:'translate3d(0,0,0)'}],{duration:550,delay:400+i*75,easing:'cubic-bezier(.2,.65,.25,1)',fill:'both'});
+    });
+  }
+
+  function revealStudy(card) {
+    if(card.dataset.sequenceRequested)return;
+    card.dataset.sequenceRequested='true';
+    card.querySelectorAll('.study-district').forEach(el=>revealTitle(el,Number(el.dataset.motionOrder||0),0,700));
+    const visual=card.querySelector('[data-motion-image]'),image=visual?.querySelector('img');
+    const start=()=>{visual?.classList.remove('image-loading');playStudy(card);};
+    if(!image||image.complete&&image.naturalWidth>0){start();return;}
+    visual.classList.add('image-loading');image.loading='eager';
+    if(typeof image.decode==='function')image.decode().then(start,start);
+    else{image.addEventListener('load',start,{once:true});image.addEventListener('error',start,{once:true});}
   }
 
   function heroLetters() {
@@ -196,9 +219,7 @@
     observer = new IntersectionObserver(entries => entries.forEach(entry => {
       if (!entry.isIntersecting) return;
       if (entry.target.hasAttribute("data-motion-sequence")) {
-        entry.target.dataset.sequencePlayed = "true";
-        entry.target.querySelectorAll("[data-motion-title]").forEach(el => revealTitle(el, Number(el.dataset.motionOrder || 0), el.classList.contains("study-district") ? 0 : 650));
-        entry.target.querySelectorAll("[data-motion-image]").forEach(el => revealPhoto(el, 180));
+        revealStudy(entry.target);
       }
       const photos = photoTargets.get(entry.target);
       if (photos) photos.forEach(revealPhoto);
@@ -206,6 +227,7 @@
       observer.unobserve(entry.target);
     }), { rootMargin: "0px 0px -7% 0px", threshold: .16 });
     document.querySelectorAll("[data-motion-sequence]").forEach(el => observer.observe(el));
+    document.addEventListener('focusin',event=>{const card=event.target.closest('[data-motion-sequence]');if(card){revealStudy(card);observer.unobserve(card);}});
     titles.filter(el => !el.closest("[data-motion-sequence]")).forEach(el => observer.observe(el));
     // Observe the stable parent; a fully clipped photo has no visible intersection.
     document.querySelectorAll("[data-motion-image]").forEach(el => {

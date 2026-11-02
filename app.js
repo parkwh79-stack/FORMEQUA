@@ -1665,7 +1665,7 @@ function refreshSiteContext(model, force = false) {
   const token = ++siteContextGeneration;
   const previous = contextGroup?.getObjectByName("real-site-context");
   if (previous) { window.AtelierSiteContext?.dispose(previous); clearGroup(previous); contextGroup.remove(previous); }
-  if (document.body.dataset.publicModel === "true") {
+  if (document.body.dataset.publicModel === "true" || document.body.dataset.sitePage === 'atelier') {
     const hud = document.getElementById("siteContextHud");
     if (hud) hud.hidden = true;
     return;
@@ -2527,7 +2527,7 @@ function rebuild3DScene(model) {
     fitCameraToSite(model); sceneParcelSignature = parcelSignature; sceneFitExtent = fitExtent;
   }
   // An infeasible above-ground model still shows its real site and constraints.
-  if (!model.floorPlates.length) { window.dispatchEvent(new CustomEvent("atelier:scene-rebuilt")); return; }
+  if (!model.floorPlates.length) {window.AtelierSolidEngine?.apply(buildingGroup,model,THREE);window.dispatchEvent(new CustomEvent("atelier:scene-rebuilt")); return; }
 
   // 4. High-Detail Procedural 3D Facade & Floor Plates (5 Archetypes × 6 Cladding Materials × 8 Color Swatches × 5 Glass Tints × 3 Podiums)
   const arch = FACADE_ARCHETYPES[state.facadeType] || FACADE_ARCHETYPES.curtain_wall;
@@ -3876,7 +3876,7 @@ function renderOptionAndRemodelComparison(preset, currentModel, optA, optB, optC
 // 8. LIVE LAW.GO.KR API LOOKUP (LAW_OC=wanhee) & PYTHON SKILLS VERIFICATION
 // ============================================================================
 async function fetchLiveLawArticle() {
-  if (document.body.dataset.publicModel === "true") return;
+  if (document.body.dataset.publicModel === "true" || document.body.dataset.sitePage === 'atelier') return;
   const box = document.getElementById("lawResultContainer");
   const [target, query, article] = document.getElementById("selectLawPreset").value.split("|");
   box.textContent = query + " " + article + " 원문을 조회하고 있습니다.";
@@ -3928,7 +3928,7 @@ async function syncZoningLawFromMinistry() {
 }
 
 async function verifyWithPythonSkillsBackend() {
-  if (document.body.dataset.publicModel === "true") return;
+  if (document.body.dataset.publicModel === "true" || document.body.dataset.sitePage === 'atelier') return;
   const btn = document.getElementById("btnVerifyPythonSkills");
   if (!state.lastComputed) return;
   const m = state.lastComputed.model;
@@ -5094,7 +5094,7 @@ window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btnExportReport").addEventListener("click", exportProformaAndReport);
 
   syncZoningLawFromMinistry();
-  const publicAtelierLanding = window.location.protocol === "https:" && document.body.dataset.sitePage === "atelier";
+  const publicAtelierLanding = document.body.dataset.sitePage === "atelier";
   if (!publicAtelierLanding && document.body.dataset.publicModel !== "true") fetchLiveLawArticle();
 });
 

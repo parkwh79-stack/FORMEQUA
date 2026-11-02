@@ -65,7 +65,7 @@
       button.classList.toggle("active", selected);
       button.setAttribute("aria-pressed", String(selected));
     });
-    document.querySelectorAll("[data-parcel]").forEach(button => button.classList.toggle("is-selected", button.dataset.parcel === key));
+    document.querySelectorAll("[data-parcel]").forEach(button => {const selected=button.dataset.parcel===key;button.classList.toggle("is-selected",selected);button.setAttribute('aria-pressed',String(selected));});
   }
 
   // Register before app.js initializes so the first computed model is visible.
