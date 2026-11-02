@@ -20,6 +20,12 @@ for(const profile of ['chamfered','elliptic','sculpted','twisted'])for(const use
   assert.ok(poly.contains(room.polygon,[room.labelPoint.x,room.labelPoint.z]));
   const door=plan.doors.find(d=>d.roomId===room.id&&d.kind!=='ensuite');assert.ok(door);
   assert.ok(room.polygon.outer.some((a,i,r)=>poly.distance([door.x,door.z],a,r[(i+1)%r.length])<.0001),'entrance lies on actual room edge');
+  const bare={...plan,furniture:[]};
+  assert.ok(walk.canStand(bare,door.x,door.z,.18),'entrance is a genuine wall opening');
+  if(room.ensuite){const bath=room.ensuite.bounds;
+   const edgeLength=room.ensuite.walls.reduce((s,w)=>s+Math.hypot(w.x2-w.x1,w.z2-w.z1),0);
+   assert.ok(Math.abs(edgeLength-(2*((bath.maxX-bath.minX)+(bath.maxZ-bath.minZ))-room.ensuite.door.width))<.01,'inset bathroom has all four walls minus its door');
+  }
  }
  for(const f of plan.furniture){const room=[...plan.rooms,...plan.supportSpaces].find(r=>r.id===f.roomId);assert.ok(room&&poly.containsItem(room.polygon,f),'furniture stays inside actual room');}
  const empty={...plan,walls:[],furniture:[],cores:[],voids:[],obstacles:[]};

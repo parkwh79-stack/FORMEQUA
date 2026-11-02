@@ -415,6 +415,9 @@
       z: touchesNorth ? bath.maxZ : bath.minZ, width: 0.9, axis: "x", kind: "ensuite", roomId: room.id };
     const subroom = { ...bath, id: room.id, type: "bathroom" };
     const walls = wallsForRooms([subroom], [bathroomDoor], height).filter(wall => {
+      // A furniture fitting rectangle is not a physical room wall. Polygon
+      // rooms therefore need every wet-room edge, including its far corner.
+      if(room.polygon)return true;
       const alongX = Math.abs(wall.z1 - wall.z2) < EPS;
       return alongX ? Math.abs(wall.z1 - room.minZ) > EPS && Math.abs(wall.z1 - room.maxZ) > EPS
         : Math.abs(wall.x1 - room.minX) > EPS && Math.abs(wall.x1 - room.maxX) > EPS;
@@ -724,7 +727,7 @@
     plan.entry = { x: 0, z: round(bounds.maxZ - 0.65) };
     const unused = mergeGridRects(grid, "free").reduce((sum, r) => sum + area(r), 0);
     if (!plan.rooms.length) warnings.push("코어·중정·복도 확보 후 충분한 폭과 깊이를 가진 실이 남지 않습니다. 코어 위치 또는 매스 치수를 조정하세요.");
-    else if (unused > Math.max(3, w * d * 0.04)) warnings.push("최소 실 폭을 충족하지 못한 일부 잔여 공간은 비워 두었습니다. 실제 평면에서 설비·수납·동선을 조정하세요.");
+    else if (!region && unused > Math.max(3, w * d * 0.04)) warnings.push("최소 실 폭을 충족하지 못한 일부 잔여 공간은 비워 두었습니다. 실제 평면에서 설비·수납·동선을 조정하세요.");
     if (residential && !coliving && !plan.rooms.some(room => room.type === "dwelling_unit")) warnings.push("이 매스에서는 주방·거실·취침·욕실을 갖춘 독립 세대를 확보하지 못했습니다. 매스 또는 코어 위치를 조정하세요.");
     if (coliving) {
       if (!plan.rooms.some(room => room.type === "private_room")) warnings.push("독립 개인실을 확보하지 못했습니다. 공용 공간만으로 코리빙 정원을 산정하지 않습니다.");
