@@ -110,30 +110,32 @@
     if (!b || ![b.minX, b.maxX, b.minZ, b.maxZ].every(finite) || b.maxX <= b.minX || b.maxZ <= b.minZ) return "";
     const scale = 24, pad = 42, w = (b.maxX - b.minX) * scale + pad * 2, h = (b.maxZ - b.minZ) * scale + pad * 2 + 44;
     const x = v => +(pad + (v - b.minX) * scale).toFixed(3), y = v => +(pad + (v - b.minZ) * scale).toFixed(3);
-    const rect = (r, fill, stroke = "#c9d5e3", extra = "") => `<rect x="${x(r.minX)}" y="${y(r.minZ)}" width="${Math.max(0, (r.maxX - r.minX) * scale)}" height="${Math.max(0, (r.maxZ - r.minZ) * scale)}" fill="${fill}" stroke="${stroke}" stroke-width=".8" ${extra}/>`;
+    const rect = (r, fill, stroke = "#c9d5e3", extra = "") => r.polygon ? `<path d="${[r.polygon.outer,...(r.polygon.holes||[])].map(ring=>ring.map((p,i)=>`${i?'L':'M'} ${x(p[0])} ${y(p[1])}`).join(' ')+' Z').join(' ')}" fill-rule="evenodd" fill="${fill}" stroke="${stroke}" stroke-width=".8" data-polygon-space="true" ${extra}/>` : `<rect x="${x(r.minX)}" y="${y(r.minZ)}" width="${Math.max(0, (r.maxX - r.minX) * scale)}" height="${Math.max(0, (r.maxZ - r.minZ) * scale)}" fill="${fill}" stroke="${stroke}" stroke-width=".8" ${extra}/>`;
     const roomFill = r => r.type?.startsWith("guest_") ? "#e8f5fa" : r.type === "dwelling_unit" || r.type === "private_room" ? "#edf2ff" : r.type?.startsWith("shared_") ? "#f8edda" : "#f4f7fb";
     const body = [outer?.length ? `<polygon points="${outer.map(p=>`${x(p[0])},${y(p[1])}`).join(' ')}" fill="#f5f3ed" stroke="#183551" stroke-width="1.5"/>` : rect(b, "#fff", "#183551"),
       ...(plan.corridors || []).map(r => rect(r, "#e2ecf5", "#e2ecf5")),
       ...(plan.rooms || []).map(r => rect(r, roomFill(r))),
+      ...(plan.supportSpaces || []).map(r => rect(r, "#e9eee5", "#cad2c5")),
       ...(plan.cores || []).map(r => rect(r, "#a7b7ca", "#758ca7")),
       ...(plan.obstacles || []).map(r => rect(r, '#6c7891', '#344e68')),
       ...(plan.voids || []).map(r => rect(r, "#fff", "#bacbd2", 'stroke-dasharray="5 4"'))];
     if (layers.furniture !== false) body.push(...(plan.furniture || []).map(f => {
       const r = { minX: f.x - f.width / 2, maxX: f.x + f.width / 2, minZ: f.z - f.depth / 2, maxZ: f.z + f.depth / 2 };
-      return `<g><title>${esc(f.type)}</title>${rect(r, /bed|sofa/.test(f.type) ? "#b9cde2" : /toilet|vanity|shower/.test(f.type) ? "#cee8ed" : "#d9c29a", "#8096ac")}</g>`;
+      return `<g${f.rotationY?` transform="rotate(${-f.rotationY*180/Math.PI} ${x(f.x)} ${y(f.z)})"`:''}><title>${esc(f.type)}</title>${rect(r, /bed|sofa/.test(f.type) ? "#b9cde2" : /toilet|vanity|shower/.test(f.type) ? "#cee8ed" : "#d9c29a", "#8096ac")}</g>`;
     }));
     body.push(...(plan.walls || []).map(wall => `<line x1="${x(wall.x1)}" y1="${y(wall.z1)}" x2="${x(wall.x2)}" y2="${y(wall.z2)}" stroke="#203b57" stroke-width="${Math.max(1.5, (wall.thickness || .12) * scale)}"/>`));
     body.push(...(plan.doors || []).map(door => {
       const room = plan.rooms.find(r => r.id === door.roomId);
       if (!room) return "";
-      const inward = door.axis === "x" ? Math.sign((room.minZ + room.maxZ) / 2 - door.z) : Math.sign((room.minX + room.maxX) / 2 - door.x);
+      const inward = door.axis === "x" ? Math.sign((room.labelPoint?.z ?? (room.minZ + room.maxZ) / 2) - door.z) : Math.sign((room.labelPoint?.x ?? (room.minX + room.maxX) / 2) - door.x);
       const horizontal = door.axis === "x", len = door.width * scale, sx = x(door.x - (horizontal ? door.width / 2 : 0)), sy = y(door.z - (horizontal ? 0 : door.width / 2));
       return `<path d="M ${sx} ${sy} l ${horizontal ? 0 : inward * len} ${horizontal ? inward * len : 0}" fill="none" stroke="#9a702c" stroke-width="1.4"/><path d="M ${sx + (horizontal ? len : 0)} ${sy + (horizontal ? 0 : len)} Q ${sx + (horizontal ? len : inward * len)} ${sy + (horizontal ? inward * len : len)} ${sx + (horizontal ? 0 : inward * len)} ${sy + (horizontal ? inward * len : 0)}" fill="none" stroke="#9a702c" stroke-width=".8" stroke-dasharray="2 2"/>`;
     }));
     if (layers.labels !== false) {
-      body.push(...(plan.rooms || []).map(r => {
-        const available = (r.maxX - r.minX) * scale, fontsize = Math.min(12, Math.max(7.5, available / Math.max(7, r.label.length)));
-        return `<text x="${x((r.minX + r.maxX) / 2)}" y="${y((r.minZ + r.maxZ) / 2) - 4}" text-anchor="middle" fill="#17324d" font-size="${fontsize}" font-weight="700" paint-order="stroke" stroke="#fff" stroke-width="2.8">${esc(r.label)}<tspan x="${x((r.minX + r.maxX) / 2)}" dy="${fontsize + 4}" font-weight="400">${number(r.areaSqm)} m²</tspan></text>`;
+      body.push(...[...(plan.rooms || []),...(plan.supportSpaces || []).filter(r=>r.layoutBounds&&r.areaSqm>3)].map(r => {
+        const fit=r.layoutBounds||r,px=x(r.labelPoint?.x ?? (r.minX+r.maxX)/2),py=y(r.labelPoint?.z ?? (r.minZ+r.maxZ)/2);
+        const available = (fit.maxX - fit.minX) * scale, fontsize = Math.min(12, Math.max(7.5, available / Math.max(7, r.label.length)));
+        return `<text x="${px}" y="${py - 4}" text-anchor="middle" fill="#17324d" font-size="${fontsize}" font-weight="700" paint-order="stroke" stroke="#fff" stroke-width="2.8">${esc(r.label)}<tspan x="${px}" dy="${fontsize + 4}" font-weight="400">${number(r.areaSqm)} m²</tspan></text>`;
       }));
       body.push(...(plan.cores || []).map(r => `<text x="${x((r.minX + r.maxX) / 2)}" y="${y((r.minZ + r.maxZ) / 2)}" text-anchor="middle" fill="#17324d" font-size="12" font-weight="700">CORE</text>`));
       body.push(...(plan.voids || []).map(r => `<text x="${x((r.minX + r.maxX) / 2)}" y="${y((r.minZ + r.maxZ) / 2)}" text-anchor="middle" fill="#577585" font-size="12">중정</text>`));
@@ -304,6 +306,7 @@
         if (status.usable) rows.push(kv("실 배치 면적 합계", amount(m.netRoomAreaSqm, "㎡")), kv("실 / 문", `${number(m.roomCount, 0)} / ${number(m.doorCount, 0)}`),
           kv("배치 지표", occupancyText(fp, plan)), kv("복도 / 코어 예약", `${number(m.corridorAreaSqm)} / ${number(m.coreAreaSqm)}㎡`), kv("가구·설비", amount(m.furnitureCount, "개", 0)));
         else rows.push(kv("실·가구·배치 수량", status.label));
+        if(status.usable&&plan.coverage)rows.push(kv("외곽 맞춤 실내", amount(plan.coverage.interiorAreaSqm,"㎡")),kv("창가 지원 / 미배치",`${number(plan.coverage.supportAreaSqm)} / ${number(plan.coverage.unassignedAreaSqm)}㎡`));
         const ledger = model.finance?.income?.floorIncome?.find(row => row.level === fp.level);
         if (ledger) rows.push(kv("수입 산정 계약면적", amount(ledger.rentalContractAreaSqm, "㎡")), kv("층별 연간 수입 / NOI", `${number(ledger.annualGrossIncomeEok, 2)} / ${number(ledger.annualNoiEok, 2)}억원/년`));
       } else if (fp) {

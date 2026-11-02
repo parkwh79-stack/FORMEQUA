@@ -17,10 +17,11 @@
     node ? require('./office-layout.js') : root.AtelierOfficeLayout,
     node ? require('./hotel-modules.js') : root.AtelierHotelModules,
     node ? require('./spatial-settings.js') : root.AtelierSpatialSettings,
-    node ? require('./floor-geometry.js') : root.AtelierFloorGeometry);
+    node ? require('./floor-geometry.js') : root.AtelierFloorGeometry,
+    node ? require('./interior-geometry.js') : root.AtelierInteriorGeometry);
   if (typeof module === "object" && module.exports) module.exports = api;
   if (root) root.AtelierInteriorPlan = api;
-})(typeof window !== "undefined" ? window : (typeof globalThis !== "undefined" ? globalThis : this), function (coreLayoutApi, officeApi, hotelApi, spatialApi, floorApi) {
+})(typeof window !== "undefined" ? window : (typeof globalThis !== "undefined" ? globalThis : this), function (coreLayoutApi, officeApi, hotelApi, spatialApi, floorApi, polygonApi) {
   "use strict";
 
   const EPS = 1e-6;
@@ -65,7 +66,7 @@
     return {
       level: fp.level || 1, use: PROGRAMS[fp.use] ? fp.use : "main", bounds, footprint: fp.footprint || null,
       status: "not-generated", reason: "not-generated", quantityStatus: "not-generated",
-      rooms: [], corridors: [], cores: [], voids: [], walls: [], doors: [], furniture: [],
+      rooms: [], corridors: [], cores: [], voids: [], walls: [], doors: [], furniture: [], supportSpaces: [], region: null, coverage: null,
       entry: { x: 0, z: round((bounds.minZ + bounds.maxZ) / 2) }, warnings,
       assumptions: [],
       spaceProgram: "standard", residentialType: null, dwellingUnits: [],
@@ -580,16 +581,17 @@
     }
     if (w <= 1 || d <= 1) return { ...blank(fp, rect(-w / 2, w / 2, shift - d / 2, shift + d / 2), ["외벽 여유 공간보다 층 크기가 작아 실내 평면을 생성하지 않았습니다."]), reason: "insufficient-floor-space" };
     const margin = 0.5;
-    const bounds = floorApi ? floorApi.planningBounds(fp, margin) : rect(-w / 2 + margin, w / 2 - margin, shift - d / 2 + margin, shift + d / 2 - margin);
+    const region=polygonApi?.enabled(fp)?polygonApi.regionFor(fp):null;
+    const bounds = region ? polygonApi.bounds(region) : floorApi ? floorApi.planningBounds(fp, margin) : rect(-w / 2 + margin, w / 2 - margin, shift - d / 2 + margin, shift + d / 2 - margin);
     const plan = blank(fp, bounds, warnings);
+    plan.region=region;
     const residential = plan.use === "residential";
     const coliving = residential && options.spaceProgram === "coliving";
     plan.spaceProgram = coliving ? "coliving" : "standard";
-    if (floorApi?.sculptural(fp.massProfile)) warnings.push("곡면·회전형 실내는 실제 외곽 안의 보수적인 내접 영역에 배치합니다. 외곽의 잔여 공간과 사선·곡면 실 배치는 별도 계획 대상입니다.");
-    else if (fp.cornerCutM > EPS) warnings.push("모서리 절삭형 실내는 실제 외곽 안의 보수적인 내접 영역에 배치합니다. 외곽의 잔여 공간은 별도 계획 대상입니다.");
     plan.residentialType = residential ? (options.residentialType === "officetel" ? "officetel" : "apartment") : null;
     const workstationSettings = { ...officeSettings(options), externalOfficeLayout: Boolean(officeApi) };
     plan.obstacles = (options.layoutObstacles || []).filter(o => o.level === plan.level && o.maxX > bounds.minX && o.minX < bounds.maxX && o.maxZ > bounds.minZ && o.minZ < bounds.maxZ).map(o => ({...o}));
+    if(region)plan.obstacles=plan.obstacles.flatMap(o=>polygonApi.clipped(o,region).map((p,i)=>polygonApi.row({...o,id:i?o.id+'-'+i:o.id},p)));
     if (plan.obstacles.length) warnings.push('고정 장애물은 사용자가 입력한 계획 가정입니다. 구조 도면에서 확인한 기둥 위치와 구분하여 검토하세요.');
     plan.assumptions = plan.use === "hotel" ? [
       "객실 전면 목표 3.8m·면적 목표 20㎡ 이상, 욕실 모듈 2.3×2.4m는 초기 배치 가정이며 법정 최소 기준이 아닙니다.",
@@ -603,6 +605,7 @@
       "세대당 전용면적 입력은 모듈 분할의 목표이며 실제 배치 면적과 다를 수 있습니다. 실내 배치 세대·개인실 수는 법정 세대수나 주차 산정 세대수를 대체하지 않습니다.",
       "채광·환기·피난·방화·설비·주택 또는 오피스텔 기준과 용도 허용은 별도 검토가 필요합니다."
     ] : []));
+    if(region)plan.assumptions.push('층별 실제 외곽을 따라 실·복도·창가 지원 영역을 생성합니다. 외벽 안쪽 0.2m는 벽체 여유이며 구조·피난·설비와 실의 법정 유효 치수는 별도 검토 대상입니다.');
     if (sharedCore !== undefined) {
       plan.voids = fp.hasAtrium ? [rect(-w * 0.175, w * 0.175, shift - d * 0.175, shift + d * 0.175)] : [];
       plan.cores = reserveCores({ ...fp, widthM: w, depthM: d }, options, bounds, plan.voids, warnings);
@@ -628,7 +631,7 @@
         if (!plan.cores.length) { plan.reason = "shared-core-unfeasible"; return plan; }
       }
     }
-    const obstacles = [...plan.voids, ...plan.cores];
+    const obstacles = region ? [...plan.voids,...plan.cores,...plan.obstacles].map(r=>clip(r,bounds)).filter(validRect) : [...plan.voids, ...plan.cores];
     const corridorWidth = plan.use === "hotel" ? 1.8 : (Math.min(w, d) < 14 ? 1.3 : (Math.min(w, d) > 26 ? 1.8 : 1.5));
     const paths = circulation(bounds, obstacles, corridorWidth);
     const grid = makeGrid(bounds, obstacles, paths);
@@ -660,13 +663,15 @@
       plan.rooms = rooms;
       warnings.push(...(plan.hotelPlanning.warnings || []));
     }
-    plan.doors = plan.rooms.map(room => addDoor(room, plan.corridors));
+    if(region)polygonApi.prepare(plan);else plan.doors = plan.rooms.map(room => addDoor(room, plan.corridors));
+    const layoutRoom=room=>room.layoutBounds?{...room,...room.layoutBounds}:room;
+    const furnishRoom=(room,door,settings)=>furnish(layoutRoom(room),door,settings).filter(item=>!room.polygon||polygonApi.containsItem(room.polygon,item));
     const floorHeight = Number(fp.zTop) - Number(fp.zBottom);
     const wallHeight = Number.isFinite(floorHeight) && floorHeight > 1 ? clamp(floorHeight - 0.3, 1.8, 3.0) : 2.7;
     plan.rooms.forEach((room, index) => {
       const door = plan.doors[index];
-      if (/^guest_/.test(room.type) || room.type === "dwelling_unit" || room.type === "private_room") room.ensuite = hotelEnsuite(room, door, wallHeight);
-      let furniture = furnish(room, door, workstationSettings).filter(item => !plan.obstacles.some(o => overlaps(o, rect(item.x-item.width/2,item.x+item.width/2,item.z-item.depth/2,item.z+item.depth/2),.05)));
+      if (/^guest_/.test(room.type) || room.type === "dwelling_unit" || room.type === "private_room") room.ensuite = hotelEnsuite(layoutRoom(room), door, wallHeight);
+      let furniture = furnishRoom(room, door, workstationSettings).filter(item => !plan.obstacles.some(o => overlaps(o, rect(item.x-item.width/2,item.x+item.width/2,item.z-item.depth/2,item.z+item.depth/2),.05)));
       if (room.type === "dwelling_unit" || room.type === "private_room") {
         const types = new Set(furniture.map(item => item.type));
         const complete = room.ensuite && types.has("bed") && types.has("toilet") && types.has("vanity")
@@ -674,7 +679,7 @@
         if (!complete) {
           room.type = "residential_support"; room.label = "주거 지원 공간 " + String(index + 1).padStart(2, "0");
           delete room.ensuite;
-          furniture = furnish({ ...room, type: "storage" }, door, workstationSettings).filter(item => !plan.obstacles.some(o => overlaps(o, rect(item.x-item.width/2,item.x+item.width/2,item.z-item.depth/2,item.z+item.depth/2),.05)));
+          furniture = furnishRoom({ ...room, type: "storage" }, door, workstationSettings).filter(item => !plan.obstacles.some(o => overlaps(o, rect(item.x-item.width/2,item.x+item.width/2,item.z-item.depth/2,item.z+item.depth/2),.05)));
           warnings.push("일부 구획에는 출입·욕실·취침 등 필수 기능을 함께 담지 못해 세대 또는 개인실로 계산하지 않았습니다.");
         } else {
           const zones = [["bed", "sleeping", "취침 영역"], ["sofa", "living", "거실 영역"], ["kitchen_counter", "kitchen", "주방 영역"]];
@@ -694,13 +699,13 @@
         if (!room.ensuite || !beds.length || !wetTypes.has("toilet") || !wetTypes.has("vanity")) {
           room.type = "hotel_service"; room.label = "운영 지원실 " + String(index + 1).padStart(2, "0");
           delete room.ensuite;
-          furniture = furnish(room, door, workstationSettings).filter(item => !plan.obstacles.some(o => overlaps(o, rect(item.x-item.width/2,item.x+item.width/2,item.z-item.depth/2,item.z+item.depth/2),.05)));
+          furniture = furnishRoom(room, door, workstationSettings).filter(item => !plan.obstacles.some(o => overlaps(o, rect(item.x-item.width/2,item.x+item.width/2,item.z-item.depth/2,item.z+item.depth/2),.05)));
         }
       }
       plan.furniture.push(...furniture);
     });
     if (officeApi && plan.rooms.some(room => room.type === 'office')) {
-      const officeRooms = plan.rooms.filter(room => room.type === 'office');
+      const officeRooms = plan.rooms.filter(room => room.type === 'office').map(layoutRoom);
       plan.officeLayout = officeApi.generate({ rooms: officeRooms, doors: plan.doors,
         obstacles: plan.obstacles, options: options.office, roomRequirements: options.officeRoomRequirements });
       const ids = new Set(officeRooms.map(room => room.id));
@@ -708,7 +713,7 @@
       plan.furniture = plan.furniture.filter(item => !ids.has(item.roomId) || !fitted.has(item.roomId)).concat(plan.officeLayout.furniture);
       warnings.push(...(plan.officeLayout.warnings || []));
     }
-    plan.walls = wallsForRooms(plan.rooms, plan.doors, wallHeight);
+    plan.walls = region ? polygonApi.walls(plan,wallHeight) : wallsForRooms(plan.rooms, plan.doors, wallHeight);
     for (const room of plan.rooms) if (room.ensuite) {
       plan.doors.push(room.ensuite.door);
       plan.walls.push(...room.ensuite.walls);
@@ -728,7 +733,7 @@
       }
     }
     plan.dwellingUnits = plan.rooms.filter(room => room.type === "dwelling_unit").map(room => ({ id: room.id, label: room.label, residentialType: plan.residentialType,
-      areaSqm: room.areaSqm, ...rect(room.minX, room.maxX, room.minZ, room.maxZ), subspaces: room.subspaces }));
+      areaSqm: room.areaSqm, ...rect(room.minX, room.maxX, room.minZ, room.maxZ), ...(room.polygon?{polygon:room.polygon}:{}), subspaces: room.subspaces }));
     const guestRooms = plan.rooms.filter(room => /^guest_/.test(room.type));
     if (plan.use === "hotel" && !guestRooms.length) warnings.push("이 매스에서는 욕실·침대·출입 동선을 함께 담는 객실 모듈을 확보하지 못했습니다. 객실 수를 임의로 늘리지 않고 운영 지원실로 표시했습니다.");
     if (plan.use === "main" && plan.rooms.some(room => room.type === "office" && !plan.furniture.some(item => item.roomId === room.id && item.workstationId))) {
@@ -747,16 +752,17 @@
       privateRoomCount: plan.rooms.filter(room => room.type === "private_room").length,
       sharedSpaceCount: plan.rooms.filter(room => room.type.startsWith("shared_")).length,
       guestBedCount: plan.furniture.filter(item => item.type === "bed" && guestRooms.some(room => room.id === item.roomId)).length,
-      corridorAreaSqm: round(plan.corridors.reduce((sum, r) => sum + area(r), 0)),
+      corridorAreaSqm: round(plan.corridors.reduce((sum, r) => sum + (region?polygonApi.area(r):area(r)), 0)),
       coreAreaSqm: round(plan.cores.reduce((sum, r) => sum + area(r), 0)),
       guestRoomAreaSqm: round(guestRooms.reduce((sum, room) => sum + room.areaSqm, 0)),
       serviceAreaSqm: round(plan.rooms.filter(room => room.type === "hotel_service").reduce((sum, room) => sum + room.areaSqm, 0))
     };
     if (plan.use === 'hotel' && hotelApi) Object.assign(plan, hotelApi.assignRooms(plan, options));
+    if(region)polygonApi.complete(plan,fp);
     plan.warnings = [...new Set(plan.warnings)];
     plan.status = "generated"; plan.reason = null; plan.quantityStatus = "generated"; plan.detailLevel = "concept";
     return plan;
   }
 
-  return Object.freeze({ generate, version: "1.3.0" });
+  return Object.freeze({ generate, version: "1.4.0" });
 });

@@ -5,6 +5,8 @@ const {analyze}=require('../analysis-engine');
 const interior=require('../interior-plan');
 const ifc=require('../mass-ifc');
 const workspace=require('../workspace-state');
+const interiors=require('../interior-geometry');
+const inside=(fp,r)=>r.polygon?r.polygon.outer.every(p=>geometry.containsPoint(fp.footprint.outer,p)):geometry.containsRect(fp,r);
 const base={siteAreaSqm:2400,targetBcr:50,floorsAbove:12,floorsBelow:3,parkingMode:'report',modelDetail:'concept',northSolar:false};
 const run=(inputs={},program='office')=>analyze({program,parcelKey:'custom_seoul',inputs:{...base,...inputs}});
 const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-6,`${a} != ${b}`);
@@ -38,7 +40,7 @@ for(const profile of ['chamfered','tapered','stepped','elliptic','sculpted','twi
  for(const fp of m.floorPlates){
   near(fp.areaSqm,geometry.create(fp).areaSqm);
   const plan=interior.generate(fp,{...result.inputs,coreLayout:m.coreLayout});
-  for(const r of [...plan.rooms,...plan.cores])assert.ok(geometry.containsRect(fp,r),`${profile}/${program}: room/core outside floor`);
+   for(const r of [...plan.rooms,...plan.cores])assert.ok(inside(fp,r),`${profile}/${program}: room/core outside floor`);
   for(const f of plan.furniture)assert.ok(geometry.containsRect(fp,{minX:f.x-f.width/2,maxX:f.x+f.width/2,minZ:f.z-f.depth/2,maxZ:f.z+f.depth/2}),`${profile}/${program}: furniture outside floor`);
  }
  for(const axis of m.structuralReference.columns)for(const fp of m.floorPlates)assert.ok(geometry.containsPoint(fp.footprint.outer,[axis.x,axis.z]));
@@ -59,7 +61,7 @@ for(const option of ['A','B','C'])for(const profile of ['chamfered','tapered','s
  assert.ok(m.areas.achievedFarPct<=m.zoningRule.maxFar+.01);assert.ok(m.areas.achievedBcrPct<=m.zoningRule.maxBcr+.01);
  for(const fp of m.floorPlates){
   const plan=interior.generate(fp,{coreLayout:m.coreLayout});
-  for(const r of [...plan.rooms,...plan.cores])assert.ok(geometry.containsRect(fp,r),`${option}/${profile}: outside contour`);
+   for(const r of [...plan.rooms,...plan.cores])assert.ok(inside(fp,r),`${option}/${profile}: outside contour`);
  }
  if(profile==='chamfered')assert.match(ifc.buildIfc(m,{}),/IFCPOLYLINE\(\((?:#\d+,){8}#\d+\)\)/);
 }

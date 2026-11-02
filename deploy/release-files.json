@@ -79,6 +79,7 @@
     "gunicorn.conf.py",
     "hotel-modules.js",
     "index.html",
+    "interior-geometry.js",
     "interior-plan.js",
     "interior-viewer.js",
     "interior-walk.css",
@@ -218,7 +219,8 @@
     "ui-feedback.js",
     "ui-feedback.css",
     "tests/ui-feedback.test.js",
-    "docs/UI-REFINEMENT.md"
+    "docs/UI-REFINEMENT.md",
+    "tests/polygon-interior.test.js"
   ],
   "web": [
     "NOTICE.md",
@@ -259,6 +261,7 @@
     "finance-model.js",
     "hotel-modules.js",
     "index.html",
+    "interior-geometry.js",
     "interior-plan.js",
     "interior-viewer.js",
     "interior-walk.css",

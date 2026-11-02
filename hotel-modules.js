@@ -2,10 +2,11 @@
  * runtime or source is included. Sizes and ADR multipliers are editable study
  * assumptions, not statutory minima, market evidence or an operating licence. */
 (function (root, factory) {
-  const api = factory(typeof module === "object" && module.exports ? require("./study-identity.js") : root.AtelierStudyIdentity);
+  const node=typeof module==='object'&&module.exports;
+  const api = factory(node ? require("./study-identity.js") : root.AtelierStudyIdentity,node?require('./interior-geometry.js'):root.AtelierInteriorGeometry);
   if (typeof module === "object" && module.exports) module.exports = api;
   if (root) root.AtelierHotelModules = api;
-})(typeof window !== "undefined" ? window : globalThis, function (identity) {
+})(typeof window !== "undefined" ? window : globalThis, function (identity,polygonApi) {
   "use strict";
   const TYPES = Object.freeze({ standard: "hotel.standard.v1", twin: "hotel.twin.v1", suite: "hotel.suite.v1", housekeeping: "hotel.housekeeping.v1" });
   const DEFAULTS = Object.freeze({ hotelAdrKrw: 180000, hotelOccupancyPct: 70, hotelRoomsOverride: 0,
@@ -34,8 +35,9 @@
   }
   function definition(room) { return CATALOG.find(c => c.roomType === room?.type) || CATALOG.find(c => c.type_id === room?.type_id); }
   function dimensions(room) {
-    const w = Number(room?.maxX) - Number(room?.minX), d = Number(room?.maxZ) - Number(room?.minZ);
-    return { widthM: w, depthM: d, areaSqm: w * d, minSideM: Math.min(w,d) };
+    const b=room?.layoutBounds||room;
+    const w = Number(b?.maxX) - Number(b?.minX), d = Number(b?.maxZ) - Number(b?.minZ);
+    return { widthM: w, depthM: d, areaSqm: room?.polygon?room.areaSqm:w * d, minSideM: Math.min(w,d) };
   }
   function fits(room, def) { const d = dimensions(room); return [d.widthM,d.depthM].every(n=>Number.isFinite(n)&&n>0) && d.areaSqm + 1e-6 >= def.minAreaSqm && d.minSideM + 1e-6 >= def.minSideM; }
   function counts(rooms) { const result = { standard: 0, twin: 0, suite: 0, housekeeping: 0 }; for (const room of rooms) { const d = definition(room); if (d) result[d.key]++; } return result; }
@@ -80,10 +82,12 @@
   function fixtureReasons(room,plan,def) {
     const reasons=[];
     if(!fits(room,def)) reasons.push("module-dimensions");
-    const inside=(a,b)=>a&&b&&[a.minX,a.maxX,a.minZ,a.maxZ,b.minX,b.maxX,b.minZ,b.maxZ].every(Number.isFinite)&&a.minX>=b.minX-1e-6&&a.maxX<=b.maxX+1e-6&&a.minZ>=b.minZ-1e-6&&a.maxZ<=b.maxZ+1e-6;
-    const validDoor=(d,b)=>d&&b&&[d.x,d.z,d.width].every(Number.isFinite)&&d.width>0&&(d.axis==="x"
+    const inside=(a,b)=>a&&b&&[a.minX,a.maxX,a.minZ,a.maxZ,b.minX,b.maxX,b.minZ,b.maxZ].every(Number.isFinite)&&a.minX>=b.minX-1e-6&&a.maxX<=b.maxX+1e-6&&a.minZ>=b.minZ-1e-6&&a.maxZ<=b.maxZ+1e-6&&(!b.polygon||polygonApi?.containsRect(b.polygon,a));
+    const validDoor=(d,b)=>{
+      if(b?.polygon&&polygonApi&&d&&[d.x,d.z,d.width].every(Number.isFinite)&&d.width>0){const ends=d.axis==='x'?[[d.x-d.width/2,d.z],[d.x+d.width/2,d.z]]:[[d.x,d.z-d.width/2],[d.x,d.z+d.width/2]];return b.polygon.outer.some((a,i,r)=>ends.every(p=>polygonApi.distance(p,a,r[(i+1)%r.length])<.0001));}
+      return d&&b&&[d.x,d.z,d.width].every(Number.isFinite)&&d.width>0&&(d.axis==="x"
       ?(Math.abs(d.z-b.minZ)<1e-5||Math.abs(d.z-b.maxZ)<1e-5)&&d.x-d.width/2>=b.minX-1e-6&&d.x+d.width/2<=b.maxX+1e-6
-      :d.axis==="z"&&(Math.abs(d.x-b.minX)<1e-5||Math.abs(d.x-b.maxX)<1e-5)&&d.z-d.width/2>=b.minZ-1e-6&&d.z+d.width/2<=b.maxZ+1e-6);
+      :d.axis==="z"&&(Math.abs(d.x-b.minX)<1e-5||Math.abs(d.x-b.maxX)<1e-5)&&d.z-d.width/2>=b.minZ-1e-6&&d.z+d.width/2<=b.maxZ+1e-6);};
     const doors=(plan.doors||[]).filter(d=>d.roomId===room.id);
     if(!doors.some(d=>d.kind!=="ensuite"&&validDoor(d,room))) reasons.push("entrance-door");
     const footprint=item=>({minX:item.x-item.width/2,maxX:item.x+item.width/2,minZ:item.z-item.depth/2,maxZ:item.z+item.depth/2});

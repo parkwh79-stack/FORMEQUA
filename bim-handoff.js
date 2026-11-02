@@ -20,11 +20,19 @@
     positive(b.maxX-b.minX,"room width");positive(b.maxZ-b.minZ,"room depth");return b;
   }
   function outline(b,elevation){return [[b.minX,b.minZ],[b.maxX,b.minZ],[b.maxX,b.maxZ],[b.minX,b.maxZ],[b.minX,b.minZ]].map(([x,z])=>toBimPoint({x,z,y:elevation}));}
+  function polygonLoop(r,elevation){return [...r,r[0]].map(([x,z])=>toBimPoint({x,z,y:elevation}));}
   function overlaps(a,b,c,d){return Math.min(b,d)-Math.max(a,c)>EPS;}
   function liesOnRect(w,b){
     return Math.abs(w.z1-w.z2)<EPS
       ? (Math.abs(w.z1-b.minZ)<EPS||Math.abs(w.z1-b.maxZ)<EPS)&&overlaps(Math.min(w.x1,w.x2),Math.max(w.x1,w.x2),b.minX,b.maxX)
       : (Math.abs(w.x1-b.minX)<EPS||Math.abs(w.x1-b.maxX)<EPS)&&overlaps(Math.min(w.z1,w.z2),Math.max(w.z1,w.z2),b.minZ,b.maxZ);
+  }
+  function liesOnRoom(w,r){
+    if(!r.polygon)return liesOnRect(w,r);
+    return [r.polygon.outer,...r.polygon.holes].some(ring=>ring.some((a,i)=>{const b=ring[(i+1)%ring.length],dx=b[0]-a[0],dz=b[1]-a[1],len=Math.hypot(dx,dz);if(len<EPS)return false;
+      const distance=(x,z)=>Math.abs(dx*(z-a[1])-dz*(x-a[0]))/len,project=(x,z)=>((x-a[0])*dx+(z-a[1])*dz)/len;
+      const u=project(w.x1,w.z1),v=project(w.x2,w.z2);return distance(w.x1,w.z1)<EPS*3&&distance(w.x2,w.z2)<EPS*3&&overlaps(Math.min(u,v),Math.max(u,v),0,len);
+    }));
   }
   function adjacentWalls(door,walls){
     const center=door.axis==="x"?door.x:door.z,constant=door.axis==="x"?door.z:door.x,half=door.width/2;
@@ -53,12 +61,13 @@
     for(const s of value.storeys)if(!Number.isInteger(s.level)||!Number.isFinite(s.elevationM)||!Number.isFinite(s.heightM)||s.heightM<=0)errors.push("층 위치·높이가 유효하지 않습니다: "+s.id);
     for(const o of [...value.rooms,...value.walls,...value.doors])if(!storeyIds.has(o.storeyId))errors.push("존재하지 않는 층 참조: "+o.id);
     for(const r of value.rooms){
-      if(!Array.isArray(r.boundaryBimM)||r.boundaryBimM.length!==5||!r.boundaryBimM.every(point)||!Number.isFinite(r.areaSqm)||r.areaSqm<=0)errors.push("실 경계·면적이 유효하지 않습니다: "+r.id);
+      const loops=[r.boundaryBimM,...(Array.isArray(r.holesBimM)?r.holesBimM:[])];
+      if(!loops.every(loop=>Array.isArray(loop)&&loop.length>=4&&loop.length<=1025&&loop.every(point))||!Number.isFinite(r.areaSqm)||r.areaSqm<=0)errors.push("실 경계·면적이 유효하지 않습니다: "+r.id);
       else {
-        let area=0;for(let i=0;i<r.boundaryBimM.length-1;i++){const a=r.boundaryBimM[i],b=r.boundaryBimM[i+1];area+=a[0]*b[1]-b[0]*a[1];}
-        if(Math.abs(Math.abs(area)/2-r.areaSqm)>0.01)errors.push("실 경계와 면적이 일치하지 않습니다: "+r.id);
-        if(r.boundaryBimM.some(p=>Math.abs(p[2]-storeyById.get(r.storeyId)?.elevationM)>EPS))errors.push("실의 높이가 층 위치와 일치하지 않습니다: "+r.id);
-        if(r.boundaryBimM[0].some((n,i)=>Math.abs(n-r.boundaryBimM[4][i])>EPS))errors.push("실 경계가 닫히지 않았습니다: "+r.id);
+        const areas=loops.map(loop=>{let area=0;for(let i=0;i<loop.length-1;i++){const a=loop[i],b=loop[i+1];area+=a[0]*b[1]-b[0]*a[1];}return Math.abs(area)/2;});
+        if(Math.abs(areas[0]-areas.slice(1).reduce((s,a)=>s+a,0)-r.areaSqm)>0.01)errors.push("실 경계와 면적이 일치하지 않습니다: "+r.id);
+        if(loops.some(loop=>loop.some(p=>Math.abs(p[2]-storeyById.get(r.storeyId)?.elevationM)>EPS)))errors.push("실의 높이가 층 위치와 일치하지 않습니다: "+r.id);
+        if(loops.some(loop=>loop[0].some((n,i)=>Math.abs(n-loop.at(-1)[i])>EPS)))errors.push("실 경계가 닫히지 않았습니다: "+r.id);
       }
     }
     for(const w of value.walls)if(!point(w.startBimM)||!point(w.endBimM)||Math.hypot(...w.startBimM.map((n,i)=>n-w.endBimM[i]))<EPS||!Number.isFinite(w.heightM)||w.heightM<=0||!Number.isFinite(w.thicknessM)||w.thicknessM<=0)errors.push("벽 형상이 유효하지 않습니다: "+w.id);
@@ -108,12 +117,14 @@
         storey.grossFloorAreaSqm=round(fp.areaSqm);
       }
       if(!plan||plan.status!=="generated"){result.warnings.push(storey.name+" 실내 객체는 생성되지 않아 전달하지 않았습니다.");continue;}
+      if(plan.coverage)storey.interiorCoverage=JSON.parse(JSON.stringify(plan.coverage));
+      storey.openSupportSpaces=(plan.supportSpaces||[]).map(r=>({sourceId:r.id,label:r.label,type:r.type,areaSqm:round(r.areaSqm),boundaryBimM:polygonLoop(r.polygon.outer,elevation),holesBimM:r.polygon.holes.map(h=>polygonLoop(h,elevation))}));
       const roomMap=new Map(),wallRows=[],wallKeys=new Set();
       for(const r of plan.rooms||[]){
         if(typeof r.id!=="string"||!r.id||roomMap.has(r.id))throw new Error("실 ID는 층 내에서 고유해야 합니다.");
         const b=boundsOf(r),roomId=id(scope,"room",fp.level,r.id);roomMap.set(r.id,roomId);
         const room={id:roomId,sourceId:r.id,moduleId:r.moduleId||null,type_id:r.type_id||null,storeyId,label:r.label,type:r.type,
-          areaSqm:round((b.maxX-b.minX)*(b.maxZ-b.minZ)),boundaryBimM:outline(b,elevation),sourceBoundsM:b,hotelModule:r.hotelModule?JSON.parse(JSON.stringify(r.hotelModule)):null};
+          areaSqm:round(r.polygon?r.polygon.areaSqm:(b.maxX-b.minX)*(b.maxZ-b.minZ)),boundaryBimM:r.polygon?polygonLoop(r.polygon.outer,elevation):outline(b,elevation),...(r.polygon?{holesBimM:r.polygon.holes.map(h=>polygonLoop(h,elevation))}:{}),sourceBoundsM:b,hotelModule:r.hotelModule?JSON.parse(JSON.stringify(r.hotelModule)):null};
         if(Number.isFinite(r.areaSqm)&&Math.abs(r.areaSqm-room.areaSqm)>0.01)throw new Error("실 경계와 원본 면적이 다릅니다: "+r.id);
         result.rooms.push(room);result.relations.push({kind:"storey-contains",fromId:storeyId,toId:roomId});
       }
@@ -125,7 +136,7 @@
         const wall={id:id(scope,"wall",fp.level,signature),storeyId,startBimM:toBimPoint({x:w.x1,z:w.z1,y:elevation}),endBimM:toBimPoint({x:w.x2,z:w.z2,y:elevation}),
           thicknessM:w.thickness,heightM:w.height,kind:"concept-partition-segment",isStructuralElement:false,nativeHostVerified:false};
         result.walls.push(wall);wallRows.push({id:wall.id,source:w});result.relations.push({kind:"storey-contains",fromId:storeyId,toId:wall.id});
-        for(const r of plan.rooms||[])if(liesOnRect(w,r)||r.ensuite?.bounds&&liesOnRect(w,r.ensuite.bounds))result.relations.push({kind:"room-boundary-segment",fromId:roomMap.get(r.id),toId:wall.id});
+        for(const r of plan.rooms||[])if(liesOnRoom(w,r)||r.ensuite?.bounds&&liesOnRect(w,r.ensuite.bounds))result.relations.push({kind:"room-boundary-segment",fromId:roomMap.get(r.id),toId:wall.id});
       }
       for(const d of plan.doors||[]){
         if(!roomMap.has(d.roomId))throw new Error("문이 존재하지 않는 실을 참조합니다: "+d.roomId);

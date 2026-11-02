@@ -6,7 +6,7 @@ Implemented 2026-11-02. Existing A/B/C presets remain available. Their default p
 
 `floor-geometry.js` supplies per-storey convex outer contours and optional rectangular atrium holes in building-local X/Z metres. Y is height. Each floor has a stable `floorId`. Floor area is the signed polygon area less holes; chamfered corners remove two times the squared cut distance. The building footprint uses the union of all storeys' outer horizontal projections, with a fast path when the first floor contains all upper floors. Taper/setbacks are applied before existing site/solar/height/area/core/parking checks. Shape changes do not replace the legal or site inputs.
 
-WebGL slabs, façade edges, plan outlines and IFC floor/roof slabs use these contours. IFC X=model X, Y=-model Z, Z=height. Interior rooms and the continuous core use a conservative inscribed rectangle for chamfered floors. The residual perimeter zone is unplanned; the plan warns about this limitation. Existing rectangular room-generation methods have not become arbitrary polygon solvers. Common structural axes are only reference lines; they are filtered against all storeys and do not establish structural safety.
+WebGL slabs, façade edges, plan outlines and IFC floor/roof slabs use these contours. IFC X=model X, Y=-model Z, Z=height. Interior rooms and corridors are clipped to the actual convex storey contour, inset 0.2 m for the exterior wall reserve. Curved and rotated perimeter portions belong to polygon rooms or open support spaces; they are not discarded as an inscribed-rectangle remainder. The continuous core still uses a shared safe inscribed region across every storey. Common structural axes are only reference lines; they are filtered against all storeys and do not establish structural safety.
 
 ## Sculptural studies
 
@@ -16,7 +16,7 @@ Three one-click silhouette presets are available in the shape panel. `elliptic` 
 
 For overlapping projections, only the union input is snapped to a one-micrometre grid to avoid trigonometric near-coincidences in polygon clipping. Actual per-storey contours and their areas stay unchanged. A containment fast path uses the largest enclosing floor when available. The four example sites, all A/B/C options and three intensities are covered by an additional 108-case calculation sweep during release QA.
 
-For all three profiles, the interior/core inscribed rectangle is derived from the contour half-planes with a physical edge inset. Residual perimeter zones remain unplanned. Full floor outlines are visible in plan and 3D. Curved façades are instanced in repeated panel groups to limit draw calls. PV rows that protrude beyond the real roof or cross an atrium are omitted. Upper projection unions, hotel counts, cached plans, workspace inputs and IFC contours all consume the same geometry. Rotating floors and changing overhangs require external structural design and incremental cost assessment; the standard conceptual cost model does not price complex transfer structures or bespoke curved panels.
+For all three profiles, the continuous core remains in the shared inscribed region; rooms, corridors and perimeter support areas follow each actual storey polygon. Full matching room floors and exterior/atrium window segments are visible in plan and 3D. Curved façades are instanced in repeated panel groups to limit draw calls. PV rows that protrude beyond the real roof or cross an atrium are omitted. Upper projection unions, hotel counts, cached plans, workspace inputs and IFC contours all consume the same geometry. Rotating floors and changing overhangs require external structural design and incremental cost assessment; the standard conceptual cost model does not price complex transfer structures or bespoke curved panels.
 
 ## Manifold boundary
 
@@ -36,4 +36,12 @@ Only the exact vendored WASM path is statically allowed. CSP permits WebAssembly
 
 ## Future work
 
-Arbitrary user-drawn curves/voids/booleans, continuous helical façades, true polygon room planning and structural/MEP design are not enabled in this version. Add them only after extending the same floor/area/core/plan/export contracts. Manifold subdivision count is not a storey count.
+Arbitrary user-drawn curves/voids/booleans, continuous helical façades, free-form polygon subdivision beyond the generated convex storeys and structural/MEP design are not enabled in this version. Add them only after extending the same floor/area/core/plan/export contracts. Manifold subdivision count is not a storey count.
+
+## Polygon interior contract
+
+`interior-geometry.js` uses the already vendored polygon-clipping library. The orthogonal room/corridor partition is intersected with each generated storey contour, retaining real polygon area and optional atrium holes. A coverage ledger compares their union plus fixed cores, explicit obstacles and open support areas against the clear floor region. Unassigned area must remain below 0.01 m² in regression tests; this is an area accounting check, not an occupancy or permit certification. Tiny or inaccessible fragments become support reservations rather than fabricated guest rooms or dwelling units.
+
+Furniture and rectangular wet-room modules must fit inside each actual room. Room polygons extend to the façade; a safe fitted rectangle only guides furniture placement. Hotel fitting prefers a 3.5 m clear module side (4 m for suites) where feasible, using the existing conceptual module assumptions, not invented statutory minima. Actual completed modules feed hotel finance quantities. The fixed vertical core does not rotate with individual floors.
+
+SVG and WebGL share those polygon room surfaces, door positions, walls and actual exterior/atrium glazing segments. Walking and navigation reject points outside the true floor, including bounding-box corners and courtyard holes; navigation cache keys include the region. BIM coordination JSON retains closed variable-vertex loops, holes, actual areas, wall relations and per-storey support/coverage metadata in `[x, -z, height]` metres. Existing IFC export still excludes interior objects. Curves remain polygonal approximations; detailed structural, fire, accessibility and MEP design require separate work.

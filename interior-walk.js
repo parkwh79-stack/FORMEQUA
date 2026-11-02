@@ -1,18 +1,19 @@
 /** First-person floor navigation. Metres, x/z world coordinates; no renderer dependency. */
 (function (root, factory) {
   "use strict";
-  const api = factory();
+  const api = factory(typeof module==='object'&&module.exports?require('./interior-geometry.js'):root.AtelierInteriorGeometry);
   if (typeof module === "object" && module.exports) module.exports = api;
   if (root) root.AtelierInteriorWalk = api;
-})(typeof window !== "undefined" ? window : globalThis, function () {
+})(typeof window !== "undefined" ? window : globalThis, function (polygonApi) {
   "use strict";
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
   function canStand(plan, x, z, margin = .22) {
     if (!plan || !Number.isFinite(x) || !Number.isFinite(z)) return false;
     const b = plan.bounds;
+    if(plan.region&&(!polygonApi||!polygonApi.contains(plan.region,[x,z],margin)))return false;
     if (x < b.minX + margin || x > b.maxX - margin || z < b.minZ + margin || z > b.maxZ - margin) return false;
-    if ([...plan.cores, ...plan.voids, ...(plan.obstacles || [])].some(r => x > r.minX - margin && x < r.maxX + margin && z > r.minZ - margin && z < r.maxZ + margin)) return false;
+    if ([...plan.cores, ...plan.voids, ...(plan.obstacles || [])].some(r => r.polygon?polygonApi.intersectsDisc(r.polygon,[x,z],margin):x > r.minX - margin && x < r.maxX + margin && z > r.minZ - margin && z < r.maxZ + margin)) return false;
     if (plan.furniture.some(item => {
       // The same rotation used to draw each furniture item also applies to its obstacle.
       const angle = item.rotationY || 0, dx = x - item.x, dz = z - item.z;

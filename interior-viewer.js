@@ -59,13 +59,24 @@
     const texture = new THREE.CanvasTexture(canvas);
     texture.encoding = THREE.sRGBEncoding;
     const mat = new THREE.MeshBasicMaterial({ map: texture, transparent: true, depthTest: false, depthWrite: false, toneMapped: false });
-    const width = Math.min(5.8, room.maxX - room.minX - .3);
+    const fit = room.layoutBounds || room;
+    const width = Math.max(.35, Math.min(5.8, fit.maxX - fit.minX - .3));
     const object = new THREE.Mesh(new THREE.PlaneGeometry(width, width * .3125), mat);
     object.rotation.x = -Math.PI / 2;
-    object.position.set((room.minX + room.maxX) / 2, y, (room.minZ + room.maxZ) / 2);
+    object.position.set(room.labelPoint?.x ?? (room.minX + room.maxX) / 2, y, room.labelPoint?.z ?? (room.minZ + room.maxZ) / 2);
     object.userData = { level: floor.level, elementType: "roomLabel", roomId: room.id };
     object.renderOrder = 20;
     layers.spaces.add(object);
+  }
+
+  function polygonSolid(parent, row, y, height, mat, kind) {
+    if (!row.polygon) return box(parent,(row.minX+row.maxX)/2,y+height/2,(row.minZ+row.maxZ)/2,row.maxX-row.minX,height,row.maxZ-row.minZ,mat,kind);
+    const shape=new THREE.Shape();
+    row.polygon.outer.forEach(([x,z],i)=>i?shape.lineTo(x,-z):shape.moveTo(x,-z));shape.closePath();
+    for(const ring of row.polygon.holes||[]){const path=new THREE.Path();ring.forEach(([x,z],i)=>i?path.lineTo(x,-z):path.moveTo(x,-z));path.closePath();shape.holes.push(path);}
+    const mesh=new THREE.Mesh(new THREE.ExtrudeGeometry(shape,{depth:height,bevelEnabled:false}),mat);
+    mesh.rotation.x=-Math.PI/2;mesh.position.y=y;mesh.receiveShadow=true;
+    mesh.userData={level:floor.level,elementType:kind,roomId:row.id,generatedInterior:true,polygonAreaSqm:row.polygon.areaSqm};parent.add(mesh);return mesh;
   }
 
   function buildStudy() {
@@ -110,16 +121,15 @@
     layers.ceilings.add(ceiling);
 
     currentPlan.rooms.forEach(room => {
-      box(layers.spaces, (room.minX + room.maxX) / 2, y + .014, (room.minZ + room.maxZ) / 2,
-        room.maxX - room.minX, .02, room.maxZ - room.minZ, mats.room, "space");
+      polygonSolid(layers.spaces,room,y+.004,.02,mats.room,"space");
       addLabel(room, y + .055);
     });
+    for(const space of currentPlan.supportSpaces||[]){polygonSolid(layers.spaces,space,y+.004,.02,mats.room,"supportSpace");if(space.layoutBounds&&space.areaSqm>3)addLabel(space,y+.055);}
     currentPlan.cores.forEach(rect => {
       box(layers.core, (rect.minX + rect.maxX) / 2, y + height / 2, (rect.minZ + rect.maxZ) / 2,
         rect.maxX - rect.minX, height, rect.maxZ - rect.minZ, mats.core, "core");
     });
-    (currentPlan.obstacles || []).forEach(rect => box(layers.core, (rect.minX+rect.maxX)/2, y+height/2, (rect.minZ+rect.maxZ)/2,
-      rect.maxX-rect.minX,height,rect.maxZ-rect.minZ,mats.frame,'input-obstacle'));
+    (currentPlan.obstacles || []).forEach(rect => polygonSolid(layers.core,rect,y,height,mats.frame,'input-obstacle'));
     currentPlan.walls.forEach(wall => {
       const dx = wall.x2 - wall.x1, dz = wall.z2 - wall.z1;
       const wallHeight = Math.min(height, wall.height || height);
@@ -130,7 +140,7 @@
     currentPlan.doors.forEach(door => {
       const alongX = door.axis === "x", doorHeight = Math.min(2.2, height - .12);
       const room = currentPlan.rooms.find(item => item.id === door.roomId);
-      const inward = alongX ? Math.sign((room.minZ + room.maxZ) / 2 - door.z) : Math.sign((room.minX + room.maxX) / 2 - door.x);
+      const inward = alongX ? Math.sign((room.labelPoint?.z ?? (room.minZ + room.maxZ) / 2) - door.z) : Math.sign((room.labelPoint?.x ?? (room.minX + room.maxX) / 2) - door.x);
       // Posts and lintel frame a genuine opening; an open leaf leaves the doorway clear.
       for (const sign of [-1, 1]) box(layers.doors,
         door.x + (alongX ? sign * door.width / 2 : 0), y + doorHeight / 2,
@@ -177,21 +187,17 @@
       if (item.type === "bed") box(layers.furniture, item.x, y + item.height + .06,
         item.z - item.depth * .3, item.width * .82, .12, item.depth * .22, mats.room, "pillow");
     });
-    // Restrained perimeter glazing lets the context read as an architectural interior.
-    const width = b.maxX - b.minX, depth = b.maxZ - b.minZ;
-    for (const z of [b.minZ, b.maxZ]) {
-      box(layers.shell, 0, y + .25, z, width, .5, .16, mats.wall, "externalSill");
-      box(layers.shell, 0, y + height / 2 + .2, z, width, height - .5, .035, mats.glass, "window");
-      const count = Math.max(2, Math.round(width / 3));
-      for (let n = 0; n <= count; n++) box(layers.shell, b.minX + width * n / count,
-        y + height / 2, z, .065, height, .1, mats.frame, "windowFrame");
-    }
-    for (const x of [b.minX, b.maxX]) {
-      box(layers.shell, x, y + .25, (b.minZ + b.maxZ) / 2, .16, .5, depth, mats.wall, "externalSill");
-      box(layers.shell, x, y + height / 2 + .2, (b.minZ + b.maxZ) / 2, .035, height - .5, depth, mats.glass, "window");
-      const count = Math.max(2, Math.round(depth / 3));
-      for (let n = 0; n <= count; n++) box(layers.shell, x, y + height / 2,
-        b.minZ + depth * n / count, .1, height, .065, mats.frame, "windowFrame");
+    // Use the same actual storey contour as the slab, including the atrium.
+    const fallback=[[b.minX,b.minZ],[b.maxX,b.minZ],[b.maxX,b.maxZ],[b.minX,b.maxZ]];
+    const rings=currentPlan.footprint?.outer?[currentPlan.footprint.outer,...(currentPlan.footprint.holes||[])]:[fallback];
+    for(const ring of rings)for(let i=0;i<ring.length;i++){
+      const a=ring[i],c=ring[(i+1)%ring.length],dx=c[0]-a[0],dz=c[1]-a[1],length=Math.hypot(dx,dz),angle=-Math.atan2(dz,dx);
+      if(length<.01)continue;
+      const segment=(vertical,h,thickness,mat,kind)=>{const mesh=box(layers.shell,(a[0]+c[0])/2,vertical,(a[1]+c[1])/2,length,h,thickness,mat,kind);mesh.rotation.y=angle;return mesh;};
+      segment(y+.25,.5,.16,mats.wall,"externalSill");
+      segment(y+(height+.5)/2,height-.5,.035,mats.glass,"window");
+      const count=Math.max(1,Math.ceil(length/3));
+      for(let n=0;n<count;n++){const mesh=box(layers.shell,a[0]+dx*n/count,y+height/2,a[1]+dz*n/count,.065,height,.1,mats.frame,"windowFrame");mesh.rotation.y=angle;}
     }
     const entry = new THREE.Mesh(new THREE.RingGeometry(.15, .27, 32), material(C.frame, { side: THREE.DoubleSide }));
     entry.rotation.x = -Math.PI / 2; entry.position.set(currentPlan.entry.x, y + .05, currentPlan.entry.z);
@@ -635,18 +641,18 @@
     const b = currentPlan.bounds, scale = 22, pad = 36;
     const x = value => pad + (value - b.minX) * scale, z = value => pad + (value - b.minZ) * scale;
     const width = (b.maxX - b.minX) * scale + pad * 2, height = (b.maxZ - b.minZ) * scale + pad * 2 + 65;
-    const rect = (r, fill) => `<rect x="${x(r.minX)}" y="${z(r.minZ)}" width="${(r.maxX-r.minX)*scale}" height="${(r.maxZ-r.minZ)*scale}" fill="${fill}" stroke="#a49d8d" stroke-width=".5"/>`;
-    const content = [rect(b,"#e1dbd0"), ...currentPlan.rooms.map(r=>rect(r,"#f5f3ee")), ...currentPlan.cores.map(r=>rect(r,"#b4ac9a")), ...currentPlan.voids.map(r=>rect(r,"#fff")),
+    const rect = (r, fill) => r.polygon?`<path d="${[r.polygon.outer,...r.polygon.holes].map(ring=>ring.map((p,i)=>`${i?'L':'M'} ${x(p[0])} ${z(p[1])}`).join(' ')+' Z').join(' ')}" fill-rule="evenodd" fill="${fill}" stroke="#a49d8d" stroke-width=".5"/>`:`<rect x="${x(r.minX)}" y="${z(r.minZ)}" width="${(r.maxX-r.minX)*scale}" height="${(r.maxZ-r.minZ)*scale}" fill="${fill}" stroke="#a49d8d" stroke-width=".5"/>`;
+    const content = [rect(currentPlan.footprint?{polygon:currentPlan.footprint}:b,"#e1dbd0"), ...currentPlan.rooms.map(r=>rect(r,"#f5f3ee")), ...(currentPlan.supportSpaces||[]).map(r=>rect(r,"#e9eee5")), ...currentPlan.cores.map(r=>rect(r,"#b4ac9a")), ...currentPlan.voids.map(r=>rect(r,"#fff")),
       ...(currentPlan.obstacles||[]).map(r=>rect(r,'#686858')),
       ...currentPlan.furniture.map(f=>rect({minX:f.x-f.width/2,maxX:f.x+f.width/2,minZ:f.z-f.depth/2,maxZ:f.z+f.depth/2},"#c1b5a3")),
       ...currentPlan.walls.map(w=>`<line x1="${x(w.x1)}" y1="${z(w.z1)}" x2="${x(w.x2)}" y2="${z(w.z2)}" stroke="#55584e" stroke-width="${Math.max(1.5,(w.thickness||.12)*scale)}"/>`),
       ...currentPlan.doors.map(d=>{
         const r = currentPlan.rooms.find(room=>room.id===d.roomId);
-        const inward = d.axis==='x' ? Math.sign((r.minZ+r.maxZ)/2-d.z) : Math.sign((r.minX+r.maxX)/2-d.x);
+        const inward = d.axis==='x' ? Math.sign((r.labelPoint?.z??(r.minZ+r.maxZ)/2)-d.z) : Math.sign((r.labelPoint?.x??(r.minX+r.maxX)/2)-d.x);
         return `<path d="M ${x(d.x-(d.axis==='x'?d.width/2:0))} ${z(d.z-(d.axis==='z'?d.width/2:0))} l ${d.axis==='x'?0:inward*d.width*scale*.8} ${d.axis==='x'?inward*d.width*scale*.8:0}" stroke="#9c8164" fill="none"/>`;
       }),
-      ...currentPlan.rooms.map(r=>`<text x="${x((r.minX+r.maxX)/2)}" y="${z((r.minZ+r.maxZ)/2)}" text-anchor="middle" fill="#45483e" font-size="10">${escape(r.label)} · ${r.areaSqm.toFixed(1)} m²</text>`)].join("");
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><title>FORMEQUA ${floor.level}F interior study</title><rect width="100%" height="100%" fill="#fff"/><g font-family="Arial,sans-serif">${content}<text x="36" y="${height-37}" fill="#45483e" font-size="13">FORMEQUA · ${floor.level}F · ${escape(useNames[floor.use])}</text><text x="36" y="${height-17}" fill="#797b70" font-size="10">자동 배치 초안 · 치수와 공간 구성은 설계 검토 필요 · 단위 m</text></g></svg>`;
+       ...currentPlan.rooms.map(r=>`<text x="${x(r.labelPoint?.x??(r.minX+r.maxX)/2)}" y="${z(r.labelPoint?.z??(r.minZ+r.maxZ)/2)}" text-anchor="middle" fill="#45483e" font-size="10">${escape(r.label)} · ${r.areaSqm.toFixed(1)} m²</text>`)].join("");
+    const svg = window.AtelierDashboardStudy?.planSvg(currentPlan,`${floor.level}F · ${useNames[floor.use]}`) || `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><title>FORMEQUA ${floor.level}F interior study</title><rect width="100%" height="100%" fill="#fff"/><g font-family="Arial,sans-serif">${content}<text x="36" y="${height-37}" fill="#45483e" font-size="13">FORMEQUA · ${floor.level}F · ${escape(useNames[floor.use])}</text><text x="36" y="${height-17}" fill="#797b70" font-size="10">자동 배치 초안 · 치수와 공간 구성은 설계 검토 필요 · 단위 m</text></g></svg>`;
     const url = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml;charset=utf-8" }));
     const link = document.createElement("a"); link.href = url; link.download = `seoul-atelier-${state.parcelKey}-${floor.level}F-interior-study.svg`; link.click();
     setTimeout(()=>URL.revokeObjectURL(url), 1000);
