@@ -19,7 +19,7 @@
   const PROJECT_VERSION = 1;
   const MAX_PROJECT_LENGTH = 5 * 1024 * 1024;
   const ENUMS = {
-    massProfile: ["legacy", "chamfered", "tapered", "stepped"], crownStyle: ["flat", "sloped"],
+    massProfile: ["legacy", "chamfered", "tapered", "stepped", "elliptic", "sculpted", "twisted"], crownStyle: ["flat", "sloped"],
     parcelKey: ["gangnam_yeoksam", "seongdong_seongsu", "mapo_hapjeong", "jongno_euljiro", "custom_seoul"],
     option: ["A", "B", "C"],
     viewMode: ["standard", "envelope", "xray", "exploded"],

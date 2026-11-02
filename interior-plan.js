@@ -585,7 +585,8 @@
     const residential = plan.use === "residential";
     const coliving = residential && options.spaceProgram === "coliving";
     plan.spaceProgram = coliving ? "coliving" : "standard";
-    if (fp.cornerCutM > EPS) warnings.push("모서리 절삭형 실내는 실제 외곽 안의 보수적인 내접 영역에 배치합니다. 외곽의 잔여 공간은 별도 계획 대상입니다.");
+    if (floorApi?.sculptural(fp.massProfile)) warnings.push("곡면·회전형 실내는 실제 외곽 안의 보수적인 내접 영역에 배치합니다. 외곽의 잔여 공간과 사선·곡면 실 배치는 별도 계획 대상입니다.");
+    else if (fp.cornerCutM > EPS) warnings.push("모서리 절삭형 실내는 실제 외곽 안의 보수적인 내접 영역에 배치합니다. 외곽의 잔여 공간은 별도 계획 대상입니다.");
     plan.residentialType = residential ? (options.residentialType === "officetel" ? "officetel" : "apartment") : null;
     const workstationSettings = { ...officeSettings(options), externalOfficeLayout: Boolean(officeApi) };
     plan.obstacles = (options.layoutObstacles || []).filter(o => o.level === plan.level && o.maxX > bounds.minX && o.minX < bounds.maxX && o.maxZ > bounds.minZ && o.minZ < bounds.maxZ).map(o => ({...o}));

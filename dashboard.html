@@ -8,7 +8,7 @@
   <title>FORMEQUA — Design Workspace</title>
   <link rel="icon" href="assets/formequa-mark.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="styles.css?v=20261021-regulations2" />
-  <link rel="stylesheet" href="dashboard.css?v=20261102-mass1" />
+  <link rel="stylesheet" href="dashboard.css?v=20261102-mass2" />
   <link rel="stylesheet" href="use-study.css?v=20261021-regulations2" />
   <link rel="stylesheet" href="dashboard-study.css?v=20261021-regulations2" />
   <link rel="stylesheet" href="parking-review.css?v=20261021-regulations2">
@@ -26,35 +26,35 @@
   <script defer src="parcel-regulation-rules.js?v=20261021-audit1"></script>
   <script defer src="parcel-geometry.js?v=20261021-audit1"></script>
   <script defer src="spatial-settings.js?v=20261021-audit1"></script>
-  <script defer src="workspace-state.js?v=20261102-mass1"></script>
+  <script defer src="workspace-state.js?v=20261102-mass2"></script>
   <script defer src="legal-rules.js?v=20261021-audit1"></script>
   <script defer src="use-permissions.js?v=20261021-audit1"></script>
   <script defer src="material-system.js?v=20261021-audit1"></script>
   <script defer src="facade-geometry.js?v=20261021-audit1"></script>
   <script defer src="building-review.js?v=20261021-audit1"></script>
-  <script defer src="concept-structure.js?v=20261102-mass1"></script>
-  <script defer src="floor-geometry.js?v=20261102-mass1"></script>
-  <script defer src="core-layout.js?v=20261102-mass1"></script>
+  <script defer src="concept-structure.js?v=20261102-mass2"></script>
+  <script defer src="floor-geometry.js?v=20261102-mass2"></script>
+  <script defer src="core-layout.js?v=20261102-mass2"></script>
   <script defer src="office-layout.js?v=20261021-audit1"></script>
   <script defer src="study-identity.js?v=20261021-audit1"></script>
   <script defer src="hotel-modules.js?v=20261021-audit1"></script>
-  <script defer src="interior-plan.js?v=20261102-mass1"></script>
-  <script defer src="finance-model.js?v=20261102-mass1"></script>
+  <script defer src="interior-plan.js?v=20261102-mass2"></script>
+  <script defer src="finance-model.js?v=20261102-mass2"></script>
   <script defer src="parking-layout.js?v=20261021-audit1"></script>
   <script defer src="site-context.js?v=20261021-audit1"></script>
   <script defer src="study-review-snapshot.js?v=20261021-private-review2"></script>
-  <script defer src="mass-solid-engine.js?v=20261102-mass1"></script>
-  <script defer src="app.js?v=20261102-mass1"></script>
+  <script defer src="mass-solid-engine.js?v=20261102-mass2"></script>
+  <script defer src="app.js?v=20261102-mass2"></script>
   <script defer src="use-study.js?v=20261021-audit1"></script>
   <script defer src="interior-walk.js?v=20261021-audit1"></script>
-  <script defer src="interior-viewer.js?v=20261102-mass1"></script>
+  <script defer src="interior-viewer.js?v=20261102-mass2"></script>
   <script defer src="parcel-review.js?v=20261024-publicmodel1"></script>
   <script defer src="project-files.js?v=20261021-audit1"></script>
   <script defer src="finance-controls.js?v=20261021-pilot1"></script>
   <script defer src="model-video.js?v=20261023-model-entry1"></script>
-  <script defer src="dashboard.js?v=20261102-mass1"></script>
+  <script defer src="dashboard.js?v=20261102-mass2"></script>
   <script defer src="facade-preview.js?v=20261023-model-entry1"></script>
-  <script defer src="dashboard-study.js?v=20261102-mass1"></script>
+  <script defer src="dashboard-study.js?v=20261102-mass2"></script>
   <script defer src="parking-review.js?v=20261021-audit1"></script>
   <script defer src="study-publication.js?v=20261024-stateless1"></script>
 </head>
@@ -644,6 +644,12 @@
           </div>
           <section id="modelFocusShapePanel" class="model-focus-shape-panel" role="tabpanel" aria-labelledby="modelFocusShapeTab" hidden>
             <div class="model-focus-scale"><span>현재 모형 높이</span><strong id="modelFocusHeight">— <small>m</small></strong><p id="modelFocusScale">적용 규모를 확인하고 있습니다.</p></div>
+            <div class="model-sculptural-label">SCULPTURAL STUDIES <span>새로운 실루엣</span></div>
+            <div class="model-sculptural-presets" role="group" aria-label="곡면·회전 매스 선택">
+              <button type="button" data-mass-preset="elliptic" aria-pressed="false"><svg viewBox="0 0 80 66" aria-hidden="true"><path d="M16 15v38c0 11 48 11 48 0V15"/><ellipse cx="40" cy="15" rx="24" ry="8"/><path d="M16 25c0 11 48 11 48 0M16 36c0 11 48 11 48 0M16 47c0 11 48 11 48 0"/></svg><strong>타원형</strong><small>Elliptic</small></button>
+              <button type="button" data-mass-preset="sculpted" aria-pressed="false"><svg viewBox="0 0 80 66" aria-hidden="true"><ellipse cx="40" cy="10" rx="14" ry="5"/><ellipse cx="40" cy="21" rx="21" ry="6"/><ellipse cx="40" cy="33" rx="26" ry="7"/><ellipse cx="40" cy="46" rx="22" ry="6"/><ellipse cx="40" cy="57" rx="15" ry="5"/><path d="M26 10Q3 34 25 57M54 10q23 24 1 47"/></svg><strong>유선형</strong><small>Sculpted</small></button>
+              <button type="button" data-mass-preset="twisted" aria-pressed="false"><svg viewBox="0 0 80 66" aria-hidden="true"><path d="m21 9 32-5 8 10-33 5ZM17 22l34-7 12 11-35 6ZM14 36l33-10 17 10-32 12ZM17 50l26-14 20 11-27 15Z"/></svg><strong>회전형</strong><small>Twisted</small></button>
+            </div>
             <div id="modelFocusMassControls" class="model-focus-mass-controls"></div>
             <div class="model-focus-form-label">건물 형태</div>
             <div class="model-focus-forms" role="group" aria-label="건물 형태 대안">
@@ -652,8 +658,8 @@
               <button type="button" data-focus-option="C" aria-pressed="false"><span class="model-form-icon model-form-core" aria-hidden="true"></span><span>북측 코어형<small>집약된 기준층</small></span></button>
             </div>
             <div class="model-profile-controls">
-              <label for="modelMassProfile">매스의 윤곽<select id="modelMassProfile"><option value="legacy">기본 형태</option><option value="chamfered">모서리 절삭</option><option value="tapered">상부 축소</option><option value="stepped">단계 후퇴 · 3개 층 단위</option></select></label>
-              <label for="modelMassShapePct">형태 변화 <output id="modelMassShapeValue">15%</output><input id="modelMassShapePct" type="range" min="0" max="30" step="1" value="15"></label>
+              <label for="modelMassProfile">매스의 윤곽<select id="modelMassProfile"><option value="legacy">기본 형태</option><option value="chamfered">모서리 절삭</option><option value="tapered">상부 축소</option><option value="stepped">단계 후퇴 · 3개 층 단위</option><option value="elliptic">타원형 · 둥근 곡면</option><option value="sculpted">유선형 · 중앙 확장</option><option value="twisted">회전형 · 층별 회전</option></select></label>
+              <label for="modelMassShapePct"><span id="modelMassShapeLabel">형태 변화</span><output id="modelMassShapeValue">15%</output><input id="modelMassShapePct" type="range" min="0" max="30" step="1" value="15"></label>
               <label for="modelCrownStyle">지붕 실루엣<select id="modelCrownStyle"><option value="flat">평지붕</option><option value="sloped">경사 크라운</option></select></label>
               <label for="modelCrownHeight" id="modelCrownHeightField" hidden>크라운 높이 <output id="modelCrownHeightValue">3.0 m</output><input id="modelCrownHeight" type="range" min="0" max="8" step=".5" value="3"></label>
               <p>층별 외곽에 맞춰 면적과 실내 배치를 갱신합니다. 크라운은 비거주 지붕 스크린이며 추가 구조·공사비는 별도 검토 대상입니다.</p>

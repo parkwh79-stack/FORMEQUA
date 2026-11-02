@@ -1,12 +1,22 @@
 # Shared mass profiles and Manifold display solids
 
-Implemented 2026-11-02. Existing A/B/C presets remain available. Their default profile is `legacy`; the additional profiles are `chamfered`, `tapered` and `stepped` (three-storey groups). `massShapePct` ranges from 0 to 30. `crownStyle` is `flat` or `sloped`; `crownHeightM` ranges from 0 to 8 metres.
+Implemented 2026-11-02. Existing A/B/C presets remain available. Their default profile is `legacy`; the additional profiles are `chamfered`, `tapered`, `stepped` (three-storey groups), `elliptic`, `sculpted` and `twisted`. `massShapePct` ranges from 0 to 30. `crownStyle` is `flat` or `sloped`; `crownHeightM` ranges from 0 to 8 metres.
 
 ## Geometry contract
 
 `floor-geometry.js` supplies per-storey convex outer contours and optional rectangular atrium holes in building-local X/Z metres. Y is height. Each floor has a stable `floorId`. Floor area is the signed polygon area less holes; chamfered corners remove two times the squared cut distance. The building footprint uses the union of all storeys' outer horizontal projections, with a fast path when the first floor contains all upper floors. Taper/setbacks are applied before existing site/solar/height/area/core/parking checks. Shape changes do not replace the legal or site inputs.
 
 WebGL slabs, façade edges, plan outlines and IFC floor/roof slabs use these contours. IFC X=model X, Y=-model Z, Z=height. Interior rooms and the continuous core use a conservative inscribed rectangle for chamfered floors. The residual perimeter zone is unplanned; the plan warns about this limitation. Existing rectangular room-generation methods have not become arbitrary polygon solvers. Common structural axes are only reference lines; they are filtered against all storeys and do not establish structural safety.
+
+## Sculptural studies
+
+Three one-click silhouette presets are available in the shape panel. `elliptic` uses a 32-vertex superellipse, varying from a rounded rectangle (power 8) toward an ellipse (power 2) as intensity rises. `sculpted` uses elliptical floors with a sinusoidal size profile: the lower and upper floors shrink by the intensity fraction, while the middle reaches the permitted envelope. These curves are polygonal approximations; areas use those actual polygons, not ideal analytic ellipses.
+
+`twisted` requests up to 90 degrees of accumulated floor rotation (`massShapePct * 3`). Each chamfered floor rotates around its local centre and scales to remain within its previously checked rectangle. A convex hull with a fixed central 55%-width/depth rectangle retains space for the vertical atrium; common cores are still separately fitted and validated across every storey. This creates discrete rotating storeys, **not** a continuous helical façade or a rigid rotation of the whole building. Fit constraints may reduce the apparent twist. Floor angles follow requested storey indices; height/FAR/core constraints may truncate the visible sequence.
+
+For overlapping projections, only the union input is snapped to a one-micrometre grid to avoid trigonometric near-coincidences in polygon clipping. Actual per-storey contours and their areas stay unchanged. A containment fast path uses the largest enclosing floor when available. The four example sites, all A/B/C options and three intensities are covered by an additional 108-case calculation sweep during release QA.
+
+For all three profiles, the interior/core inscribed rectangle is derived from the contour half-planes with a physical edge inset. Residual perimeter zones remain unplanned. Full floor outlines are visible in plan and 3D. Curved façades are instanced in repeated panel groups to limit draw calls. PV rows that protrude beyond the real roof or cross an atrium are omitted. Upper projection unions, hotel counts, cached plans, workspace inputs and IFC contours all consume the same geometry. Rotating floors and changing overhangs require external structural design and incremental cost assessment; the standard conceptual cost model does not price complex transfer structures or bespoke curved panels.
 
 ## Manifold boundary
 
@@ -26,4 +36,4 @@ Only the exact vendored WASM path is statically allowed. CSP permits WebAssembly
 
 ## Future work
 
-Curved/elliptical floors, twist, arbitrary voids/booleans, true polygon room planning and structural/MEP design are not enabled in this version. Add them only after extending the same floor/area/core/plan/export contracts. Manifold subdivision count is not a storey count.
+Arbitrary user-drawn curves/voids/booleans, continuous helical façades, true polygon room planning and structural/MEP design are not enabled in this version. Add them only after extending the same floor/area/core/plan/export contracts. Manifold subdivision count is not a storey count.

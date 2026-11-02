@@ -92,7 +92,9 @@
     for (const [id,key] of [['modelMassProfile','massProfile'],['modelMassShapePct','massShapePct'],['modelCrownStyle','crownStyle'],['modelCrownHeight','crownHeightM']]) {
       const field=byId(id); if(field && field!==document.activeElement)field.value=state[key];
     }
-    if(byId('modelMassShapeValue'))byId('modelMassShapeValue').textContent=`${state.massShapePct}%`;
+    if(byId('modelMassShapeLabel'))byId('modelMassShapeLabel').textContent=({elliptic:'곡면 강도',sculpted:'상·하부 축소',twisted:'요청 누적 회전각'})[state.massProfile]||'형태 변화';
+    if(byId('modelMassShapeValue'))byId('modelMassShapeValue').textContent=state.massProfile==='twisted'?`${Math.round(state.massShapePct*3)}°`:`${state.massShapePct}%`;
+    document.querySelectorAll('[data-mass-preset]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.massPreset===state.massProfile)));
     if(byId('modelCrownHeightValue'))byId('modelCrownHeightValue').textContent=`${Number(state.crownHeightM).toFixed(1)} m`;
     if(byId('modelCrownHeightField'))byId('modelCrownHeightField').hidden=state.crownStyle!=='sloped';
     if(byId('modelMassShapePct'))byId('modelMassShapePct').disabled=state.massProfile==='legacy';
@@ -339,6 +341,10 @@
 
   window.addEventListener("DOMContentLoaded", () => {
     syncAppearance();
+    document.querySelectorAll('[data-mass-preset]').forEach(button=>button.addEventListener('click',()=>{
+      state.massProfile=button.dataset.massPreset;state.massShapePct=30;
+      updateAllCalculationsAndUI();
+    }));
     for (const [id,key] of [['modelMassProfile','massProfile'],['modelMassShapePct','massShapePct'],['modelCrownStyle','crownStyle'],['modelCrownHeight','crownHeightM']]) {
       const field=byId(id);
       field?.addEventListener(field.type==='range'?'input':'change',()=>{

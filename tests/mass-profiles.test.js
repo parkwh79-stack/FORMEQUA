@@ -15,10 +15,22 @@ near(geometry.attach({...simple,hasAtrium:true},{massProfile:'chamfered',massSha
 assert.throws(()=>geometry.settings({massShapePct:NaN}));
 assert.throws(()=>geometry.settings({crownHeightM:9}));
 near(geometry.projectedArea([simple,{...simple,northShiftM:8}]),300);
+const ellipse=geometry.attach(simple,{massProfile:'elliptic',massShapePct:30});
+near(ellipse.areaSqm,16*Math.sin(Math.PI/16)*50);
+assert.equal(ellipse.footprint.outer.length,32);
+const bulb={massProfile:'sculpted',massShapePct:30};
+near(geometry.scaleFor(1,11,bulb),.7);near(geometry.scaleFor(6,11,bulb),1);near(geometry.scaleFor(11,11,bulb),.7);
+for(const strength of [0,15,30])for(const profile of ['elliptic','sculpted','twisted'])for(const width of [8,20,70]){
+ const fp=geometry.attach({...simple,widthM:width,level:6,hasAtrium:true},{massProfile:profile,massShapePct:strength,floorsAbove:11});
+ assert.ok(fp.footprint.areaSqm>0);assert.ok(fp.footprint.outer.length<=64);
+ for(const [x,z] of fp.footprint.outer){assert.ok(Math.abs(x)<=width/2+1e-7);assert.ok(Math.abs(z-simple.northShiftM)<=simple.depthM/2+1e-7);}
+ for(const p of fp.footprint.holes[0])assert.ok(geometry.containsPoint(fp.footprint.outer,p),'atrium must stay inside fitted rotating/curved floor');
+ const bounds=geometry.planningBounds(fp);for(const p of [[bounds.minX,bounds.minZ],[bounds.maxX,bounds.maxZ],[bounds.minX,bounds.maxZ],[bounds.maxX,bounds.minZ]])assert.ok(geometry.containsPoint(fp.footprint.outer,p));
+}
 const legacy=run(),explicit=run({massProfile:'legacy',massShapePct:30});
 assert.deepEqual(explicit.model.areas,legacy.model.areas);
 assert.deepEqual(explicit.model.finance,legacy.model.finance);
-for(const profile of ['chamfered','tapered','stepped'])for(const program of ['office','hotel']){
+for(const profile of ['chamfered','tapered','stepped','elliptic','sculpted','twisted'])for(const program of ['office','hotel']){
  const result=run({massProfile:profile,massShapePct:25},program),m=result.model;
  assert.ok(m.floorPlates.length>3);
  near(m.floorPlates.reduce((s,f)=>s+f.areaSqm,0),m.areas.aboveGroundGfaSqm);
@@ -41,7 +53,7 @@ const limited=run({regulationMode:'scenario',maxHeightM:30,crownStyle:'sloped',c
 assert.ok(limited.model.buildingHeightM<=30+.001);
 const clean=workspace({}).sanitize({parcelKey:'custom_seoul',massProfile:'chamfered',massShapePct:24,crownStyle:'sloped',crownHeightM:4});
 assert.equal(clean.massProfile,'chamfered');assert.equal(clean.crownHeightM,4);
-for(const option of ['A','B','C'])for(const profile of ['chamfered','tapered','stepped']){
+for(const option of ['A','B','C'])for(const profile of ['chamfered','tapered','stepped','elliptic','sculpted','twisted']){
  const m=run({option,massProfile:profile,massShapePct:30,crownStyle:'sloped',crownHeightM:8,floorsAbove:35}).model;
  assert.ok(m.actualFloorsAbove>0);near(m.areas.buildingFootprintSqm,geometry.projectedArea(m.floorPlates));
  assert.ok(m.areas.achievedFarPct<=m.zoningRule.maxFar+.01);assert.ok(m.areas.achievedBcrPct<=m.zoningRule.maxBcr+.01);
@@ -63,5 +75,11 @@ for(const option of ['A','B','C'])for(const profile of ['chamfered','tapered','s
   near(volume(solids[0]),fp.areaSqm*4);assert.ok(Math.abs(volume(solids[1])-fp.areaSqm*6*.55)<1e-4);
  }
  await assert.rejects(buildSolids([{key:'bad',heightM:1,contours:[[[NaN,0],[1,0],[0,1]]]}]));
+  for(const profile of ['elliptic','sculpted','twisted']){
+    const fp=geometry.attach({...simple,level:6,hasAtrium:true},{massProfile:profile,massShapePct:30,floorsAbove:11});
+    const [solid]=await buildSolids([{key:profile,heightM:4,contours:geometry.localContours(fp)}]);
+    assert.ok(solid.positions.length>0);assert.ok([...solid.positions].every(Number.isFinite));
+    const clean=workspace({}).sanitize({parcelKey:'custom_seoul',massProfile:profile,massShapePct:30});assert.equal(clean.massProfile,profile);
+  }
  console.log('Mass profiles: canonical areas, room/core/furniture containment, height, saved inputs, IFC and actual Manifold WASM solids passed.');
 })().catch(error=>{console.error(error);process.exitCode=1;});

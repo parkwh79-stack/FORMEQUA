@@ -606,3 +606,14 @@ html:has(body.dashboard-site.model-focus), body.dashboard-site.model-focus { ove
 .model-profile-controls select{padding:8px;background:#faf9f5;border:1px solid #cfcec4;border-radius:3px;color:#414b3b;font:inherit}
 .model-profile-controls p{margin:0;font-size:11px;line-height:1.65;color:#75796e}
 .model-profile-controls [hidden]{display:none}
+.model-sculptural-label{display:flex;justify-content:space-between;gap:8px;margin:17px 0 9px;font-size:10px;font-weight:700;letter-spacing:.07em;color:#535d49}
+.model-sculptural-label span{font-size:10px;letter-spacing:0;color:#777b70;font-weight:400}
+.model-sculptural-presets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:20px}
+.model-sculptural-presets button{display:grid;justify-items:center;gap:3px;padding:9px 3px 10px;background:#f8f7f2;border:1px solid #d2d2c7;color:#59634e;cursor:pointer;transition:background .2s,border-color .2s}
+.model-sculptural-presets button:hover,.model-sculptural-presets button[aria-pressed=true]{background:#e8eadf;border-color:#6f795f}
+.model-sculptural-presets button:focus-visible{outline:2px solid #75805f;outline-offset:3px}
+.model-sculptural-presets svg{height:57px;width:72px;max-width:100%;fill:none;stroke:currentColor;stroke-width:1.1;stroke-linejoin:round}
+.model-sculptural-presets strong{font-size:12px;font-weight:600}
+.model-sculptural-presets small{font-size:9px;letter-spacing:.05em}
+body.model-focus .model-profile-controls input[type=range]::-webkit-slider-thumb{background:#6b775b;border-color:#6b775b}
+body.model-focus .model-profile-controls input[type=range]::-moz-range-thumb{background:#6b775b;border-color:#6b775b}
