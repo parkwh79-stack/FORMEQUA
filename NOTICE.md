@@ -18,3 +18,7 @@ been separately designated; the third-party licenses below remain applicable.
 Photographs, illustrations and generated architectural concept assets are not
 granted a software license by this notice. AI architectural concepts are not
 photographs of completed buildings. No visitor review records are included.
+# Manifold runtime
+
+`vendor/manifold/manifold.js` and `manifold.wasm` are the unmodified Manifold 3.5.4 npm runtime, published by the Manifold authors under Apache License 2.0. See `vendor/manifold/LICENSE.txt` and `vendor/manifold/provenance.json` for license, pinned source revision, distribution integrity and runtime hashes. Upstream: https://github.com/elalish/manifold/tree/v3.5.4 . The FORMEQUA adapter is application code and is not an upstream Manifold example.
+

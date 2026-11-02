@@ -203,7 +203,18 @@
     "vendor/README.md",
     "vendor/polygon-clipping-0.15.7.umd.min.js",
     "vendor/polygon-clipping-LICENSE.md",
-    "workspace-state.js"
+    "workspace-state.js",
+    "floor-geometry.js",
+    "mass-solid-engine.js",
+    "mass-solid-worker.js",
+    "vendor/manifold/formequa-kernel.js",
+    "vendor/manifold/manifold.js",
+    "vendor/manifold/manifold.wasm",
+    "vendor/manifold/LICENSE.txt",
+    "vendor/manifold/package.json",
+    "vendor/manifold/provenance.json",
+    "tests/mass-profiles.test.js",
+    "docs/MASS-PROFILES.md"
   ],
   "web": [
     "NOTICE.md",
@@ -284,6 +295,13 @@
     "use-study.js",
     "vendor/polygon-clipping-0.15.7.umd.min.js",
     "vendor/polygon-clipping-LICENSE.md",
-    "workspace-state.js"
+    "workspace-state.js",
+    "floor-geometry.js",
+    "mass-solid-engine.js",
+    "mass-solid-worker.js",
+    "vendor/manifold/formequa-kernel.js",
+    "vendor/manifold/manifold.js",
+    "vendor/manifold/manifold.wasm",
+    "vendor/manifold/LICENSE.txt"
   ]
 }

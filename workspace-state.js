@@ -19,6 +19,7 @@
   const PROJECT_VERSION = 1;
   const MAX_PROJECT_LENGTH = 5 * 1024 * 1024;
   const ENUMS = {
+    massProfile: ["legacy", "chamfered", "tapered", "stepped"], crownStyle: ["flat", "sloped"],
     parcelKey: ["gangnam_yeoksam", "seongdong_seongsu", "mapo_hapjeong", "jongno_euljiro", "custom_seoul"],
     option: ["A", "B", "C"],
     viewMode: ["standard", "envelope", "xray", "exploded"],
@@ -43,6 +44,7 @@
   };
   // Bounds mirror the existing controls (loan bounds mirror their input handlers).
   const NUMBERS = {
+    massShapePct: [0,30], crownHeightM: [0,8],
     siteAreaSqm: [200, 20000], roadWidthM: [4, 50], publicContribPct: [0, 25],
     legalFarCapPct: [0, 1500], legalBcrCapPct: [0, 100], maxHeightM: [0, 300],
     housingUnitAreaSqm: [15, 250], housingUnits: [0, 3000, true],
@@ -67,7 +69,7 @@
   let getState = null;
   let initialized = false;
   let importing = false;
-  const PROJECT_DEFAULTS = Object.freeze({ ...spatial?.defaults, modelDetail: "auto", regulationMode: "statutory", financeMode: "rental", hotelAdrKrw: 180000,
+  const PROJECT_DEFAULTS = Object.freeze({ ...spatial?.defaults, massProfile:"legacy", massShapePct:15, crownStyle:"flat", crownHeightM:3, modelDetail: "auto", regulationMode: "statutory", financeMode: "rental", hotelAdrKrw: 180000,
     hotelOccupancyPct: 70, hotelRoomsOverride: 0, hotelAncillaryRevenuePct: 15,
     hotelOpexPct: 60, hotelFixedOpexEok: 0, hotelFfeReservePct: 4,
     hotelManagementFeePct: 3, hotelResidentialDistanceM: null, hotelResidentialBarrier: null });
@@ -87,6 +89,9 @@
     }
     if (!Object.hasOwn(input, "regulationMode")) clean.regulationMode = "statutory";
     if (!Object.hasOwn(input, "modelDetail")) clean.modelDetail = "auto";
+    for (const [key,value] of Object.entries({massProfile:'legacy',massShapePct:15,crownStyle:'flat',crownHeightM:3})) {
+      if (!Object.hasOwn(input,key)) clean[key]=value;
+    }
     for (const [key, [min, max, integer]] of Object.entries(NUMBERS)) {
       const value = numeric(input[key]);
       if (value !== null && value >= min && value <= max && (!integer || Number.isInteger(value))) clean[key] = value;

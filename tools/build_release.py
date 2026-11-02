@@ -25,7 +25,7 @@ QUERY_FIXTURES = {
 }
 # Hosting must distribute the notices accompanying its bundled JavaScript.
 # Keep these exact paths separate from the app's general static-file policy.
-HOSTING_NOTICE_FILES = {"NOTICE.md", "vendor/polygon-clipping-LICENSE.md"}
+HOSTING_NOTICE_FILES = {"NOTICE.md", "vendor/polygon-clipping-LICENSE.md", "vendor/manifold/LICENSE.txt"}
 STATELESS_DEPLOYMENT_CONFIG = (
     "window.FORMEQUA_DEPLOYMENT = Object.freeze({\n"
     "  reviewStorageEnabled: false,\n"

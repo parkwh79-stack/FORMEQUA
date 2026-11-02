@@ -103,6 +103,10 @@
       const storey={id:storeyId,level:fp.level,name:fp.level<0?"B"+-fp.level:fp.level+"F",use:fp.use,elevationM:elevation,heightM:height,
         planStatus:plan?.status||"not-supplied",expectedGuestRoomCount:plan?.use==="hotel"&&plan?.status==="generated"?plan.metrics?.guestRoomCount:null};
       result.storeys.push(storey);
+      if(fp.footprint){
+        storey.footprintBimM={outer:fp.footprint.outer.map(([x,z])=>[round(x),round(-z),round(elevation)]),holes:fp.footprint.holes.map(r=>r.map(([x,z])=>[round(x),round(-z),round(elevation)]))};
+        storey.grossFloorAreaSqm=round(fp.areaSqm);
+      }
       if(!plan||plan.status!=="generated"){result.warnings.push(storey.name+" 실내 객체는 생성되지 않아 전달하지 않았습니다.");continue;}
       const roomMap=new Map(),wallRows=[],wallKeys=new Set();
       for(const r of plan.rooms||[]){

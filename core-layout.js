@@ -2,10 +2,10 @@
  * metre frame. A coordination draft, not a stair/elevator/fire-safety design. */
 (function (root, factory) {
   "use strict";
-  const api = factory();
+  const api = factory(typeof module === "object" && module.exports ? require("./floor-geometry.js") : root?.AtelierFloorGeometry);
   if (typeof module === "object" && module.exports) module.exports = api;
   if (root) root.AtelierCoreLayout = api;
-})(typeof window !== "undefined" ? window : null, function () {
+})(typeof window !== "undefined" ? window : null, function (floorApi) {
   "use strict";
   const EPS = 0.000001, INSET = 0.5;
   const finite = n => typeof n === "number" && Number.isFinite(n);
@@ -24,7 +24,7 @@
     if (!fp || !finite(fp.widthM) || !finite(fp.depthM) || fp.widthM <= 2 * INSET || fp.depthM <= 2 * INSET ||
       (fp.northShiftM !== undefined && !finite(fp.northShiftM))) return null;
     const w = fp.widthM, d = fp.depthM, z = fp.northShiftM === undefined ? 0 : fp.northShiftM;
-    return { bounds: rect(-w / 2 + INSET, w / 2 - INSET, z - d / 2 + INSET, z + d / 2 - INSET),
+    return { bounds: floorApi ? floorApi.planningBounds(fp, INSET) : rect(-w / 2 + INSET, w / 2 - INSET, z - d / 2 + INSET, z + d / 2 - INSET),
       voids: fp.hasAtrium ? [rect(-w * 0.175, w * 0.175, z - d * 0.175, z + d * 0.175)] : [] };
   }
   function validateForFloor(layout, fp) {

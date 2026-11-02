@@ -16,10 +16,11 @@
   const api = factory(node ? require('./core-layout.js') : root.AtelierCoreLayout,
     node ? require('./office-layout.js') : root.AtelierOfficeLayout,
     node ? require('./hotel-modules.js') : root.AtelierHotelModules,
-    node ? require('./spatial-settings.js') : root.AtelierSpatialSettings);
+    node ? require('./spatial-settings.js') : root.AtelierSpatialSettings,
+    node ? require('./floor-geometry.js') : root.AtelierFloorGeometry);
   if (typeof module === "object" && module.exports) module.exports = api;
   if (root) root.AtelierInteriorPlan = api;
-})(typeof window !== "undefined" ? window : (typeof globalThis !== "undefined" ? globalThis : this), function (coreLayoutApi, officeApi, hotelApi, spatialApi) {
+})(typeof window !== "undefined" ? window : (typeof globalThis !== "undefined" ? globalThis : this), function (coreLayoutApi, officeApi, hotelApi, spatialApi, floorApi) {
   "use strict";
 
   const EPS = 1e-6;
@@ -62,7 +63,7 @@
 
   function blank(fp, bounds, warnings) {
     return {
-      level: fp.level || 1, use: PROGRAMS[fp.use] ? fp.use : "main", bounds,
+      level: fp.level || 1, use: PROGRAMS[fp.use] ? fp.use : "main", bounds, footprint: fp.footprint || null,
       status: "not-generated", reason: "not-generated", quantityStatus: "not-generated",
       rooms: [], corridors: [], cores: [], voids: [], walls: [], doors: [], furniture: [],
       entry: { x: 0, z: round((bounds.minZ + bounds.maxZ) / 2) }, warnings,
@@ -579,11 +580,12 @@
     }
     if (w <= 1 || d <= 1) return { ...blank(fp, rect(-w / 2, w / 2, shift - d / 2, shift + d / 2), ["외벽 여유 공간보다 층 크기가 작아 실내 평면을 생성하지 않았습니다."]), reason: "insufficient-floor-space" };
     const margin = 0.5;
-    const bounds = rect(-w / 2 + margin, w / 2 - margin, shift - d / 2 + margin, shift + d / 2 - margin);
+    const bounds = floorApi ? floorApi.planningBounds(fp, margin) : rect(-w / 2 + margin, w / 2 - margin, shift - d / 2 + margin, shift + d / 2 - margin);
     const plan = blank(fp, bounds, warnings);
     const residential = plan.use === "residential";
     const coliving = residential && options.spaceProgram === "coliving";
     plan.spaceProgram = coliving ? "coliving" : "standard";
+    if (fp.cornerCutM > EPS) warnings.push("모서리 절삭형 실내는 실제 외곽 안의 보수적인 내접 영역에 배치합니다. 외곽의 잔여 공간은 별도 계획 대상입니다.");
     plan.residentialType = residential ? (options.residentialType === "officetel" ? "officetel" : "apartment") : null;
     const workstationSettings = { ...officeSettings(options), externalOfficeLayout: Boolean(officeApi) };
     plan.obstacles = (options.layoutObstacles || []).filter(o => o.level === plan.level && o.maxX > bounds.minX && o.minX < bounds.maxX && o.maxZ > bounds.minZ && o.minZ < bounds.maxZ).map(o => ({...o}));

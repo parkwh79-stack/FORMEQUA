@@ -86,7 +86,7 @@ def static_allowed(raw_path):
         return False
     if len(parts) > 1 and parts[0] not in {"assets", "vendor"}:
         return False
-    if Path(path).suffix.lower() not in ALLOWED_SUFFIXES:
+    if Path(path).suffix.lower() not in ALLOWED_SUFFIXES and path not in {"/vendor/manifold/manifold.wasm", "/vendor/manifold/LICENSE.txt"}:
         return False
     target = (PUBLIC_DIR / path.lstrip("/")).resolve()
     try:
@@ -114,5 +114,5 @@ def response_headers(path):
                ("Referrer-Policy", "same-origin"), ("Permissions-Policy", "camera=(), microphone=(), geolocation=()")]
     if path.startswith(("/api/", "/dashboard", "/model.html")):
         headers += [("Cache-Control", "no-store"), ("X-Robots-Tag", "noindex, nofollow, noarchive, nosnippet")]
-    headers.append(("Content-Security-Policy", "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self'; frame-src 'self' https://smap.seoul.go.kr; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"))
+    headers.append(("Content-Security-Policy", "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self'; frame-src 'self' https://smap.seoul.go.kr; media-src 'self' blob:; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"))
     return headers

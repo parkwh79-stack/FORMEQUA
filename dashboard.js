@@ -89,6 +89,13 @@
   }
 
   function syncFocusMass() {
+    for (const [id,key] of [['modelMassProfile','massProfile'],['modelMassShapePct','massShapePct'],['modelCrownStyle','crownStyle'],['modelCrownHeight','crownHeightM']]) {
+      const field=byId(id); if(field && field!==document.activeElement)field.value=state[key];
+    }
+    if(byId('modelMassShapeValue'))byId('modelMassShapeValue').textContent=`${state.massShapePct}%`;
+    if(byId('modelCrownHeightValue'))byId('modelCrownHeightValue').textContent=`${Number(state.crownHeightM).toFixed(1)} m`;
+    if(byId('modelCrownHeightField'))byId('modelCrownHeightField').hidden=state.crownStyle!=='sloped';
+    if(byId('modelMassShapePct'))byId('modelMassShapePct').disabled=state.massProfile==='legacy';
     document.querySelectorAll("[data-focus-option]").forEach(button => {
       const selected = button.dataset.focusOption === state.option;
       button.setAttribute("aria-pressed", String(selected));
@@ -332,6 +339,13 @@
 
   window.addEventListener("DOMContentLoaded", () => {
     syncAppearance();
+    for (const [id,key] of [['modelMassProfile','massProfile'],['modelMassShapePct','massShapePct'],['modelCrownStyle','crownStyle'],['modelCrownHeight','crownHeightM']]) {
+      const field=byId(id);
+      field?.addEventListener(field.type==='range'?'input':'change',()=>{
+        state[key]=field.type==='range'?Number(field.value):field.value;
+        updateAllCalculationsAndUI();
+      });
+    }
     document.querySelectorAll("[data-focus-tab]").forEach(button => {
       button.addEventListener("click", () => selectFocusTab(button.dataset.focusTab));
       button.addEventListener("keydown", event => {

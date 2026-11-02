@@ -466,6 +466,7 @@ const SEOUL_PARCELS = {
 // 2. APPLICATION STATE
 // ============================================================================
 const state = {
+  massProfile: "legacy", massShapePct: 15, crownStyle: "flat", crownHeightM: 3,
   ...(typeof window !== 'undefined' ? window.AtelierSpatialSettings?.defaults || {} : {}),
   parcelKey: "gangnam_yeoksam",
   option: "A", // "A" (Podium+Tower), "B" (Courtyard+Terrace), "C" (North Core High-Eff)
@@ -656,6 +657,8 @@ function reviewParcelRegulations(params) {
 }
 
 function evaluateDesignAndProforma(params, optionCode = params.option, overrideLandPricePyeongM = null) {
+  const floorShapeEngine = window.AtelierFloorGeometry;
+  const shapeSettings = floorShapeEngine?.settings(params) || { profile: "legacy", crownStyle: "flat", crownHeightM: 0 };
   const parcelRegulationReview = reviewParcelRegulations(params);
   const regulationMode = params.regulationMode === "scenario" ? "scenario" : "statutory";
   // Saved comparison numbers are never presented as statutory density/height.
@@ -797,7 +800,7 @@ function evaluateDesignAndProforma(params, optionCode = params.option, overrideL
   const requestedFloorsAbove = Math.max(0, Math.floor(Number(params.floorsAbove) || 0));
   const maxHeightM = Math.max(0, Number(params.maxHeightM) || 0);
   const floorHeightM = Math.max(0.1, Number(params.floorHeight) || 4);
-  const roofAllowanceM = 1.2;
+  const roofAllowanceM = shapeSettings.crownStyle === "sloped" ? Math.max(1.2, shapeSettings.crownHeightM + .45) : 1.2;
   const minStudyDimensionM = 6; // 자동 실내 평면 생성을 위한 검토용 한계. 법정 최소 치수가 아니다.
   const overrides = params.floorUseOverrides || {};
   const mixedProfile = params.mixedUseProfile || "office_retail";
@@ -862,6 +865,9 @@ function evaluateDesignAndProforma(params, optionCode = params.option, overrideL
       d *= 0.92;
     }
 
+    const profileScale = floorShapeEngine?.scaleFor(f, requestedFloorsAbove, params) || 1;
+    w *= profileScale; d *= profileScale;
+    if (shapeSettings.profile === "stepped" && f > 1 && (f - 1) % 3 === 0) hasTerraceStep = true;
     let solarRequiredSetbackM = rearSetbackM;
     const solarHeightM = zTop + roofAllowanceM;
     if (northSolarApplies) {
@@ -879,7 +885,8 @@ function evaluateDesignAndProforma(params, optionCode = params.option, overrideL
     northOffsetShift = Math.max(northLimit + d / 2, Math.min(southLimit - d / 2, northOffsetShift));
     const hasAtrium = optionCode === "B" && f >= 2;
     const atriumVoidRatio = hasAtrium ? 0.35 * 0.35 : 0;
-    let grossPlateSqm = w * d * (1 - atriumVoidRatio);
+    const cutFactor = shapeSettings.profile === "chamfered" ? shapeSettings.amountPct / 100 : 0;
+    let grossPlateSqm = w * d * (1 - atriumVoidRatio) - 2 * Math.pow(Math.min(w, d) * cutFactor, 2);
     const floorUse = floorUseAt(f);
     let remainingFarSqm = Math.max(0, areaBudgetSqm - accumulatedSqm);
     const primaryUse = String(params.buildingUse || "");
@@ -911,7 +918,7 @@ function evaluateDesignAndProforma(params, optionCode = params.option, overrideL
     }
     if (w < minStudyDimensionM || d < minStudyDimensionM) { stopReason = "small-floor"; break; }
     if (coreLayout?.status === "reserved" && window.AtelierCoreLayout &&
-        !window.AtelierCoreLayout.validateForFloor(coreLayout, { widthM:w, depthM:d, northShiftM:northOffsetShift, hasAtrium }).valid) {
+        !window.AtelierCoreLayout.validateForFloor(coreLayout, { widthM:w, depthM:d, northShiftM:northOffsetShift, hasAtrium, cornerCutM:Math.min(w,d)*cutFactor }).valid) {
       stopReason = "core-fit"; break;
     }
     const uMeta = USE_META[floorUse] || USE_META.main;
@@ -925,7 +932,7 @@ function evaluateDesignAndProforma(params, optionCode = params.option, overrideL
     if (floorUse === "residential") residentialSqm += grossPlateSqm;
     else nonResidentialSqm += grossPlateSqm;
 
-    plates.push({
+    const floorPlate = {
       level: f,
       use: floorUse,
       useLabelKr: floorUse === "amenity" && String(params.buildingUse || "").includes("호텔") ? "호텔 로비·공용" : uMeta.labelKr,
@@ -944,7 +951,8 @@ function evaluateDesignAndProforma(params, optionCode = params.option, overrideL
       hasAtrium,
       atriumVoidRatio,
       hasTerraceStep
-    });
+    };
+    plates.push(floorShapeEngine ? floorShapeEngine.attach(floorPlate, params) : floorPlate);
     }
     return { plates, areaSqm: accumulatedSqm, residentialSqm, nonResidentialSqm, stopReason };
   }
@@ -1016,7 +1024,7 @@ function evaluateDesignAndProforma(params, optionCode = params.option, overrideL
   if (generated.stopReason === "residential") massWarnings.push("상업지역 공동주택의 주거 용적률과 비주거 비율 조건에 맞춰 주거층 생성을 제한했습니다.");
   if (!actualFloorsAbove) massWarnings.push("현재 이격·높이·용적률·주차 조건에서 자동 생성할 수 있는 지상 평면이 없습니다.");
   if (actualFloorsAbove < requestedFloorsAbove) massWarnings.push(`요청 ${requestedFloorsAbove}층 중 ${actualFloorsAbove}층이 생성되었습니다. 6m 미만 평면은 실내 검토 한계로 생략합니다.`);
-  const buildingFootprintSqm = floorPlates.length ? floorPlates[0].widthM * floorPlates[0].depthM : 0;
+  const buildingFootprintSqm = floorPlates.length ? (shapeSettings.profile !== 'legacy' ? floorShapeEngine.projectedArea(floorPlates) : floorPlates[0].widthM * floorPlates[0].depthM) : 0;
   const achievedBcrPct = (buildingFootprintSqm / siteAreaSqm) * 100;
 
   const typFloorIdx = Math.min(floorPlates.length - 1, 4);
@@ -1035,6 +1043,9 @@ function evaluateDesignAndProforma(params, optionCode = params.option, overrideL
 
   const { sqmPerParkingUnit, legalParkingCount, plannedParkingCount, disabledParkingCount, evChargerFastSlow } = parking;
   const buildingHeightM = actualFloorsAbove ? floorPlates[actualFloorsAbove - 1].zTop + roofAllowanceM : 0;
+  const roofCrown = actualFloorsAbove && shapeSettings.crownStyle === 'sloped' && shapeSettings.crownHeightM > 0
+    ? {style:'sloped',heightM:shapeSettings.crownHeightM,baseElevationM:floorPlates.at(-1).zTop+.45,nonoccupiable:true,countedGfaSqm:0} : null;
+  if (roofCrown) massWarnings.push('경사 크라운은 비거주 지붕 스크린 개념입니다. 높이 여유에 반영하며 별도 구조·풍하중·추가 공사비와 법정 높이 산정은 확인이 필요합니다.');
   const buildingReview = window.AtelierBuildingReview?.evaluate({ ...params, floorPlates, buildingHeightM,
     basementPlateSqm, totalGfaSqm }) || null;
   const representation = buildingReview?.representation || { requested: params.modelDetail || "auto",
@@ -1056,10 +1067,10 @@ function evaluateDesignAndProforma(params, optionCode = params.option, overrideL
 
   let grossWallAreaSqm = 0;
   for (const fp of floorPlates) {
-    grossWallAreaSqm += 2.0 * (fp.widthM + fp.depthM) * params.floorHeight;
+    grossWallAreaSqm += (shapeSettings.profile !== "legacy" && fp.footprint ? fp.footprint.perimeterM : 2.0 * (fp.widthM + fp.depthM)) * params.floorHeight;
   }
   const topFp = floorPlates[floorPlates.length - 1] || { widthM: baseWidthM, depthM: baseDepthM };
-  const parapetAreaSqm = actualFloorsAbove ? 2.0 * (topFp.widthM + topFp.depthM) * 1.35 : 0;
+  const parapetAreaSqm = actualFloorsAbove ? (shapeSettings.profile !== 'legacy' ? topFp.footprint.perimeterM : 2.0 * (topFp.widthM + topFp.depthM)) * 1.35 : 0;
   const visionGlassAreaSqm = grossWallAreaSqm * wwrRatio;
   const opaqueSpandrelAreaSqm = grossWallAreaSqm * (1.0 - wwrRatio) + parapetAreaSqm;
 
@@ -1340,6 +1351,7 @@ function evaluateDesignAndProforma(params, optionCode = params.option, overrideL
     floorPlates,
     buildingHeightM,
     requestedFloorsAbove,
+    roofCrown,
     actualFloorsAbove,
     northSolarApplies,
     constraints: {
@@ -2234,7 +2246,48 @@ function getProceduralCladdingTexture(materialKey, baseHex) {
   return tex;
 }
 
+function addProfileFacade(fp, o) {
+  const rings = [fp.footprint.outer, ...fp.footprint.holes];
+  const add = (length, height, depth, material, x, y, z, angle) => {
+    const mesh = new THREE.Mesh(applyWorldFacadeUvs(new THREE.BoxGeometry(length, height, depth)), material);
+    mesh.position.set(x, y, z); mesh.rotation.y = angle;
+    mesh.castShadow = true; mesh.receiveShadow = true;
+    mesh.userData = { isInspectableFloor: true, level: fp.level };
+    buildingGroup.add(mesh); return mesh;
+  };
+  for (const ring of rings) for (let i = 0; i < ring.length; i++) {
+    const a = ring[i], b = ring[(i + 1) % ring.length];
+    const dx = b[0] - a[0], dz = b[1] - a[1], length = Math.hypot(dx, dz);
+    if (length < .05) continue;
+    const ux = dx / length, uz = dz / length, nx = uz, nz = -ux, angle = -Math.atan2(uz, ux);
+    const cx = (a[0] + b[0]) / 2, cz = (a[1] + b[1]) / 2;
+    add(length, o.glassHeight, .07, o.glassMat, cx - nx * .12, o.yBottom + o.slabThick + o.glassHeight / 2, cz - nz * .12, angle);
+    const bandHeight = Math.max(.18, o.glassHeight * (1 - o.wwrRatio));
+    if (!o.isXray) add(length, bandHeight, .12, o.spandrelMat, cx - nx * .08, o.yBottom + o.slabThick + bandHeight / 2, cz - nz * .08, angle);
+    const bays = Math.max(1, Math.ceil(length / o.bayW));
+    for (let j = 0; j <= bays; j++) {
+      const x = a[0] + dx * j / bays, z = a[1] + dz * j / bays;
+      const depth = state.facadeType === 'kinetic_louver' ? Math.min(.5, o.finDepth) : o.isMasonryLike ? .2 : .1;
+      add(.09, o.glassHeight, depth, o.frameMat, x - nx * depth / 2, o.yBottom + o.slabThick + o.glassHeight / 2, z - nz * depth / 2, angle);
+    }
+  }
+  if (state.selectedFloorLevel === fp.level) {
+    const geometry = createMassPlateGeometry(fp, state.floorHeight);
+    const outline = new THREE.LineSegments(new THREE.EdgesGeometry(geometry), new THREE.LineBasicMaterial({color:ATELIER_PALETTE.bronze}));
+    outline.position.set(0, o.yBottom + state.floorHeight / 2, fp.northShiftM);
+    buildingGroup.add(outline); geometry.dispose();
+  }
+}
+
 function createMassPlateGeometry(fp, heightM, widthM = fp.widthM, depthM = fp.depthM) {
+  if (fp.footprint && fp.cornerCutM > 0) {
+    const rings = window.AtelierFloorGeometry.localContours(fp, widthM, depthM);
+    const shape = new THREE.Shape(rings[0].map(([x,z]) => new THREE.Vector2(x,-z)));
+    rings.slice(1).forEach(r => shape.holes.push(new THREE.Path(r.map(([x,z]) => new THREE.Vector2(x,-z)))));
+    const geometry = new THREE.ExtrudeGeometry(shape, {depth:heightM,bevelEnabled:false,steps:1});
+    geometry.rotateX(-Math.PI/2); geometry.translate(0,-heightM/2,0);
+    return geometry;
+  }
   if (!fp.hasAtrium) return new THREE.BoxGeometry(widthM, heightM, depthM);
   const shape = new THREE.Shape();
   shape.moveTo(-widthM / 2, -depthM / 2);
@@ -2557,6 +2610,7 @@ function rebuild3DScene(model) {
       mass.position.set(0, yBottom + (fp.zTop - fp.zBottom) / 2, zCenter);
       mass.castShadow = true; mass.receiveShadow = true;
       mass.userData = { isInspectableFloor: true, level: fp.level, kind: "planning-mass" };
+      if (fp.massProfile !== 'legacy' && fp.footprint) mass.userData.massSolid = { contours: window.AtelierFloorGeometry.localContours(fp), heightM: fp.zTop - fp.zBottom };
       buildingGroup.add(mass);
       const edges = new THREE.LineSegments(new THREE.EdgesGeometry(geometry), new THREE.LineBasicMaterial({ color: ATELIER_PALETTE.contextEdge, clippingPlanes: activeClipPlanes }));
       edges.position.copy(mass.position); buildingGroup.add(edges);
@@ -2570,6 +2624,7 @@ function rebuild3DScene(model) {
     slabMesh.castShadow = true;
     slabMesh.receiveShadow = true;
     slabMesh.userData = { isInspectableFloor: true, level: fp.level };
+    if (fp.massProfile !== 'legacy' && fp.footprint) slabMesh.userData.massSolid = { contours: window.AtelierFloorGeometry.localContours(fp), heightM: slabThick };
     buildingGroup.add(slabMesh);
 
     // 4b. Interior Parallax Ceiling/Office Plane (three-fenestra depth effect)
@@ -2599,7 +2654,8 @@ function rebuild3DScene(model) {
       glassColor = isDay ? 0xa6af97 : 0xa5aa8e;
     }
 
-    const glassGeo = new THREE.BoxGeometry(Math.max(4, fp.widthM - recess * 2), glassHeight, Math.max(4, fp.depthM - recess * 2));
+    const contourFacade = fp.massProfile && fp.massProfile !== "legacy";
+    const glassGeo = contourFacade ? null : new THREE.BoxGeometry(Math.max(4, fp.widthM - recess * 2), glassHeight, Math.max(4, fp.depthM - recess * 2));
     const glassMat = new THREE.MeshPhysicalMaterial({
       color: surfaceColor(glassColor),
       transparent: true,
@@ -2611,6 +2667,10 @@ function rebuild3DScene(model) {
       reflectivity: 0.72,
       clippingPlanes: activeClipPlanes
     });
+    if (contourFacade) {
+      addProfileFacade(fp, {glassMat, frameMat, spandrelMat, slabBandMat, yBottom, slabThick, glassHeight, bayW, wwrRatio, finDepth, isXray, isRetail, isMasonryLike});
+      continue;
+    }
     const glassMesh = new THREE.Mesh(glassGeo, glassMat);
     glassMesh.position.set(0, yBottom + slabThick + glassHeight / 2, zCenter);
     glassMesh.castShadow = true;
@@ -2804,8 +2864,23 @@ function rebuild3DScene(model) {
     roofSlab.castShadow = true;
     buildingGroup.add(roofSlab);
 
+    if (model.roofCrown) {
+      const crown = model.roofCrown, h = crown.heightM;
+      const geometry = createMassPlateGeometry(topFloor, h, topFloor.widthM * .94, topFloor.depthM * .94);
+      const position = geometry.getAttribute('position'), width = topFloor.widthM * .94;
+      for (let i = 0; i < position.count; i++) if (position.getY(i) > 0) {
+        position.setY(i, -h / 2 + h * (.1 + .9 * (position.getX(i) / width + .5)));
+      }
+      position.needsUpdate = true; geometry.computeVertexNormals();
+      const mesh = new THREE.Mesh(geometry, spandrelMat);
+      mesh.position.set(0, roofY + .45 + h / 2, topFloor.northShiftM);
+      mesh.castShadow = true; mesh.receiveShadow = true;
+      mesh.userData = { kind:'nonoccupiable-roof-crown', massSolid:{ contours:window.AtelierFloorGeometry.localContours(topFloor, topFloor.widthM * .94, topFloor.depthM * .94), heightM:h, sloped:true } };
+      buildingGroup.add(mesh);
+    }
+
     // Rooftop Solar PV Panels (신재생에너지 태양광 모듈)
-    if (!simpleMass && !isXray && !isClipped) {
+    if (!simpleMass && !isXray && !isClipped && state.crownStyle !== "sloped") {
       const pvMat = new THREE.MeshStandardMaterial({
         color: ATELIER_PALETTE.solarPanel,
         roughness: 0.42,
@@ -2817,7 +2892,7 @@ function rebuild3DScene(model) {
       const pvDepthM = Math.min(1.6, Math.max(0, pvMaxZ - pvMinZ));
       const pvRows = pvDepthM > 0.4 ? Math.min(3, Math.floor((pvMaxZ - pvMinZ + 0.4) / (pvDepthM + 0.4))) : 0;
       for (let r = 0; r < pvRows; r++) {
-        const pvGeo = new THREE.BoxGeometry(topFloor.widthM * 0.65, 0.12, pvDepthM);
+        const pvGeo = new THREE.BoxGeometry(Math.min(topFloor.widthM * .65, topFloor.widthM - 2 * (topFloor.cornerCutM || 0) - .9), 0.12, pvDepthM);
         const pvMesh = new THREE.Mesh(pvGeo, pvMat);
         pvMesh.rotation.x = 0.32; // Tilted toward South sun
         pvMesh.position.set(0, roofY + 0.8, topFloor.northShiftM + pvMinZ + pvDepthM / 2 + r * (pvDepthM + 0.4));
@@ -2827,7 +2902,8 @@ function rebuild3DScene(model) {
   }
 
   // 6. Continuous core reservation shared by floor plans, parking and IFC.
-  const maxExplodeHeight = model.buildingHeightM + (model.floorPlates.length - 1) * explodeGap;
+  const coreTopM = model.roofCrown ? (topFloor?.zTop || 0) + .45 : model.buildingHeightM;
+  const maxExplodeHeight = coreTopM + (model.floorPlates.length - 1) * explodeGap;
   const totalHeight = maxExplodeHeight + totalBaseDepth;
   const coreMat = new THREE.MeshStandardMaterial({
     color: ATELIER_PALETTE.core,
@@ -2955,6 +3031,7 @@ function rebuild3DScene(model) {
       dimensionGroup.add(rLabel);
     }
   }
+  window.AtelierSolidEngine?.apply(buildingGroup, model, THREE);
   window.dispatchEvent(new CustomEvent("atelier:scene-rebuilt"));
 }
 
@@ -3022,7 +3099,7 @@ function renderTestFitSvg(model) {
       <text x="${siteX + 7}" y="${siteY + 13}" fill="#047857" font-size="9.5" font-weight="800">${model.parcelGeometry?.frameRotationRad ? `배치축 평면 · 북향과 ${Math.abs(model.parcelGeometry.frameRotationRad * 180 / Math.PI).toFixed(1)}°` : "▲ 정북방향"} (${model.parcelGeometry ? "검토 영역" : "대지"} ${model.siteWidthM.toFixed(1)}m × ${model.siteDepthM.toFixed(1)}m)</text>
 
       <!-- Typical Floor Plate (Rentable Zone) -->
-      <rect x="${bX}" y="${bY}" width="${bWpx}" height="${bDpx}" fill="rgba(37,99,235,0.10)" stroke="#1d4ed8" stroke-width="2"/>
+      ${typFloor.footprint ? `<polygon points="${typFloor.footprint.outer.map(([x,z])=>`${svgW/2+x*scale},${svgH/2+z*scale}`).join(' ')}" fill="rgba(37,99,235,0.10)" stroke="#1d4ed8" stroke-width="2"/>` : `<rect x="${bX}" y="${bY}" width="${bWpx}" height="${bDpx}" fill="rgba(37,99,235,0.10)" stroke="#1d4ed8" stroke-width="2"/>`}
 
 
       ${coreSvg}

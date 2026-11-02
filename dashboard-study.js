@@ -19,7 +19,7 @@
   };
   // Match the API's editable input schema. Preserve out-of-range values so the
   // server can reject them; session-storage sanitation must not change a request.
-  const API_INPUT_KEYS = ("option viewMode modelDetail facadeType claddingMaterial facadeAccent glassTint podiumStyle zoning buildingUse hotelType spaceProgram parkingMode regulationMode residentialType housingPermitType parkingDistrict coreType mixedUseProfile siteAreaSqm roadWidthM publicContribPct legalFarCapPct legalBcrCapPct maxHeightM housingUnitAreaSqm housingUnits setbackM setbackSideM setbackRearM floorsAbove floorsBelow targetBcr floorHeight facadeWwrPct facadeBayM facadeLouverM facadePanelDepthMm facadeJointMm facadeLouverAngleDeg clipPlanePct sunHour landPricePyeongM constCostPyeongMan rentPyeongMan capRatePct loanLtvPct loanRatePct lpSharePct lpHurdlePct gpPromotePct targetIrrPct daylightTheme showSurroundingBuildings seoulDowntown northSolar parcelMerged showDimensions floorUseOverrides financeMode hotelAdrKrw hotelOccupancyPct hotelRoomsOverride hotelAncillaryRevenuePct hotelOpexPct hotelFixedOpexEok hotelFfeReservePct hotelManagementFeePct hotelResidentialDistanceM hotelResidentialBarrier parcelData").split(" ");
+  const API_INPUT_KEYS = ("massProfile massShapePct crownStyle crownHeightM option viewMode modelDetail facadeType claddingMaterial facadeAccent glassTint podiumStyle zoning buildingUse hotelType spaceProgram parkingMode regulationMode residentialType housingPermitType parkingDistrict coreType mixedUseProfile siteAreaSqm roadWidthM publicContribPct legalFarCapPct legalBcrCapPct maxHeightM housingUnitAreaSqm housingUnits setbackM setbackSideM setbackRearM floorsAbove floorsBelow targetBcr floorHeight facadeWwrPct facadeBayM facadeLouverM facadePanelDepthMm facadeJointMm facadeLouverAngleDeg clipPlanePct sunHour landPricePyeongM constCostPyeongMan rentPyeongMan capRatePct loanLtvPct loanRatePct lpSharePct lpHurdlePct gpPromotePct targetIrrPct daylightTheme showSurroundingBuildings seoulDowntown northSolar parcelMerged showDimensions floorUseOverrides financeMode hotelAdrKrw hotelOccupancyPct hotelRoomsOverride hotelAncillaryRevenuePct hotelOpexPct hotelFixedOpexEok hotelFfeReservePct hotelManagementFeePct hotelResidentialDistanceM hotelResidentialBarrier parcelData").split(" ");
   const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
   const finite = value => typeof value === "number" && Number.isFinite(value);
   const number = (value, digits = 1) => finite(value) ? value.toLocaleString("ko-KR", { maximumFractionDigits: digits }) : "확인 필요";
@@ -43,7 +43,7 @@
   }
   function planSignature(floor, options) {
     const coreLayout = options.coreLayout !== undefined ? options.coreLayout : floor.coreLayout;
-    return JSON.stringify([floor.level, floor.use, floor.widthM, floor.depthM, floor.northShiftM, floor.zBottom, floor.zTop, floor.hasAtrium, options,
+    return JSON.stringify([floor.level, floor.use, floor.widthM, floor.depthM, floor.northShiftM, floor.zBottom, floor.zTop, floor.hasAtrium, floor.footprint, options,
       coreLayout !== undefined, coreLayout?.status, coreLayout?.cores]);
   }
   function analysisRequest(inputs, floorLevel) {
@@ -105,13 +105,14 @@
 
   /** The same metre coordinates and generated objects used by the WebGL interior. */
   function planSvg(plan, title, layers = {}) {
-    const b = plan?.bounds;
+    const outer = plan?.footprint?.outer;
+    const b = outer?.length ? {minX:Math.min(...outer.map(p=>p[0])),maxX:Math.max(...outer.map(p=>p[0])),minZ:Math.min(...outer.map(p=>p[1])),maxZ:Math.max(...outer.map(p=>p[1]))} : plan?.bounds;
     if (!b || ![b.minX, b.maxX, b.minZ, b.maxZ].every(finite) || b.maxX <= b.minX || b.maxZ <= b.minZ) return "";
     const scale = 24, pad = 42, w = (b.maxX - b.minX) * scale + pad * 2, h = (b.maxZ - b.minZ) * scale + pad * 2 + 44;
     const x = v => +(pad + (v - b.minX) * scale).toFixed(3), y = v => +(pad + (v - b.minZ) * scale).toFixed(3);
     const rect = (r, fill, stroke = "#c9d5e3", extra = "") => `<rect x="${x(r.minX)}" y="${y(r.minZ)}" width="${Math.max(0, (r.maxX - r.minX) * scale)}" height="${Math.max(0, (r.maxZ - r.minZ) * scale)}" fill="${fill}" stroke="${stroke}" stroke-width=".8" ${extra}/>`;
     const roomFill = r => r.type?.startsWith("guest_") ? "#e8f5fa" : r.type === "dwelling_unit" || r.type === "private_room" ? "#edf2ff" : r.type?.startsWith("shared_") ? "#f8edda" : "#f4f7fb";
-    const body = [rect(b, "#fff", "#183551"),
+    const body = [outer?.length ? `<polygon points="${outer.map(p=>`${x(p[0])},${y(p[1])}`).join(' ')}" fill="#f5f3ed" stroke="#183551" stroke-width="1.5"/>` : rect(b, "#fff", "#183551"),
       ...(plan.corridors || []).map(r => rect(r, "#e2ecf5", "#e2ecf5")),
       ...(plan.rooms || []).map(r => rect(r, roomFill(r))),
       ...(plan.cores || []).map(r => rect(r, "#a7b7ca", "#758ca7")),

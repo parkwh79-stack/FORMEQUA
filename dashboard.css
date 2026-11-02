@@ -599,3 +599,10 @@ html:has(body.dashboard-site.model-focus), body.dashboard-site.model-focus { ove
   .dashboard-site.model-focus .model-video-status:not([hidden]) { top: 64px; right: 12px; max-width: calc(100% - 24px); font-size: 11px; }
   .dashboard-site.model-focus .interior-controls:not([hidden]) { bottom: max(12px, env(safe-area-inset-bottom)); max-width: calc(100% - 24px); }
 }
+/* Compact mass editing controls, alongside the established material palette. */
+.model-profile-controls{display:grid;gap:13px;margin-top:18px;padding-top:17px;border-top:1px solid #d8d7ce}
+.model-profile-controls label{display:grid;grid-template-columns:1fr auto;gap:8px;font-size:12px;font-weight:600;color:#414b3b}
+.model-profile-controls select,.model-profile-controls input{grid-column:1/-1;width:100%;min-width:0;accent-color:#535d49}
+.model-profile-controls select{padding:8px;background:#faf9f5;border:1px solid #cfcec4;border-radius:3px;color:#414b3b;font:inherit}
+.model-profile-controls p{margin:0;font-size:11px;line-height:1.65;color:#75796e}
+.model-profile-controls [hidden]{display:none}

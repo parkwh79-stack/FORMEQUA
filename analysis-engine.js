@@ -16,10 +16,12 @@ const conceptStructure = require("./concept-structure.js");
 const parcelGeometry = require("./parcel-geometry.js");
 const parcelRegulations = require("./parcel-regulation-rules.js");
 const spatial = require('./spatial-settings.js');
+const floorGeometry = require('./floor-geometry.js');
 const API_VERSION = "1.0";
 const PROGRAMS = ["office", "officetel", "hotel", "housing", "living", "knowledge", "retail", "sales"];
 const PARCELS = ["gangnam_yeoksam", "seongdong_seongsu", "mapo_hapjeong", "jongno_euljiro", "custom_seoul"];
 const ENUMS = {
+  massProfile: ['legacy','chamfered','tapered','stepped'], crownStyle: ['flat','sloped'],
   parcelKey: PARCELS,
   option: ["A", "B", "C"], viewMode: ["standard", "envelope", "xray", "exploded"],
   zoning: ["일반상업지역", "중심상업지역", "근린상업지역", "준공업지역", "준주거지역", "제3종일반주거지역", "제2종일반주거지역"],
@@ -38,6 +40,7 @@ const ENUMS = {
   podiumStyle: ["showwindow", "brick_arcade", "piloti_colonade"], ...spatial.enums
 };
 const NUMBERS = {
+  massShapePct: [0,30], crownHeightM: [0,8],
   siteAreaSqm: [200, 20000], roadWidthM: [4, 50], publicContribPct: [0, 25],
   legalFarCapPct: [0, 1500], legalBcrCapPct: [0, 100], maxHeightM: [0, 300],
   housingUnitAreaSqm: [15, 250], housingUnits: [0, 3000, true],
@@ -121,7 +124,7 @@ function createCalculationContext() {
     return elements.get(id);
   };
   const context = vm.createContext({ window: {
-    AtelierLegal: legal, AtelierUsePermissions: permissions,
+    AtelierLegal: legal, AtelierUsePermissions: permissions, AtelierFloorGeometry: floorGeometry,
     AtelierFinance: finance, AtelierInteriorPlan: { generate }, AtelierCoreLayout: coreLayout, AtelierSpatialSettings: spatial,
     AtelierBuildingReview: buildingReview, AtelierConceptStructure: conceptStructure,
     AtelierParkingLayout: parkingLayout, AtelierParcelGeometry: parcelGeometry, AtelierParcelRegulations: parcelRegulations,

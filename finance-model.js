@@ -22,7 +22,7 @@
     // Land price / finance sensitivities repeatedly evaluate identical plans.
     const coreLayout = params.coreLayout !== undefined ? params.coreLayout : fp.coreLayout;
     const key = JSON.stringify([hotelModules.studyScope(params),fp.level,fp.zBottom,fp.zTop,fp.widthM, fp.depthM, fp.northShiftM, fp.hasAtrium,
-      fp.atriumVoidRatio, params.coreType, params.option,
+      fp.atriumVoidRatio, fp.cornerCutM, fp.footprint, params.coreType, params.option,
       params.hotelTwinPct,params.hotelSuitePct,params.hotelServiceEveryRooms,
       (params.layoutObstacles||[]).filter(o=>o.level===fp.level).map(o=>[o.id,o.kind,o.minX,o.maxX,o.minZ,o.maxZ]).sort((a,b)=>String(a[0]).localeCompare(String(b[0]))),
       params.circulationProfile,

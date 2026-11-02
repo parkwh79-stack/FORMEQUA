@@ -90,6 +90,10 @@
     const shape = new THREE.Shape();
     shape.moveTo(b.minX, -b.minZ); shape.lineTo(b.maxX, -b.minZ);
     shape.lineTo(b.maxX, -b.maxZ); shape.lineTo(b.minX, -b.maxZ); shape.closePath();
+    if (currentPlan.footprint?.outer?.length) {
+      shape.curves=[]; shape.currentPoint.set(0,0);
+      currentPlan.footprint.outer.forEach(([x,z],i)=>i?shape.lineTo(x,-z):shape.moveTo(x,-z));shape.closePath();
+    }
     currentPlan.voids.forEach(rect => {
       const hole = new THREE.Path();
       hole.moveTo(rect.minX, -rect.minZ); hole.lineTo(rect.minX, -rect.maxZ);
@@ -403,7 +407,7 @@
     // Finance-only ledger changes must not reset an active camera. A changed
     // shared core footprint/status must rebuild the visible interior.
     return JSON.stringify([floor?.level, floor?.use, floor?.widthM, floor?.depthM, floor?.northShiftM,
-      floor?.zBottom, floor?.zTop, floor?.hasAtrium, coreLayout !== undefined, coreLayout?.status, coreLayout?.cores,
+      floor?.zBottom, floor?.zTop, floor?.hasAtrium, floor?.footprint, coreLayout !== undefined, coreLayout?.status, coreLayout?.cores,
       model?.representation?.detailLevel, state.coreType, state.option, state.daylightTheme, state.spaceProgram, state.residentialType, state.housingUnitAreaSqm,
       window.AtelierSpatialSettings?.select(state), state.parcelKey, window.AtelierStudyIdentity?.scope(state)]);
   }

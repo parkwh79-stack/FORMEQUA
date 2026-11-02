@@ -15,6 +15,7 @@
     const ticks=(a,b)=>{const n=Math.max(1,Math.ceil((b-a)/step));return Array.from({length:n+1},(_,i)=>a+(b-a)*i/n);};
     const cores=options.coreLayout?.cores||[], xs=ticks(bounds.minX,bounds.maxX),zs=ticks(bounds.minZ,bounds.maxZ);
     for(const x of xs)for(const z of zs){
+      if(floors.some(f=>f.footprint&&!f.footprint.outer.every((a,i,r)=>{const b=r[(i+1)%r.length];return (b[0]-a[0])*(z-a[1])-(b[1]-a[1])*(x-a[0])>=.15*Math.hypot(b[0]-a[0],b[1]-a[1]);})))continue;
       if(cores.some(c=>x>=c.minX-.15&&x<=c.maxX+.15&&z>=c.minZ-.15&&z<=c.maxZ+.15))continue;
       if(floors.some(f=>f.hasAtrium&&Math.abs(x)<f.widthM*.175+.15&&Math.abs(z-(f.northShiftM||0))<f.depthM*.175+.15))continue;
       result.columns.push({id:`axis-${result.columns.length+1}`,x,z,levels:floors.map(f=>({level:f.level,zBottom:f.zBottom,zTop:f.zTop}))});

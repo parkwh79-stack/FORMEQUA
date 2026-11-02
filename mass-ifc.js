@@ -143,6 +143,7 @@
     const note = "Conceptual planning mass only; not a survey, permit model, structural design or detailed BIM. " +
       "Local metric coordinates approximate WGS84 around the parcel origin; heights are relative to local ground, not a surveyed vertical datum. " +
       "Detailed facade, interior and rooftop PV/equipment are not exported. The planning roof-height allowance is not a physical solid." +
+      (model.roofCrown ? " The nonoccupiable sloped roof crown is not exported; its height is recorded in the planning allowance only." : "") +
       (sharedCores.length ? " " + coreNote : "");
     const project = add("IFCPROJECT(" + g("project") + ",$,'FORMEQUA Planning Mass'," + str(note) + ",$,$,'Planning study'," + refs([context]) + "," + ref(unitSet) + ")");
     let latitude = "$", longitude = "$";
@@ -186,12 +187,13 @@
       const ids = unique.map(p => point(dimension === 3 ? [finite(p[0], "boundary X"), -finite(p[1], "boundary Z"), 0] : p));
       return add("IFCPOLYLINE(" + refs(ids.concat(ids[0])) + ")");
     }
-    function solidShape(width, depth, height, atrium, profileLabel) {
+    function solidShape(width, depth, height, atrium, profileLabel, footprint, centerZ=0) {
       const w = width / 2, d = depth / 2;
-      const outer = closedCurve([[-w, -d], [w, -d], [w, d], [-w, d]], 2);
+      const convert = ring => ring.map(p=>[p[0],-(p[1]-centerZ)]).reverse();
+      const outer = closedCurve(footprint ? convert(footprint.outer) : [[-w, -d], [w, -d], [w, d], [-w, d]], 2);
       let profile;
       if (atrium) {
-        const inner = closedCurve([[-w * 0.35, -d * 0.35], [-w * 0.35, d * 0.35], [w * 0.35, d * 0.35], [w * 0.35, -d * 0.35]], 2);
+        const inner = closedCurve(footprint?.holes?.length ? convert(footprint.holes[0]) : [[-w * 0.35, -d * 0.35], [-w * 0.35, d * 0.35], [w * 0.35, d * 0.35], [w * 0.35, -d * 0.35]], 2);
         profile = add("IFCARBITRARYPROFILEDEFWITHVOIDS(.AREA.,'Planning floor with atrium'," + ref(outer) + "," + refs([inner]) + ")");
       } else profile = add("IFCARBITRARYCLOSEDPROFILEDEF(.AREA.," + str(profileLabel || "Planning floor") + "," + ref(outer) + ")");
       const solid = add("IFCEXTRUDEDAREASOLID(" + ref(profile) + "," + ref(worldAxis) + "," + ref(up) + "," + real(height) + ")");
@@ -205,14 +207,14 @@
       const storey = add("IFCBUILDINGSTOREY(" + g("storey/" + key) + ",$," + str(name) + ",$,$," + ref(storeyPlacement) + ",$,$,.ELEMENT.," + real(elevation) + ")");
       storeys.push(storey);
       const massPlacement = placement(storeyPlacement, [centerX, -centerZ, 0]);
-      const shape = solidShape(width, depth, height, atrium);
+      const shape = solidShape(width, depth, height, atrium, null, source?.footprint, centerZ);
       const mass = add("IFCBUILDINGELEMENTPROXY(" + g("mass/" + key) + ",$," + str(name + " planning volume") + "," + str(note) + ",'PlanningMass'," + ref(massPlacement) + "," + ref(shape) + "," + str(key + "_MASS") + ",.ELEMENT.)");
       const elements = [mass];
       if (!simpleMass && options.includeSlabs !== false) {
         const thickness = level < 0 ? 0.35 : 0.28;
         // WebGL basement slabs are centered on -3.5m*n; above slabs start at zBottom.
         const slabPlacement = placement(storeyPlacement, [centerX, -centerZ, level < 0 ? -thickness / 2 : 0]);
-        const slabShape = solidShape(width, depth, thickness, atrium);
+        const slabShape = solidShape(width, depth, thickness, atrium, null, source?.footprint, centerZ);
         elements.push(add("IFCSLAB(" + g("slab/" + key) + ",$," + str(name + " conceptual floor slab") + "," + str("Planning slab thickness only; not structural design.") + ",$," + ref(slabPlacement) + "," + ref(slabShape) + "," + str(key + "_SLAB") + ",.FLOOR.)"));
       }
       for (const core of sharedCores) {
@@ -231,7 +233,7 @@
         ]);
       }
       contain(key, storey, elements);
-      const geometricArea = width * depth * (atrium ? 1 - 0.35 * 0.35 : 1);
+      const geometricArea = source?.footprint?.areaSqm ?? width * depth * (atrium ? 1 - 0.35 * 0.35 : 1);
       const grossArea = source && Number.isFinite(source.areaSqm) ? source.areaSqm : geometricArea;
       const netArea = source && Number.isFinite(source.netFloorSqm) ? source.netFloorSqm : null;
       if (grossArea < 0 || netArea !== null && netArea < 0) fail("floor areas must not be negative.");
@@ -265,7 +267,7 @@
       const fp = floors[floors.length - 1], height = fp.zTop === undefined ? fallbackHeight : fp.zTop - fp.zBottom;
       // Matches the renderer's 0.45m slab centered at zTop + 0.22m.
       const roofPlacement = placement(highestStorey.storeyPlacement, [0, -(fp.northShiftM || 0), height - 0.005]);
-      const roofShape = solidShape(fp.widthM, fp.depthM, 0.45, !!fp.hasAtrium);
+      const roofShape = solidShape(fp.widthM, fp.depthM, 0.45, !!fp.hasAtrium, null, fp.footprint, fp.northShiftM || 0);
       const roof = add("IFCSLAB(" + g("slab/roof") + ",$,'Conceptual roof slab'," + str("Planning roof slab only; rooftop PV/equipment and roof-height allowance not modelled.") + ",$," + ref(roofPlacement) + "," + ref(roofShape) + ",'ROOF_SLAB',.ROOF.)");
       contain("roof", highestStorey.storey, [roof]);
     }
